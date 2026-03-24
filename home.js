@@ -55,6 +55,8 @@ function carregarDados() {
   // 🤝 ACORDO (por valor)
   let restanteAcordo = dividaTotal - valorPagoAcordo;
   if (restanteAcordo < 0) restanteAcordo = 0;
+  document.getElementById("dividaTotal").innerText =
+  "Dívida total: €" + dividaTotal;
 
   document.getElementById("pagoAcordo").innerText =
     "Pago: €" + valorPagoAcordo;
