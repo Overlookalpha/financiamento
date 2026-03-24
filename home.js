@@ -75,19 +75,25 @@ function carregarDados() {
 
 // ➕ PAGAR FINANCIAMENTO
 function pagarParcela() {
-  let valor = prompt("Quanto pagaste no financiamento?");
+  let valor = document.getElementById("inputBanco").value;
   if (!valor) return;
 
   valorPagoBanco += Number(valor);
+
+  document.getElementById("inputBanco").value = "";
+
   carregarDados();
 }
 
 
 // ➕ PAGAR ACORDO
-function pagarAcordo() {
-  let valor = prompt("Quanto pagaste do acordo?");
+function pagarParcela() {
+  let valor = document.getElementById("inputBanco").value;
   if (!valor) return;
 
-  valorPagoAcordo += Number(valor);
+  valorPagoBanco += Number(valor);
+
+  document.getElementById("inputBanco").value = "";
+
   carregarDados();
 }
