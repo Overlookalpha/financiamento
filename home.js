@@ -31,51 +31,36 @@ auth.onAuthStateChanged(async (user) => {
 
 
 // 📊 DADOS FIXOS (por enquanto)
-let parcelasPagas = 33;
-let totalParcelas = 96;
+let totalFinanciamento = 20000; // depois ajustamos certo
+let valorPagoBanco = 0;
 
-let mesesPagos = 33;
 let dividaTotal = 13371;
+let valorPagoAcordo = 0;
 
 
 // 🔄 CARREGAR
 function carregarDados() {
 
-  // 🚗 BANCO
-  let valorParcela = 405;
-
-  let totalPagoBanco = parcelasPagas * valorParcela;
-  let restanteBanco = (totalParcelas - parcelasPagas) * valorParcela;
-
-  document.getElementById("parcelas").innerText =
-    "Parcelas: " + parcelasPagas + " / " + totalParcelas;
+  // 🚗 BANCO (por valor)
+  let restanteBanco = totalFinanciamento - valorPagoBanco;
+  if (restanteBanco < 0) restanteBanco = 0;
 
   document.getElementById("pagoBanco").innerText =
-    "Pago: €" + totalPagoBanco;
+    "Pago: €" + valorPagoBanco;
 
   document.getElementById("restanteBanco").innerText =
     "Falta: €" + restanteBanco;
 
 
-  // 🤝 ACORDO
-  let valorMensal = 100;
-
-  let pagoAcordo = mesesPagos * valorMensal;
-  let restanteAcordo = dividaTotal - pagoAcordo;
-
+  // 🤝 ACORDO (por valor)
+  let restanteAcordo = dividaTotal - valorPagoAcordo;
   if (restanteAcordo < 0) restanteAcordo = 0;
 
-  document.getElementById("dividaTotal").innerText =
-    "Dívida total: €" + dividaTotal;
-
   document.getElementById("pagoAcordo").innerText =
-    "Pago: €" + pagoAcordo;
+    "Pago: €" + valorPagoAcordo;
 
   document.getElementById("restanteAcordo").innerText =
     "Falta: €" + restanteAcordo;
-
-  document.getElementById("meses").innerText =
-    "Meses pagos: " + mesesPagos;
 
 
   // 🔒 BLOQUEIO
@@ -85,14 +70,22 @@ function carregarDados() {
   }
 }
 
-// ➕ PAGAR PARCELA
+
+// ➕ PAGAR FINANCIAMENTO
 function pagarParcela() {
-  parcelasPagas++;
+  let valor = prompt("Quanto pagaste no financiamento?");
+  if (!valor) return;
+
+  valorPagoBanco += Number(valor);
   carregarDados();
 }
 
+
 // ➕ PAGAR ACORDO
 function pagarAcordo() {
-  mesesPagos++;
+  let valor = prompt("Quanto pagaste do acordo?");
+  if (!valor) return;
+
+  valorPagoAcordo += Number(valor);
   carregarDados();
 }
