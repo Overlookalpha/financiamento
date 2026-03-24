@@ -87,13 +87,13 @@ function pagarParcela() {
 
 
 // ➕ PAGAR ACORDO
-function pagarParcela() {
-  let valor = document.getElementById("inputBanco").value;
+function pagarAcordo() {
+  let valor = document.getElementById("inputAcordo").value;
   if (!valor) return;
 
-  valorPagoBanco += Number(valor);
+  valorPagoAcordo += Number(valor);
 
-  document.getElementById("inputBanco").value = "";
+  document.getElementById("inputAcordo").value = "";
 
   carregarDados();
 }
