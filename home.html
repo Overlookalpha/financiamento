@@ -67,7 +67,11 @@ button:hover {
 
 <div class="card">
   <h3>💳 Financiamento</h3>
+
   <p id="parcelas"></p>
+  <p id="pagoBanco"></p>
+  <p id="restanteBanco"></p>
+
   <button id="btnParcela" onclick="pagarParcela()">Paguei parcela</button>
 </div>
 
@@ -75,10 +79,14 @@ button:hover {
 
 <div class="card">
   <h3>🤝 Acordo (100€/mês)</h3>
-  <p id="acordo"></p>
+
+  <p id="dividaTotal"></p>
+  <p id="pagoAcordo"></p>
+  <p id="restanteAcordo"></p>
+  <p id="meses"></p>
+
   <button id="btnAcordo" onclick="pagarAcordo()">Paguei 100€</button>
 </div>
-
 <!-- FIREBASE -->
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
