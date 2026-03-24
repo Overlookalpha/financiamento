@@ -8,24 +8,55 @@
 body {
   margin: 0;
   font-family: Arial;
-  background: #0f2027;
+  background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
   color: white;
   text-align: center;
 }
 
-.card {
-  background: #1e2a38;
-  margin: 15px;
-  padding: 20px;
-  border-radius: 10px;
+h2 {
+  margin-top: 30px;
+  font-size: 28px;
 }
+
+.card {
+  background: rgba(255,255,255,0.05);
+  margin: 20px;
+  padding: 25px;
+  border-radius: 15px;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 0 20px rgba(0,0,0,0.3);
+}
+
+.card h3 {
+  margin-bottom: 10px;
+}
+
+p {
+  font-size: 18px;
+  margin: 10px 0;
+}
+
 button {
-  padding: 10px;
+  padding: 12px;
   margin-top: 10px;
   border: none;
-  border-radius: 8px;
-  background: #00c6ff;
+  border-radius: 10px;
+  background: linear-gradient(45deg, #00c6ff, #0072ff);
   color: white;
+  font-weight: bold;
+  cursor: pointer;
+  width: 80%;
+  transition: 0.2s;
+}
+
+button:hover {
+  transform: scale(1.05);
+}
+
+.divider {
+  height: 2px;
+  background: rgba(255,255,255,0.1);
+  margin: 20px;
 }
 </style>
 </head>
@@ -35,13 +66,15 @@ button {
 <h2>🚗 Controle do Carro</h2>
 
 <div class="card">
-  <h3>Financiamento</h3>
+  <h3>💳 Financiamento</h3>
   <p id="parcelas"></p>
   <button id="btnParcela" onclick="pagarParcela()">Paguei parcela</button>
 </div>
 
+<div class="divider"></div>
+
 <div class="card">
-  <h3>Acordo (100€/mês)</h3>
+  <h3>🤝 Acordo (100€/mês)</h3>
   <p id="acordo"></p>
   <button id="btnAcordo" onclick="pagarAcordo()">Paguei 100€</button>
 </div>
