@@ -41,21 +41,49 @@ let dividaTotal = 13371;
 // 🔄 CARREGAR
 function carregarDados() {
 
+  // 🚗 BANCO
+  let valorParcela = 405;
+
+  let totalPagoBanco = parcelasPagas * valorParcela;
+  let restanteBanco = (totalParcelas - parcelasPagas) * valorParcela;
+
   document.getElementById("parcelas").innerText =
-    parcelasPagas + " / " + totalParcelas;
+    "Parcelas: " + parcelasPagas + " / " + totalParcelas;
 
-  document.getElementById("acordo").innerText =
-    "Pago: €" + (mesesPagos * 100) +
-    " | Falta: €" + (dividaTotal - (mesesPagos * 100));
+  document.getElementById("pagoBanco").innerText =
+    "Pago: €" + totalPagoBanco;
+
+  document.getElementById("restanteBanco").innerText =
+    "Falta: €" + restanteBanco;
 
 
-  // 🔒 BLOQUEAR SE NÃO FOR ADMIN
+  // 🤝 ACORDO
+  let valorMensal = 100;
+
+  let pagoAcordo = mesesPagos * valorMensal;
+  let restanteAcordo = dividaTotal - pagoAcordo;
+
+  if (restanteAcordo < 0) restanteAcordo = 0;
+
+  document.getElementById("dividaTotal").innerText =
+    "Dívida total: €" + dividaTotal;
+
+  document.getElementById("pagoAcordo").innerText =
+    "Pago: €" + pagoAcordo;
+
+  document.getElementById("restanteAcordo").innerText =
+    "Falta: €" + restanteAcordo;
+
+  document.getElementById("meses").innerText =
+    "Meses pagos: " + mesesPagos;
+
+
+  // 🔒 BLOQUEIO
   if (!isAdmin) {
     document.getElementById("btnParcela").style.display = "none";
     document.getElementById("btnAcordo").style.display = "none";
   }
 }
-
 
 // ➕ PAGAR PARCELA
 function pagarParcela() {
