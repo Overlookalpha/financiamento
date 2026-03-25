@@ -100,7 +100,6 @@ async function carregarDados() {
 
   document.getElementById("restanteAcordo").innerText =
     "Falta: €" + restanteAcordo;
-}
 
 
 // ➕ PAGAR FINANCIAMENTO
