@@ -77,7 +77,6 @@ async function carregarDados() {
   valorPagoBanco = totalBanco;
   valorPagoAcordo = totalAcordo;
   // 🔥 BUSCAR VALORES DO FIREBASE
-let financiamentoFalta = 0;
 
 let financiamentoFalta = 0;
 
