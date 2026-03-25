@@ -107,22 +107,6 @@ async function carregarDados() {
   document.getElementById("restanteAcordo").innerText =
     "Falta: €" + restanteAcordo;
 
-  // 📅 PRÓXIMOS PAGAMENTOS
-  if (ultimoPagamentoBanco) {
-    document.getElementById("proximoBanco").innerText =
-      "Próximo: " + calcularProximo(ultimoPagamentoBanco);
-  }
-
-  if (ultimoPagamentoAcordo) {
-    document.getElementById("proximoAcordo").innerText =
-      "Próximo: " + calcularProximo(ultimoPagamentoAcordo);
-  }
-}
-function calcularProximo(data) {
-  let d = new Date(data);
-  d.setMonth(d.getMonth() + 1);
-  return d.toLocaleDateString();
-}
 // ➕ PAGAR FINANCIAMENTO
 window.pagarParcela = async function () {
   let valor = Number(document.getElementById("inputBanco").value);
