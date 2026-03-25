@@ -39,22 +39,48 @@ let valorPagoAcordo = 0;
 
 
 // 🔄 CARREGAR
-function carregarDados() {
+async function carregarDados() {
 
-  // 🚗 BANCO
+  let user = auth.currentUser;
+
+  let snapshot = await db.collection("pagamentos")
+    .where("uid", "==", user.uid)
+    .get();
+
+  let totalBanco = 0;
+  let totalAcordo = 0;
+
+  let ultimoPagamentoBanco = null;
+  let ultimoPagamentoAcordo = null;
+
+  snapshot.forEach(doc => {
+    let p = doc.data();
+
+    if (p.tipo === "financiamento") {
+      totalBanco += p.valor;
+      ultimoPagamentoBanco = p.data;
+    }
+
+    if (p.tipo === "acordo") {
+      totalAcordo += p.valor;
+      ultimoPagamentoAcordo = p.data;
+    }
+  });
+
+  valorPagoBanco = totalBanco;
+  valorPagoAcordo = totalAcordo;
+
   let restanteBanco = totalFinanciamento - valorPagoBanco;
   if (restanteBanco < 0) restanteBanco = 0;
+
+  let restanteAcordo = dividaTotal - valorPagoAcordo;
+  if (restanteAcordo < 0) restanteAcordo = 0;
 
   document.getElementById("pagoBanco").innerText =
     "Pago: €" + valorPagoBanco;
 
   document.getElementById("restanteBanco").innerText =
     "Falta: €" + restanteBanco;
-
-
-  // 🤝 ACORDO
-  let restanteAcordo = dividaTotal - valorPagoAcordo;
-  if (restanteAcordo < 0) restanteAcordo = 0;
 
   document.getElementById("dividaTotal").innerText =
     "Dívida total: €" + dividaTotal;
@@ -65,27 +91,33 @@ function carregarDados() {
   document.getElementById("restanteAcordo").innerText =
     "Falta: €" + restanteAcordo;
 
+  // 📅 mostrar última data
+  if (ultimoPagamentoBanco) {
+    document.getElementById("dataBanco").innerText =
+      "Último pagamento: " + new Date(ultimoPagamentoBanco).toLocaleDateString();
+  }
 
-  // 🔒 BLOQUEIO
-  if (!isAdmin) {
-    document.getElementById("btnParcela").style.display = "none";
-    document.getElementById("btnAcordo").style.display = "none";
+  if (ultimoPagamentoAcordo) {
+    document.getElementById("dataAcordo").innerText =
+      "Último pagamento: " + new Date(ultimoPagamentoAcordo).toLocaleDateString();
   }
 }
 
-
 // ➕ PAGAR FINANCIAMENTO
-window.pagarParcela = function () {
-  let valor = document.getElementById("inputBanco").value;
+window.pagarParcela = async function () {
+  let valor = Number(document.getElementById("inputBanco").value);
+  if (!valor || valor <= 0) return alert("Valor inválido");
 
-  valor = Number(valor);
+  let user = auth.currentUser;
 
-  if (!valor || valor <= 0) {
-    alert("Digite um valor válido");
-    return;
-  }
+  let data = new Date().toISOString();
 
-  valorPagoBanco += valor;
+  await db.collection("pagamentos").add({
+    uid: user.uid,
+    tipo: "financiamento",
+    valor: valor,
+    data: data
+  });
 
   document.getElementById("inputBanco").value = "";
 
@@ -94,17 +126,20 @@ window.pagarParcela = function () {
 
 
 // ➕ PAGAR ACORDO
-window.pagarAcordo = function () {
-  let valor = document.getElementById("inputAcordo").value;
+window.pagarAcordo = async function () {
+  let valor = Number(document.getElementById("inputAcordo").value);
+  if (!valor || valor <= 0) return alert("Valor inválido");
 
-  valor = Number(valor);
+  let user = auth.currentUser;
 
-  if (!valor || valor <= 0) {
-    alert("Digite um valor válido");
-    return;
-  }
+  let data = new Date().toISOString();
 
-  valorPagoAcordo += valor;
+  await db.collection("pagamentos").add({
+    uid: user.uid,
+    tipo: "acordo",
+    valor: valor,
+    data: data
+  });
 
   document.getElementById("inputAcordo").value = "";
 
