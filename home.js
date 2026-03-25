@@ -55,7 +55,6 @@ async function carregarDados() {
   snapshot.forEach(doc => {
     let p = doc.data();
 
-    // 📜 HISTÓRICO
     html += `
       <p>
         ${p.tipo === "financiamento" ? "💳 Financiamento" : "🤝 Acordo"} <br>
@@ -64,7 +63,6 @@ async function carregarDados() {
       </p>
     `;
 
-    // 📊 SOMA
     if (p.tipo === "financiamento") {
       totalBanco += p.valor;
     }
@@ -74,7 +72,6 @@ async function carregarDados() {
     }
   });
 
-  // 👉 MOSTRAR HISTÓRICO
   document.getElementById("historico").innerHTML = html;
 
   valorPagoBanco = totalBanco;
@@ -100,6 +97,7 @@ async function carregarDados() {
 
   document.getElementById("restanteAcordo").innerText =
     "Falta: €" + restanteAcordo;
+
 }
 
 // ➕ PAGAR FINANCIAMENTO
