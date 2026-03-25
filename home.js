@@ -77,14 +77,16 @@ async function carregarDados() {
   valorPagoBanco = totalBanco;
   valorPagoAcordo = totalAcordo;
   // 🔥 BUSCAR VALORES DO FIREBASE
+let financiamentoFalta = 0;
+
 let docControle = await db.collection("controle").doc("carro").get();
 
 if (docControle.exists) {
   let dados = docControle.data();
 
   totalFinanciamento = dados.financiamento_total;
-let financiamentoFalta = dados.financiamento_falta;
-dividaTotal = dados.acordo_total;
+  financiamentoFalta = dados.financiamento_falta;
+  dividaTotal = dados.acordo_total;
 }
   let restanteBanco = financiamentoFalta - valorPagoBanco;
   if (restanteBanco < 0) restanteBanco = 0;
