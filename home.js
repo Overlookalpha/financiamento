@@ -39,7 +39,6 @@ let valorPagoAcordo = 0;
 
 
 // 🔄 CARREGAR
-// 🔄 CARREGAR
 async function carregarDados() {
 
   let user = auth.currentUser;
@@ -52,9 +51,6 @@ async function carregarDados() {
 
   let totalBanco = 0;
   let totalAcordo = 0;
-
-  let ultimoPagamentoBanco = null;
-  let ultimoPagamentoAcordo = null;
 
   snapshot.forEach(doc => {
     let p = doc.data();
@@ -71,12 +67,10 @@ async function carregarDados() {
     // 📊 SOMA
     if (p.tipo === "financiamento") {
       totalBanco += p.valor;
-      ultimoPagamentoBanco = p.data;
     }
 
     if (p.tipo === "acordo") {
       totalAcordo += p.valor;
-      ultimoPagamentoAcordo = p.data;
     }
   });
 
@@ -107,6 +101,8 @@ async function carregarDados() {
   document.getElementById("restanteAcordo").innerText =
     "Falta: €" + restanteAcordo;
 }
+
+
 // ➕ PAGAR FINANCIAMENTO
 window.pagarParcela = async function () {
   let valor = Number(document.getElementById("inputBanco").value);
@@ -149,6 +145,9 @@ window.pagarAcordo = async function () {
 
   carregarDados();
 };
+
+
+// 🧠 TESTE BOTÃO SCORE
 window.abrirScore = function () {
   alert("Score abrindo...");
-}
+};
