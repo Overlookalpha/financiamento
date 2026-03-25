@@ -44,6 +44,7 @@ async function carregarDados() {
   let user = auth.currentUser;
 
   let snapshot = await db.collection("pagamentos")
+    let html = "";
     .where("uid", "==", user.uid)
     .get();
 
@@ -55,7 +56,15 @@ async function carregarDados() {
 
   snapshot.forEach(doc => {
     let p = doc.data();
-
+    html += `
+  <p>
+    ${p.tipo === "financiamento" ? "💳 Financiamento" : "🤝 Acordo"} <br>
+    €${p.valor} <br>
+    ${new Date(p.data).toLocaleDateString()}
+  </p>
+`;
+});
+document.getElementById("historico").innerHTML = html;
     if (p.tipo === "financiamento") {
       totalBanco += p.valor;
       ultimoPagamentoBanco = p.data;
