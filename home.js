@@ -165,3 +165,6 @@ window.pagarAcordo = async function () {
 
   carregarDados();
 };
+window.abrirScore = function () {
+  alert("Score abrindo...");
+}
