@@ -28,7 +28,7 @@ auth.onAuthStateChanged(async (user) => {
 
   carregarDados();
 });
-
+ 
 
 // 📊 DADOS FIXOS
 let totalFinanciamento = 20000;
