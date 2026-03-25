@@ -83,9 +83,10 @@ if (docControle.exists) {
   let dados = docControle.data();
 
   totalFinanciamento = dados.financiamento_total;
+let financiamentoFalta = dados.financiamento_falta;
 dividaTotal = dados.acordo_total;
 }
-  let restanteBanco = totalFinanciamento - valorPagoBanco;
+  let restanteBanco = financiamentoFalta - valorPagoBanco;
   if (restanteBanco < 0) restanteBanco = 0;
 
   let restanteAcordo = dividaTotal - valorPagoAcordo;
