@@ -93,16 +93,19 @@ async function carregarDados() {
 
   // 📅 mostrar última data
   if (ultimoPagamentoBanco) {
-    document.getElementById("dataBanco").innerText =
-      "Último pagamento: " + new Date(ultimoPagamentoBanco).toLocaleDateString();
-  }
-
-  if (ultimoPagamentoAcordo) {
-    document.getElementById("dataAcordo").innerText =
-      "Último pagamento: " + new Date(ultimoPagamentoAcordo).toLocaleDateString();
-  }
+    document.getElementById("proximoBanco").innerText =
+    "Próximo: " + calcularProximo(ultimoPagamentoBanco);
 }
-
+  if (ultimoPagamentoAcordo) {
+   document.getElementById("proximoAcordo").innerText =
+    "Próximo: " + calcularProximo(ultimoPagamentoAcordo);
+}
+}
+function calcularProximo(data) {
+  let d = new Date(data);
+  d.setMonth(d.getMonth() + 1);
+  return d.toLocaleDateString();
+}
 // ➕ PAGAR FINANCIAMENTO
 window.pagarParcela = async function () {
   let valor = Number(document.getElementById("inputBanco").value);
