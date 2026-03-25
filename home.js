@@ -39,14 +39,16 @@ let valorPagoAcordo = 0;
 
 
 // 🔄 CARREGAR
+// 🔄 CARREGAR
 async function carregarDados() {
 
   let user = auth.currentUser;
 
   let snapshot = await db.collection("pagamentos")
-    let html = "";
     .where("uid", "==", user.uid)
     .get();
+
+  let html = "";
 
   let totalBanco = 0;
   let totalAcordo = 0;
@@ -56,15 +58,17 @@ async function carregarDados() {
 
   snapshot.forEach(doc => {
     let p = doc.data();
+
+    // 📜 HISTÓRICO
     html += `
-  <p>
-    ${p.tipo === "financiamento" ? "💳 Financiamento" : "🤝 Acordo"} <br>
-    €${p.valor} <br>
-    ${new Date(p.data).toLocaleDateString()}
-  </p>
-`;
-});
-document.getElementById("historico").innerHTML = html;
+      <p>
+        ${p.tipo === "financiamento" ? "💳 Financiamento" : "🤝 Acordo"} <br>
+        €${p.valor} <br>
+        ${new Date(p.data).toLocaleDateString()}
+      </p>
+    `;
+
+    // 📊 SOMA
     if (p.tipo === "financiamento") {
       totalBanco += p.valor;
       ultimoPagamentoBanco = p.data;
@@ -75,6 +79,9 @@ document.getElementById("historico").innerHTML = html;
       ultimoPagamentoAcordo = p.data;
     }
   });
+
+  // 👉 MOSTRAR HISTÓRICO
+  document.getElementById("historico").innerHTML = html;
 
   valorPagoBanco = totalBanco;
   valorPagoAcordo = totalAcordo;
@@ -100,15 +107,16 @@ document.getElementById("historico").innerHTML = html;
   document.getElementById("restanteAcordo").innerText =
     "Falta: €" + restanteAcordo;
 
-  // 📅 mostrar última data
+  // 📅 PRÓXIMOS PAGAMENTOS
   if (ultimoPagamentoBanco) {
     document.getElementById("proximoBanco").innerText =
-    "Próximo: " + calcularProximo(ultimoPagamentoBanco);
-}
+      "Próximo: " + calcularProximo(ultimoPagamentoBanco);
+  }
+
   if (ultimoPagamentoAcordo) {
-   document.getElementById("proximoAcordo").innerText =
-    "Próximo: " + calcularProximo(ultimoPagamentoAcordo);
-}
+    document.getElementById("proximoAcordo").innerText =
+      "Próximo: " + calcularProximo(ultimoPagamentoAcordo);
+  }
 }
 function calcularProximo(data) {
   let d = new Date(data);
