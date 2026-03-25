@@ -148,4 +148,4 @@ window.pagarAcordo = async function () {
 window.abrirScore = function () {
   alert("Score abrindo...");
 };
-}
+
