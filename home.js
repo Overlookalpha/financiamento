@@ -106,7 +106,7 @@ async function carregarDados() {
 
   document.getElementById("restanteAcordo").innerText =
     "Falta: €" + restanteAcordo;
-
+}
 // ➕ PAGAR FINANCIAMENTO
 window.pagarParcela = async function () {
   let valor = Number(document.getElementById("inputBanco").value);
