@@ -12,6 +12,7 @@ const db = firebase.firestore();
 
 let isAdmin = false;
 
+
 // 🔐 VERIFICAR USUÁRIO
 auth.onAuthStateChanged(async (user) => {
   if (!user) {
@@ -19,7 +20,6 @@ auth.onAuthStateChanged(async (user) => {
     return;
   }
 
-  // verificar admin
   let doc = await db.collection("admins").doc(user.uid).get();
 
   if (doc.exists) {
@@ -30,8 +30,8 @@ auth.onAuthStateChanged(async (user) => {
 });
 
 
-// 📊 DADOS FIXOS (por enquanto)
-let totalFinanciamento = 20000; // depois ajustamos certo
+// 📊 DADOS FIXOS
+let totalFinanciamento = 20000;
 let valorPagoBanco = 0;
 
 let dividaTotal = 13371;
@@ -41,7 +41,7 @@ let valorPagoAcordo = 0;
 // 🔄 CARREGAR
 function carregarDados() {
 
-  // 🚗 BANCO (por valor)
+  // 🚗 BANCO
   let restanteBanco = totalFinanciamento - valorPagoBanco;
   if (restanteBanco < 0) restanteBanco = 0;
 
@@ -52,11 +52,12 @@ function carregarDados() {
     "Falta: €" + restanteBanco;
 
 
-  // 🤝 ACORDO (por valor)
+  // 🤝 ACORDO
   let restanteAcordo = dividaTotal - valorPagoAcordo;
   if (restanteAcordo < 0) restanteAcordo = 0;
+
   document.getElementById("dividaTotal").innerText =
-  "Dívida total: €" + dividaTotal;
+    "Dívida total: €" + dividaTotal;
 
   document.getElementById("pagoAcordo").innerText =
     "Pago: €" + valorPagoAcordo;
@@ -74,26 +75,38 @@ function carregarDados() {
 
 
 // ➕ PAGAR FINANCIAMENTO
-function pagarParcela() {
+window.pagarParcela = function () {
   let valor = document.getElementById("inputBanco").value;
-  if (!valor) return;
 
-  valorPagoBanco += Number(valor);
+  valor = Number(valor);
+
+  if (!valor || valor <= 0) {
+    alert("Digite um valor válido");
+    return;
+  }
+
+  valorPagoBanco += valor;
 
   document.getElementById("inputBanco").value = "";
 
   carregarDados();
-}
+};
 
 
 // ➕ PAGAR ACORDO
-function pagarAcordo() {
+window.pagarAcordo = function () {
   let valor = document.getElementById("inputAcordo").value;
-  if (!valor) return;
 
-  valorPagoAcordo += Number(valor);
+  valor = Number(valor);
+
+  if (!valor || valor <= 0) {
+    alert("Digite um valor válido");
+    return;
+  }
+
+  valorPagoAcordo += valor;
 
   document.getElementById("inputAcordo").value = "";
 
   carregarDados();
-}
+};
