@@ -79,15 +79,22 @@ async function carregarDados() {
   // 🔥 BUSCAR VALORES DO FIREBASE
 let financiamentoFalta = 0;
 
-let docControle = await db.collection("controle").doc("carro").get();
+let financiamentoFalta = 0;
 
-if (docControle.exists) {
-  let dados = docControle.data();
+try {
+  let docControle = await db.collection("controle").doc("carro").get();
 
-  totalFinanciamento = dados.financiamento_total;
-  financiamentoFalta = dados.financiamento_falta;
-  dividaTotal = dados.acordo_total;
+  if (docControle.exists) {
+    let dados = docControle.data();
+
+    totalFinanciamento = dados.financiamento_total;
+    financiamentoFalta = dados.financiamento_falta;
+    dividaTotal = dados.acordo_total;
+  }
+} catch (e) {
+  console.log("Erro Firebase:", e);
 }
+
   let restanteBanco = financiamentoFalta - valorPagoBanco;
   if (restanteBanco < 0) restanteBanco = 0;
 
