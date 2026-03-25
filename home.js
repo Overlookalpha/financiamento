@@ -94,6 +94,9 @@ if (docControle.exists) {
   let restanteAcordo = dividaTotal - valorPagoAcordo;
   if (restanteAcordo < 0) restanteAcordo = 0;
 
+document.getElementById("totalBanco").innerText =
+  "Dívida total: €" + totalFinanciamento;
+  
   document.getElementById("pagoBanco").innerText =
     "Pago: €" + valorPagoBanco;
 
