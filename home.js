@@ -87,14 +87,14 @@ try {
     let dados = docControle.data();
 
     totalFinanciamento = dados.financiamento_total;
-    financiamentoFalta = dados.financiamento_falta;
+  
     dividaTotal = dados.acordo_total;
   }
 } catch (e) {
   console.log("Erro Firebase:", e);
 }
 
-  let restanteBanco = financiamentoFalta - valorPagoBanco;
+  let restanteBanco = totalFinanciamento - valorPagoBanco;
   if (restanteBanco < 0) restanteBanco = 0;
 
   let restanteAcordo = dividaTotal - valorPagoAcordo;
