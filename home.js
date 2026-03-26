@@ -168,4 +168,23 @@ window.pagarAcordo = async function () {
 window.abrirScore = function () {
   alert("Score abrindo...");
 };
+window.salvarManutencao = async function () {
+  let user = auth.currentUser;
 
+  if (!user) {
+    alert("Usuário não autenticado");
+    return;
+  }
+
+  await db.collection("manutencoes").add({
+    uid: user.uid,
+    categoria: "freios",
+    item: "pastilhas",
+    valor: 120,
+    km: 152000,
+    data: new Date().toISOString(),
+    observacao: "teste app"
+  });
+
+  alert("Manutenção salva 🚗");
+};
