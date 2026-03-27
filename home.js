@@ -244,7 +244,7 @@ snapshot.forEach(doc => {
     const m = doc.data();
 
     const base = manutencoesBase.find(b =>
-  b.item.toLowerCase().includes(m.item.toLowerCase()) &&
+  m.item.toLowerCase().includes(b.item.toLowerCase()) &&
   b.categoria.toLowerCase() === m.categoria.toLowerCase()
 );
     let statusInfo = null;
