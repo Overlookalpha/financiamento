@@ -243,10 +243,10 @@ async function carregarManutencoes() {
 snapshot.forEach(doc => {
     const m = doc.data();
 
-    const base = manutencoesBase.find(b => 
-        b.item === m.item && b.categoria === m.categoria
-    );
-
+    const base = manutencoesBase.find(b =>
+  b.item.toLowerCase().includes(m.item.toLowerCase()) &&
+  b.categoria.toLowerCase() === m.categoria.toLowerCase()
+);
     let statusInfo = null;
 
     if (base) {
