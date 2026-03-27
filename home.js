@@ -257,14 +257,14 @@ snapshot.forEach(doc => {
     if (statusInfo?.status === "vermelho") cor = "🔴";
 
     historico.innerHTML += `
-        <div style="margin:10px; padding:10px; background:#1e293b; border-radius:10px;">
-            <strong>${cor} ${m.categoria}</strong><br>
-            ${m.item}<br>
-            €${m.valor}<br>
-            ${statusInfo?.kmRestante !== null ? "KM: " + statusInfo.kmRestante : ""}<br>
-            ${statusInfo?.diasRestantes !== null ? "Dias: " + statusInfo.diasRestantes : ""}<br>
-        </div>
-    `;
+<div style="margin:10px; padding:10px; background:#1e293b; border-radius:10px;">
+<strong>${cor} ${m.categoria}</strong><br>
+${m.item}<br>
+€${m.valor}<br>
+${statusInfo && statusInfo.kmRestante !== null ? "KM: " + statusInfo.kmRestante : ""}<br>
+${statusInfo && statusInfo.diasRestantes !== null ? "Dias: " + statusInfo.diasRestantes : ""}<br>
+</div>
+`;
 });
 function calcularStatusManutencao(base, ultimaManutencao, kmAtual) {
 
