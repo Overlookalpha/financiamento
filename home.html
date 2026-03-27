@@ -129,40 +129,51 @@ button:active {
   <button onclick="abrirAba('config')">⚙️ Config</button>
 </div>
 
-<div class="card">
-  <h3>💳 Financiamento</h3>
+<div id="aba-financeiro" class="aba">
 
-<p id="totalBanco"></p> <!-- NOVO -->
-<p id="pagoBanco"></p>
-<p id="restanteBanco"></p>
-  
-  <!-- 📅 DATAS CORRETAS -->
-  <p id="dataBanco"></p>
-  <p id="proximoBanco"></p>
-
-  <input id="inputBanco" type="number" placeholder="Digite o valor pago" />
-
-  <button id="btnParcela" onclick="pagarParcela()">Adicionar pagamento</button>
-</div>
-
-<div class="divider"></div>
-
-<div class="card">
-  <h3>🤝 Acordo</h3>
-
-  <p id="dividaTotal"></p>
-  <p id="pagoAcordo"></p>
-  <p id="restanteAcordo"></p>
-
-  <input id="inputAcordo" type="number" placeholder="Digite o valor pago" />
-
-  <button id="btnAcordo" onclick="pagarAcordo()">Adicionar pagamento</button>
-</div>
   <div class="card">
-  <h3>📜 Histórico</h3>
-  <div id="historico"></div>
-  <div id="historicoManutencao"></div>
-  <button onclick="salvarManutencao()">Testar Manutenção</button>
+    <h3>💳 Financiamento</h3>
+
+    <p id="totalBanco"></p> <!-- NOVO -->
+    <p id="pagoBanco"></p>
+    <p id="restanteBanco"></p>
+    
+    <!-- 📅 DATAS CORRETAS -->
+    <p id="dataBanco"></p>
+    <p id="proximoBanco"></p>
+
+    <input id="inputBanco" type="number" placeholder="Digite o valor pago" />
+
+    <button id="btnParcela" onclick="pagarParcela()">Adicionar pagamento</button>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="card">
+    <h3>🤝 Acordo</h3>
+
+    <p id="dividaTotal"></p>
+    <p id="pagoAcordo"></p>
+    <p id="restanteAcordo"></p>
+
+    <input id="inputAcordo" type="number" placeholder="Digite o valor pago" />
+
+    <button id="btnAcordo" onclick="pagarAcordo()">Adicionar pagamento</button>
+  </div>
+
+</div>
+
+
+<!-- ABA MANUTENÇÃO -->
+<div id="aba-manutencao" class="aba">
+
+  <div class="card">
+    <h3>📜 Histórico</h3>
+    <div id="historico"></div>
+    <div id="historicoManutencao"></div>
+    <button onclick="salvarManutencao()">Testar Manutenção</button>
+  </div>
+
 </div>
 <!-- 🔥 FIREBASE -->
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
