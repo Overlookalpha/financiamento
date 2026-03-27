@@ -266,6 +266,7 @@ ${statusInfo && statusInfo.diasRestantes !== null ? "Dias: " + statusInfo.diasRe
 </div>
 `;
 });
+}
 function calcularStatusManutencao(base, ultimaManutencao, kmAtual) {
 
   // 📏 KM
