@@ -27,6 +27,7 @@ auth.onAuthStateChanged(async (user) => {
   }
 
   carregarDados();
+  carregarManutencoes();
 });
  
 
@@ -187,4 +188,31 @@ window.salvarManutencao = async function () {
   });
 
   alert("Manutenção salva 🚗");
+  carregarManutencoes();
 };
+async function carregarManutencoes() {
+    let user = auth.currentUser;
+
+    if (!user) return;
+
+    const snapshot = await db.collection("manutencoes")
+        .where("uid", "==", user.uid)
+        .orderBy("data", "desc")
+        .get();
+
+    const historico = document.getElementById("historico");
+    historico.innerHTML = "";
+
+    snapshot.forEach(doc => {
+        const m = doc.data();
+
+        historico.innerHTML += `
+            <div style="margin:10px; padding:10px; background:#1e293b; border-radius:10px;">
+                <strong>${m.categoria}</strong><br>
+                ${m.item}<br>
+                €${m.valor}<br>
+                ${new Date(m.data).toLocaleDateString()}
+            </div>
+        `;
+    });
+}
