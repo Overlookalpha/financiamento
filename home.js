@@ -356,6 +356,7 @@ function renderizarManutencoesBase() {
   container.innerHTML = "";
 
   manutencoesBase.forEach(item => {
+
     let status = "🟢";
     let textoStatus = "OK";
 
@@ -367,36 +368,59 @@ function renderizarManutencoesBase() {
       textoStatus = "Próximo da troca";
     }
 
-    container.innerHTML += `
-      <div style="
-        margin:12px;
-        padding:14px;
-        background: linear-gradient(135deg, #1e293b, #0f172a);
-        border-radius:12px;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.4);
-        color:white;
-      ">
-        <div style="font-size:16px; font-weight:bold; margin-bottom:6px;">
-          🔧 ${status} ${item.categoria}
-        </div>
+    // 🔹 CARD PRINCIPAL
+    const card = document.createElement("div");
+    card.style.margin = "12px";
+    card.style.padding = "14px";
+    card.style.background = "linear-gradient(135deg, #1e293b, #0f172a)";
+    card.style.borderRadius = "12px";
+    card.style.boxShadow = "0 4px 12px rgba(0,0,0,0.4)";
+    card.style.color = "white";
 
-        <div style="font-size:15px; margin-bottom:6px;">
-          ${item.item}
-        </div>
+    // 🔹 CATEGORIA
+    const categoria = document.createElement("div");
+    categoria.style.fontSize = "16px";
+    categoria.style.fontWeight = "bold";
+    categoria.style.marginBottom = "6px";
+    categoria.innerText = "🔧 " + status + " " + item.categoria;
 
-        <div style="font-size:14px; opacity:0.8;">
-          💰 Custo médio: €${item.custoMedio}
-        </div>
+    // 🔹 ITEM
+    const itemDiv = document.createElement("div");
+    itemDiv.style.fontSize = "15px";
+    itemDiv.style.marginBottom = "6px";
+    itemDiv.innerText = item.item;
 
-        <div style="font-size:14px; margin-top:6px;">
-          ⏱ Troca a cada:
-          ${item.kmTroca ? item.kmTroca + " km" : ""}
-          ${item.diasTroca ? " / " + item.diasTroca + " dias" : ""}
-        </div>
-      </div>
-    `;
+    // 🔹 CUSTO
+    const custo = document.createElement("div");
+    custo.style.fontSize = "14px";
+    custo.style.opacity = "0.8";
+    custo.innerText = "💰 Custo médio: €" + item.custoMedio;
+
+    // 🔹 TROCA
+    const troca = document.createElement("div");
+    troca.style.fontSize = "14px";
+    troca.style.marginTop = "6px";
+    troca.innerText =
+      "⏱ Troca a cada: " +
+      (item.kmTroca ? item.kmTroca + " km" : "") +
+      (item.diasTroca ? " / " + item.diasTroca + " dias" : "");
+
+    // 🔹 STATUS TEXTO
+    const statusDiv = document.createElement("div");
+    statusDiv.style.marginTop = "6px";
+    statusDiv.style.fontSize = "13px";
+    statusDiv.innerText = textoStatus;
+
+    // 🔗 MONTA
+    card.appendChild(categoria);
+    card.appendChild(itemDiv);
+    card.appendChild(custo);
+    card.appendChild(troca);
+    card.appendChild(statusDiv);
+
+    container.appendChild(card);
   });
 }
 
-// 👉 CHAMA AQUI FORA
+// 👉 CHAMA FORA
 renderizarManutencoesBase();
