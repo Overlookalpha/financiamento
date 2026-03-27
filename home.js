@@ -118,7 +118,7 @@ async function carregarDados() {
     }
   });
 
-  document.getElementById("historico").innerHTML = html;
+  document.getElementById("historicoManutencao").innerHTML = html;
 
   valorPagoBanco = totalBanco;
   valorPagoAcordo = totalAcordo;
