@@ -13,36 +13,47 @@ const db = firebase.firestore();
 let isAdmin = false;
 // 👇 PRIMEIRA COISA DO ARQUIVO
 
-const manutencoesBase = [
-  { categoria: "Motor", item: "Óleo do motor", kmTroca: 10000, diasTroca: 180, custoMedio: 70 },
-  { categoria: "Motor", item: "Filtro de óleo", kmTroca: 10000, diasTroca: 180, custoMedio: 20 },
-  { categoria: "Motor", item: "Filtro de ar", kmTroca: 15000, diasTroca: 365, custoMedio: 20 },
-  { categoria: "Motor", item: "Filtro combustível", kmTroca: 20000, diasTroca: 365, custoMedio: 40 },
-  { categoria: "Motor", item: "Velas", kmTroca: 30000, diasTroca: 730, custoMedio: 60 },
-  { categoria: "Motor", item: "Correia dentada", kmTroca: 80000, diasTroca: 1825, custoMedio: 400 },
-  { categoria: "Motor", item: "Bomba de água", kmTroca: 80000, diasTroca: 1825, custoMedio: 250 },
+ const manutencoesBase = [
 
-  { categoria: "Freios", item: "Pastilhas de freio", kmTroca: 20000, diasTroca: 365, custoMedio: 120 },
-  { categoria: "Freios", item: "Discos de freio", kmTroca: 40000, diasTroca: 730, custoMedio: 250 },
-  { categoria: "Freios", item: "Fluido de freio", kmTroca: 30000, diasTroca: 365, custoMedio: 60 },
+  { categoria: "🛢 Motor", item: "Óleo do motor", kmTroca: 10000, diasTroca: 180, custoMedio: 70 },
+  { categoria: "🛢 Motor", item: "Filtro de óleo", kmTroca: 10000, diasTroca: 180, custoMedio: 20 },
+  { categoria: "🛢 Motor", item: "Filtro de ar", kmTroca: 15000, diasTroca: 365, custoMedio: 20 },
+  { categoria: "🛢 Motor", item: "Filtro combustível", kmTroca: 20000, diasTroca: 365, custoMedio: 40 },
+  { categoria: "🛢 Motor", item: "Velas", kmTroca: 30000, diasTroca: 730, custoMedio: 60 },
+  { categoria: "🛢 Motor", item: "Correia dentada", kmTroca: 80000, diasTroca: 1825, custoMedio: 400 },
+  { categoria: "🛢 Motor", item: "Bomba de água", kmTroca: 80000, diasTroca: 1825, custoMedio: 250 },
 
-  { categoria: "Pneus", item: "Pneus", kmTroca: 40000, diasTroca: 730, custoMedio: 280 },
-  { categoria: "Pneus", item: "Alinhamento", kmTroca: 10000, diasTroca: 180, custoMedio: 40 },
-  { categoria: "Pneus", item: "Balanceamento", kmTroca: 10000, diasTroca: 180, custoMedio: 30 },
+  { categoria: "🛑 Freios", item: "Pastilhas de freio", kmTroca: 20000, diasTroca: 365, custoMedio: 120 },
+  { categoria: "🛑 Freios", item: "Discos de freio", kmTroca: 40000, diasTroca: 730, custoMedio: 250 },
+  { categoria: "🛑 Freios", item: "Fluido de freio", kmTroca: 30000, diasTroca: 365, custoMedio: 60 },
 
-  { categoria: "Suspensão", item: "Amortecedores", kmTroca: 60000, diasTroca: 1460, custoMedio: 300 },
-  { categoria: "Suspensão", item: "Molas", kmTroca: 80000, diasTroca: 1825, custoMedio: 200 },
+  { categoria: "🛞 Pneus", item: "Pneus", kmTroca: 40000, diasTroca: 730, custoMedio: 280 },
+  { categoria: "🛞 Pneus", item: "Alinhamento", kmTroca: 10000, diasTroca: 180, custoMedio: 40 },
+  { categoria: "🛞 Pneus", item: "Balanceamento", kmTroca: 10000, diasTroca: 180, custoMedio: 30 },
 
-  { categoria: "Elétrica", item: "Bateria", kmTroca: 0, diasTroca: 730, custoMedio: 120 },
-  { categoria: "Elétrica", item: "Alternador", kmTroca: 100000, diasTroca: 1825, custoMedio: 350 },
+  { categoria: "🚗 Suspensão", item: "Amortecedores", kmTroca: 60000, diasTroca: 1460, custoMedio: 300 },
+  { categoria: "🚗 Suspensão", item: "Molas", kmTroca: 80000, diasTroca: 1825, custoMedio: 200 },
 
-  { categoria: "Arrefecimento", item: "Radiador", kmTroca: 100000, diasTroca: 1825, custoMedio: 250 },
-  { categoria: "Arrefecimento", item: "Líquido de arrefecimento", kmTroca: 30000, diasTroca: 365, custoMedio: 50 },
+  { categoria: "🔋 Elétrica", item: "Bateria", kmTroca: 0, diasTroca: 730, custoMedio: 120 },
+  { categoria: "🔋 Elétrica", item: "Alternador", kmTroca: 100000, diasTroca: 1825, custoMedio: 350 },
 
-  { categoria: "Ar", item: "Recarga de gás", kmTroca: 30000, diasTroca: 365, custoMedio: 80 },
-  { categoria: "Ar", item: "Compressor", kmTroca: 100000, diasTroca: 1825, custoMedio: 400 }
+  { categoria: "❄️ Arrefecimento", item: "Radiador", kmTroca: 100000, diasTroca: 1825, custoMedio: 250 },
+  { categoria: "❄️ Arrefecimento", item: "Líquido de arrefecimento", kmTroca: 30000, diasTroca: 365, custoMedio: 50 },
+
+  { categoria: "🌬️ Ar-condicionado", item: "Recarga de gás", kmTroca: 30000, diasTroca: 365, custoMedio: 80 },
+  { categoria: "🌬️ Ar-condicionado", item: "Compressor", kmTroca: 100000, diasTroca: 1825, custoMedio: 400 },
+
+  // ⚠️ VERIFICAÇÕES IMPORTANTES
+  { categoria: "⚠️ Verificações", item: "Nível do óleo do motor", kmTroca: null, diasTroca: 7, custoMedio: 0 },
+  { categoria: "⚠️ Verificações", item: "Água do radiador", kmTroca: null, diasTroca: 7, custoMedio: 0 },
+  { categoria: "⚠️ Verificações", item: "Pressão dos pneus", kmTroca: null, diasTroca: 7, custoMedio: 0 },
+  { categoria: "⚠️ Verificações", item: "Reservatório limpa-vidros", kmTroca: null, diasTroca: 7, custoMedio: 0 },
+  { categoria: "⚠️ Verificações", item: "Luzes do veículo", kmTroca: null, diasTroca: 15, custoMedio: 0 },
+  { categoria: "⚠️ Verificações", item: "Palhetas do limpa-vidros", kmTroca: null, diasTroca: 15, custoMedio: 0 },
+  { categoria: "⚠️ Verificações", item: "Estado dos pneus", kmTroca: null, diasTroca: 30, custoMedio: 0 },
+  { categoria: "⚠️ Verificações", item: "Bateria (verificação)", kmTroca: null, diasTroca: 30, custoMedio: 0 }
+
 ];
-
 
 // 👇 DEPOIS continua teu código normal
 
@@ -334,6 +345,9 @@ function abrirAba(nome) {
   document.getElementById("aba-" + nome).style.display = "block";
 }
 abrirAba("home");
+
+let kmAtual = 152000; // provisório
+
 function renderizarManutencoesBase() {
   const container = document.getElementById("listaManutencao");
 
@@ -342,17 +356,42 @@ function renderizarManutencoesBase() {
   container.innerHTML = "";
 
   manutencoesBase.forEach(item => {
+ et status = "🟢";
+let textoStatus = "OK";
 
-    container.innerHTML += `
-      <div style="margin:10px; padding:10px; background:#1e293b; border-radius:10px;">
-        <strong>${item.categoria}</strong><br>
-        ${item.item}<br>
-        Custo médio: €${item.custoMedio}<br>
-        Troca a cada: 
-        ${item.kmTroca ? item.kmTroca + " km" : ""}
-        ${item.diasTroca ? " / " + item.diasTroca + " dias" : ""}
-      </div>
-    `;
-  });
+if (item.kmTroca && kmAtual >= item.kmTroca) {
+  status = "🔴";
+  textoStatus = "Troca atrasada!";
+} else if (item.kmTroca && kmAtual >= item.kmTroca * 0.8) {
+  status = "🟡";
+  textoStatus = "Próximo da troca";
 }
+    container.innerHTML += `
+  <div style="
+    margin:12px;
+    padding:14px;
+    background: linear-gradient(135deg, #1e293b, #0f172a);
+    border-radius:12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+    color:white;
+  ">
+    <div style="font-size:16px; font-weight:bold; margin-bottom:6px;">
+      🔧 ${status} ${item.categoria}
+    </div>
+
+    <div style="font-size:15px; margin-bottom:6px;">
+      ${item.item}
+    </div>
+
+    <div style="font-size:14px; opacity:0.8;">
+      💰 Custo médio: €${item.custoMedio}
+    </div>
+
+    <div style="font-size:14px; margin-top:6px;">
+      ⏱ Troca a cada:
+      ${item.kmTroca ? item.kmTroca + " km" : ""}
+      ${item.diasTroca ? " / " + item.diasTroca + " dias" : ""}
+    </div>
+  </div>
+`;
 renderizarManutencoesBase();
