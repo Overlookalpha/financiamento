@@ -235,7 +235,7 @@ async function carregarManutencoes() {
         .orderBy("data", "desc")
         .get();
 
-    const historico = document.getElementById("historico");
+    const historico = document.getElementById("historicoManutencao");
     historico.innerHTML = "";
 
     const kmAtual = 152000;
