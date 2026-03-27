@@ -213,8 +213,8 @@ window.salvarManutencao = async function () {
 
   await db.collection("manutencoes").add({
     uid: user.uid,
-    categoria: "freios",
-    item: "pastilhas",
+    categoria: "Freios",
+    item: "Pastilhas de freio",
     valor: 120,
     km: 152000,
     data: new Date().toISOString(),
@@ -237,19 +237,35 @@ async function carregarManutencoes() {
     const historico = document.getElementById("historico");
     historico.innerHTML = "";
 
-    snapshot.forEach(doc => {
-        const m = doc.data();
+    const kmAtual = 152000;
 
-        historico.innerHTML += `
-            <div style="margin:10px; padding:10px; background:#1e293b; border-radius:10px;">
-                <strong>${m.categoria}</strong><br>
-                ${m.item}<br>
-                €${m.valor}<br>
-                ${new Date(m.data).toLocaleDateString()}
-            </div>
-        `;
-    });
-}
+snapshot.forEach(doc => {
+    const m = doc.data();
+
+    const base = manutencoesBase.find(b => 
+        b.item === m.item && b.categoria === m.categoria
+    );
+
+    let statusInfo = null;
+
+    if (base) {
+        statusInfo = calcularStatusManutencao(base, m, kmAtual);
+    }
+
+    let cor = "🟢";
+    if (statusInfo?.status === "amarelo") cor = "🟡";
+    if (statusInfo?.status === "vermelho") cor = "🔴";
+
+    historico.innerHTML += `
+        <div style="margin:10px; padding:10px; background:#1e293b; border-radius:10px;">
+            <strong>${cor} ${m.categoria}</strong><br>
+            ${m.item}<br>
+            €${m.valor}<br>
+            ${statusInfo?.kmRestante !== null ? "KM: " + statusInfo.kmRestante : ""}<br>
+            ${statusInfo?.diasRestantes !== null ? "Dias: " + statusInfo.diasRestantes : ""}<br>
+        </div>
+    `;
+});
 function calcularStatusManutencao(base, ultimaManutencao, kmAtual) {
 
   // 📏 KM
