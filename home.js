@@ -334,3 +334,25 @@ function abrirAba(nome) {
   document.getElementById("aba-" + nome).style.display = "block";
 }
 abrirAba("home");
+function renderizarManutencoesBase() {
+  const container = document.getElementById("listaManutencao");
+
+  if (!container) return;
+
+  container.innerHTML = "";
+
+  manutencoesBase.forEach(item => {
+
+    container.innerHTML += `
+      <div style="margin:10px; padding:10px; background:#1e293b; border-radius:10px;">
+        <strong>${item.categoria}</strong><br>
+        ${item.item}<br>
+        Custo médio: €${item.custoMedio}<br>
+        Troca a cada: 
+        ${item.kmTroca ? item.kmTroca + " km" : ""}
+        ${item.diasTroca ? " / " + item.diasTroca + " dias" : ""}
+      </div>
+    `;
+  });
+}
+renderizarManutencoesBase();
