@@ -249,9 +249,19 @@ async function carregarManutencoes() {
 snapshot.forEach(doc => {
     const m = doc.data();
 
-   const base = manutencoesBase.find(b =>
-  m.item.toLowerCase().includes(b.item.toLowerCase()) &&
-  b.categoria.toLowerCase() === m.categoria.toLowerCase()
+  function normalizar(texto) {
+  return texto
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "");
+}
+
+const base = manutencoesBase.find(b =>
+  normalizar(b.categoria) === normalizar(m.categoria) &&
+  (
+    normalizar(b.item).includes(normalizar(m.item)) ||
+    normalizar(m.item).includes(normalizar(b.item))
+  )
 );
     let statusInfo = null;
 
