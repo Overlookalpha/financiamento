@@ -239,11 +239,17 @@ async function carregarManutencoes() {
     historico.innerHTML = "";
 
     const kmAtual = 152000;
+  const normalizar = (texto) =>
+  texto
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .trim();
 
 snapshot.forEach(doc => {
     const m = doc.data();
 
-    const base = manutencoesBase.find(b =>
+   const base = manutencoesBase.find(b =>
   m.item.toLowerCase().includes(b.item.toLowerCase()) &&
   b.categoria.toLowerCase() === m.categoria.toLowerCase()
 );
