@@ -11,6 +11,40 @@ const auth = firebase.auth();
 const db = firebase.firestore();
 
 let isAdmin = false;
+// 👇 PRIMEIRA COISA DO ARQUIVO
+
+const manutencoesBase = [
+  { categoria: "Motor", item: "Óleo do motor", kmTroca: 10000, diasTroca: 180, custoMedio: 70 },
+  { categoria: "Motor", item: "Filtro de óleo", kmTroca: 10000, diasTroca: 180, custoMedio: 20 },
+  { categoria: "Motor", item: "Filtro de ar", kmTroca: 15000, diasTroca: 365, custoMedio: 20 },
+  { categoria: "Motor", item: "Filtro combustível", kmTroca: 20000, diasTroca: 365, custoMedio: 40 },
+  { categoria: "Motor", item: "Velas", kmTroca: 30000, diasTroca: 730, custoMedio: 60 },
+  { categoria: "Motor", item: "Correia dentada", kmTroca: 80000, diasTroca: 1825, custoMedio: 400 },
+  { categoria: "Motor", item: "Bomba de água", kmTroca: 80000, diasTroca: 1825, custoMedio: 250 },
+
+  { categoria: "Freios", item: "Pastilhas de freio", kmTroca: 20000, diasTroca: 365, custoMedio: 120 },
+  { categoria: "Freios", item: "Discos de freio", kmTroca: 40000, diasTroca: 730, custoMedio: 250 },
+  { categoria: "Freios", item: "Fluido de freio", kmTroca: 30000, diasTroca: 365, custoMedio: 60 },
+
+  { categoria: "Pneus", item: "Pneus", kmTroca: 40000, diasTroca: 730, custoMedio: 280 },
+  { categoria: "Pneus", item: "Alinhamento", kmTroca: 10000, diasTroca: 180, custoMedio: 40 },
+  { categoria: "Pneus", item: "Balanceamento", kmTroca: 10000, diasTroca: 180, custoMedio: 30 },
+
+  { categoria: "Suspensão", item: "Amortecedores", kmTroca: 60000, diasTroca: 1460, custoMedio: 300 },
+  { categoria: "Suspensão", item: "Molas", kmTroca: 80000, diasTroca: 1825, custoMedio: 200 },
+
+  { categoria: "Elétrica", item: "Bateria", kmTroca: 0, diasTroca: 730, custoMedio: 120 },
+  { categoria: "Elétrica", item: "Alternador", kmTroca: 100000, diasTroca: 1825, custoMedio: 350 },
+
+  { categoria: "Arrefecimento", item: "Radiador", kmTroca: 100000, diasTroca: 1825, custoMedio: 250 },
+  { categoria: "Arrefecimento", item: "Líquido de arrefecimento", kmTroca: 30000, diasTroca: 365, custoMedio: 50 },
+
+  { categoria: "Ar", item: "Recarga de gás", kmTroca: 30000, diasTroca: 365, custoMedio: 80 },
+  { categoria: "Ar", item: "Compressor", kmTroca: 100000, diasTroca: 1825, custoMedio: 400 }
+];
+
+
+// 👇 DEPOIS continua teu código normal
 
 
 // 🔐 VERIFICAR USUÁRIO
@@ -215,4 +249,46 @@ async function carregarManutencoes() {
             </div>
         `;
     });
+}
+function calcularStatusManutencao(base, ultimaManutencao, kmAtual) {
+
+  // 📏 KM
+  let kmRestante = null;
+
+  if (base.kmTroca > 0 && ultimaManutencao?.km) {
+    let kmRodado = kmAtual - ultimaManutencao.km;
+    kmRestante = base.kmTroca - kmRodado;
+  }
+
+  // ⏱️ TEMPO
+  let diasRestantes = null;
+
+  if (base.diasTroca > 0 && ultimaManutencao?.data) {
+    let hoje = new Date();
+    let dataUltima = new Date(ultimaManutencao.data);
+
+    let diasPassados = Math.floor((hoje - dataUltima) / (1000 * 60 * 60 * 24));
+    diasRestantes = base.diasTroca - diasPassados;
+  }
+
+  // 🎯 STATUS (quem vencer primeiro manda)
+  let status = "verde";
+
+  if (
+    (kmRestante !== null && kmRestante <= 0) ||
+    (diasRestantes !== null && diasRestantes <= 0)
+  ) {
+    status = "vermelho";
+  } else if (
+    (kmRestante !== null && kmRestante <= 1000) ||
+    (diasRestantes !== null && diasRestantes <= 3)
+  ) {
+    status = "amarelo";
+  }
+
+  return {
+    kmRestante,
+    diasRestantes,
+    status
+  };
 }
