@@ -356,7 +356,7 @@ function renderizarManutencoesBase() {
   container.innerHTML = "";
 
   manutencoesBase.forEach(item => {
- et status = "🟢";
+ let status = "🟢";
 let textoStatus = "OK";
 
 if (item.kmTroca && kmAtual >= item.kmTroca) {
