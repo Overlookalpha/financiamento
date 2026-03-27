@@ -134,29 +134,30 @@ button:active {
 
 <div id="aba-home">
 
-<div class="card">
-  <h3>🚨 Alertas</h3>
-  <p id="alertasHome">Nenhum alerta no momento</p>
+  <div class="card">
+    <h3>🚨 Alertas</h3>
+    <p id="alertasHome">Nenhum alerta no momento</p>
+  </div>
+
 </div>
-  
-</div>
-  
+
+
 <div id="aba-financeiro" class="aba">
 
   <div class="card">
-    <h3>💳 Financiamento</h3>
+    <h3>💰 Financiamento</h3>
 
-    <p id="totalBanco"></p> <!-- NOVO -->
+    <p id="totalBanco"></p>
     <p id="pagoBanco"></p>
     <p id="restanteBanco"></p>
-    
-    <!-- 📅 DATAS CORRETAS -->
+
+    <!-- DATAS -->
     <p id="dataBanco"></p>
     <p id="proximoBanco"></p>
 
-    <input id="inputBanco" type="number" placeholder="Digite o valor pago" />
-
+    <input id="inputBanco" type="number" placeholder="Digite o valor pago">
     <button id="btnParcela" onclick="pagarParcela()">Adicionar pagamento</button>
+
   </div>
 
   <div class="divider"></div>
@@ -168,14 +169,13 @@ button:active {
     <p id="pagoAcordo"></p>
     <p id="restanteAcordo"></p>
 
-    <input id="inputAcordo" type="number" placeholder="Digite o valor pago" />
-
+    <input id="inputAcordo" type="number" placeholder="Digite o valor pago">
     <button id="btnAcordo" onclick="pagarAcordo()">Adicionar pagamento</button>
+
   </div>
 
 </div>
 
-  </div>
 
 <!-- ABA MANUTENÇÃO -->
 <div id="aba-manutencao" class="aba">
@@ -185,15 +185,14 @@ button:active {
     <div id="listaManutencao"></div>
   </div>
 
-</div>
-
   <div class="card">
-    <h3>📜 Histórico</h3>
+    <h3>📄 Histórico</h3>
     <div id="historicoManutencao"></div>
     <button onclick="salvarManutencao()">Testar Manutenção</button>
   </div>
 
 </div>
+
 <!-- 🔥 FIREBASE -->
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
