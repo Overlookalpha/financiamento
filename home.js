@@ -214,7 +214,7 @@ window.salvarManutencao = async function () {
   await db.collection("manutencoes").add({
     uid: user.uid,
     categoria: "Freios",
-    item: "Pastilhas de freio",
+    item: "Pastilhas",
     valor: 120,
     km: 152000,
     data: new Date().toISOString(),
@@ -224,6 +224,34 @@ window.salvarManutencao = async function () {
   alert("Manutenção salva 🚗");
   carregarManutencoes();
 };
+
+const manutencoesBase = [
+  {
+    categoria: "freios",
+    item: "pastilhas",
+    kmTroca: 30000,
+    diasTroca: 180
+  },
+  {
+    categoria: "motor",
+    item: "óleo",
+    kmTroca: 10000,
+    diasTroca: 180
+  },
+  {
+    categoria: "arrefecimento",
+    item: "líquido",
+    kmTroca: null,
+    diasTroca: 365
+  },
+  {
+    categoria: "pneus",
+    item: "pneu",
+    kmTroca: 40000,
+    diasTroca: null
+  }
+];
+
 async function carregarManutencoes() {
     let user = auth.currentUser;
 
