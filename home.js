@@ -214,7 +214,7 @@ window.salvarManutencao = async function () {
   await db.collection("manutencoes").add({
     uid: user.uid,
     categoria: "Freios",
-    item: "Pastilhas",
+    item: "Pastilhas de freio",
     valor: 120,
     km: 152000,
     data: new Date().toISOString(),
