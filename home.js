@@ -225,33 +225,6 @@ window.salvarManutencao = async function () {
   carregarManutencoes();
 };
 
-const manutencoesBase = [
-  {
-    categoria: "freios",
-    item: "pastilhas",
-    kmTroca: 30000,
-    diasTroca: 180
-  },
-  {
-    categoria: "motor",
-    item: "óleo",
-    kmTroca: 10000,
-    diasTroca: 180
-  },
-  {
-    categoria: "arrefecimento",
-    item: "líquido",
-    kmTroca: null,
-    diasTroca: 365
-  },
-  {
-    categoria: "pneus",
-    item: "pneu",
-    kmTroca: 40000,
-    diasTroca: null
-  }
-];
-
 async function carregarManutencoes() {
     let user = auth.currentUser;
 
