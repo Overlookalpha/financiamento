@@ -326,3 +326,10 @@ function calcularStatusManutencao(base, ultimaManutencao, kmAtual) {
     status
   };
 }
+function abrirAba(nome) {
+  document.getElementById("aba-home").style.display = "none";
+  document.getElementById("aba-financeiro").style.display = "none";
+  document.getElementById("aba-manutencao").style.display = "none";
+
+  document.getElementById("aba-" + nome).style.display = "block";
+}
