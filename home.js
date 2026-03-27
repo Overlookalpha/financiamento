@@ -333,3 +333,4 @@ function abrirAba(nome) {
 
   document.getElementById("aba-" + nome).style.display = "block";
 }
+abrirAba("home");
