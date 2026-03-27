@@ -356,42 +356,47 @@ function renderizarManutencoesBase() {
   container.innerHTML = "";
 
   manutencoesBase.forEach(item => {
- let status = "🟢";
-let textoStatus = "OK";
+    let status = "🟢";
+    let textoStatus = "OK";
 
-if (item.kmTroca && kmAtual >= item.kmTroca) {
-  status = "🔴";
-  textoStatus = "Troca atrasada!";
-} else if (item.kmTroca && kmAtual >= item.kmTroca * 0.8) {
-  status = "🟡";
-  textoStatus = "Próximo da troca";
-}
+    if (item.kmTroca && kmAtual >= item.kmTroca) {
+      status = "🔴";
+      textoStatus = "Troca atrasada!";
+    } else if (item.kmTroca && kmAtual >= item.kmTroca * 0.8) {
+      status = "🟡";
+      textoStatus = "Próximo da troca";
+    }
+
     container.innerHTML += `
-  <div style="
-    margin:12px;
-    padding:14px;
-    background: linear-gradient(135deg, #1e293b, #0f172a);
-    border-radius:12px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.4);
-    color:white;
-  ">
-    <div style="font-size:16px; font-weight:bold; margin-bottom:6px;">
-      🔧 ${status} ${item.categoria}
-    </div>
+      <div style="
+        margin:12px;
+        padding:14px;
+        background: linear-gradient(135deg, #1e293b, #0f172a);
+        border-radius:12px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+        color:white;
+      ">
+        <div style="font-size:16px; font-weight:bold; margin-bottom:6px;">
+          🔧 ${status} ${item.categoria}
+        </div>
 
-    <div style="font-size:15px; margin-bottom:6px;">
-      ${item.item}
-    </div>
+        <div style="font-size:15px; margin-bottom:6px;">
+          ${item.item}
+        </div>
 
-    <div style="font-size:14px; opacity:0.8;">
-      💰 Custo médio: €${item.custoMedio}
-    </div>
+        <div style="font-size:14px; opacity:0.8;">
+          💰 Custo médio: €${item.custoMedio}
+        </div>
 
-    <div style="font-size:14px; margin-top:6px;">
-      ⏱ Troca a cada:
-      ${item.kmTroca ? item.kmTroca + " km" : ""}
-      ${item.diasTroca ? " / " + item.diasTroca + " dias" : ""}
-    </div>
-  </div>
-`;
+        <div style="font-size:14px; margin-top:6px;">
+          ⏱ Troca a cada:
+          ${item.kmTroca ? item.kmTroca + " km" : ""}
+          ${item.diasTroca ? " / " + item.diasTroca + " dias" : ""}
+        </div>
+      </div>
+    `;
+  });
+}
+
+// 👉 CHAMA AQUI FORA
 renderizarManutencoesBase();
