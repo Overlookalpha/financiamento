@@ -469,6 +469,12 @@ if (manutencoesFiltradas.length > 0) {
 
     // 🧠 calcula mesmo sem histórico
     const status = calcularStatusManutencao(base, ultima, kmAtual);
+    // 🚨 se não tem histórico válido → considera atrasado
+if (!ultima) {
+  alertas.push("🔴 " + base.item + " sem registro");
+  return;
+}
+    console.log(base.item, status);
 
     if (status.status === "vermelho") {
       alertas.push("🔴 " + base.item + " atrasado");
