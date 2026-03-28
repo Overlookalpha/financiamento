@@ -445,7 +445,7 @@ async function carregarAlertasHome() {
 
   const kmAtual = 152000;
 
-  snapshot.forEach(doc => {
+  manutencoesBase.forEach(base => {
     const m = doc.data();
 
     const normalizar = (texto) =>
