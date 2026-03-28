@@ -437,7 +437,8 @@ async function carregarAlertasHome() {
   const snapshot = await db.collection("manutencoes")
     .where("uid", "==", user.uid)
     .get();
-
+  console.log("Manutenções encontradas:", snapshot.size);
+  
   const alertasDiv = document.getElementById("alertasHome");
 
   let alertas = [];
