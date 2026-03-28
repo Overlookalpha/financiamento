@@ -234,7 +234,7 @@ window.salvarManutencao = async function () {
     categoria: "Freios",
     item: "Pastilhas de freio",
     valor: 120,
-    km: 152000,
+    km: kmAtual,
     data: new Date().toISOString(),
     observacao: "teste app"
   });
@@ -306,10 +306,11 @@ function calcularStatusManutencao(base, ultimaManutencao, kmAtualParam) {
   // 📏 KM
   let kmRestante = null;
 
-  if (base.kmTroca > 0 && ultimaManutencao?.km) {
-    let kmRodado = kmAtualParam - ultimaManutencao.km;
-    kmRestante = base.kmTroca - kmRodado;
-  }
+ if (base.kmTroca > 0) {
+  let kmBase = ultimaManutencao?.km || 0;
+  let kmRodado = kmAtualParam - kmBase;
+  kmRestante = base.kmTroca - kmRodado;
+}
 
   // ⏱️ TEMPO
   let diasRestantes = null;
