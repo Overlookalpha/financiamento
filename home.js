@@ -1,3 +1,8 @@
+let kmAtualReal = 152000;
+let modoTeste = true;
+let kmTeste = 300000;
+
+let kmAtual = modoTeste ? kmTeste : kmAtualReal;
 // CONFIG
 const firebaseConfig = {
   apiKey: "AIzaSyDxIxFwkQb0xEoysQqTDjwK-ijERK0p67w",
@@ -250,12 +255,6 @@ async function carregarManutencoes() {
 
     const historico = document.getElementById("historicoManutencao");
     historico.innerHTML = "";
-
-    let kmAtualReal = 152000;
-    let modoTeste = true;
-    let kmTeste = 300000;
-
-    let kmAtual = modoTeste ? kmTeste : kmAtualReal;
   const normalizar = (texto) =>
   texto
     .toLowerCase()
@@ -443,7 +442,6 @@ async function carregarAlertasHome() {
   const alertasDiv = document.getElementById("alertasHome");
   let alertas = [];
 
-  const kmAtual = 152000;
 
   // 🔥 transforma snapshot em array
   let historico = [];
