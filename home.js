@@ -456,17 +456,21 @@ async function carregarAlertasHome() {
     let ultima = null;
 
     // 🔎 procura no histórico
-    historico.forEach(m => {
-      if (
-        normalizar(base.categoria) === normalizar(m.categoria) &&
-        (
-          normalizar(base.item).includes(normalizar(m.item)) ||
-          normalizar(m.item).includes(normalizar(base.item))
-        )
-      ) {
-        ultima = m;
-      }
-    });
+    let manutencoesFiltradas = historico.filter(m => 
+  normalizar(base.categoria) === normalizar(m.categoria) &&
+  (
+    normalizar(base.item).includes(normalizar(m.item)) ||
+    normalizar(m.item).includes(normalizar(base.item))
+  )
+);
+
+// 👉 pega a mais recente de verdade
+let ultima = null;
+
+if (manutencoesFiltradas.length > 0) {
+  manutencoesFiltradas.sort((a, b) => new Date(b.data) - new Date(a.data));
+  ultima = manutencoesFiltradas[0];
+}
 
     // 🧠 calcula mesmo sem histórico
     const status = calcularStatusManutencao(base, ultima, kmAtual);
