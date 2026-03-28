@@ -300,13 +300,13 @@ ${statusInfo && statusInfo.diasRestantes !== null ? "Dias: " + statusInfo.diasRe
 `;
 });
 }
-function calcularStatusManutencao(base, ultimaManutencao, kmAtual) {
+function calcularStatusManutencao(base, ultimaManutencao, kmAtualParam) {
 
   // 📏 KM
   let kmRestante = null;
 
   if (base.kmTroca > 0 && ultimaManutencao?.km) {
-    let kmRodado = kmAtual - ultimaManutencao.km;
+    let kmRodado = kmAtualParam - ultimaManutencao.km;
     kmRestante = base.kmTroca - kmRodado;
   }
 
