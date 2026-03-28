@@ -445,16 +445,21 @@ async function carregarAlertasHome() {
 
   const kmAtual = 152000;
 
+  // 🔥 transforma snapshot em array
+  let historico = [];
+  snapshot.forEach(doc => historico.push(doc.data()));
+
+  // 🔥 função pra comparar texto
+  const normalizar = (texto) =>
+    texto.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+
+  // 🔥 percorre TODA a base
   manutencoesBase.forEach(base => {
 
     let ultima = null;
 
-    snapshot.forEach(doc => {
-      const m = doc.data();
-
-      const normalizar = (texto) =>
-        texto.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-
+    // 🔎 procura no histórico
+    historico.forEach(m => {
       if (
         normalizar(base.categoria) === normalizar(m.categoria) &&
         (
@@ -466,6 +471,7 @@ async function carregarAlertasHome() {
       }
     });
 
+    // 🧠 calcula mesmo sem histórico
     const status = calcularStatusManutencao(base, ultima, kmAtual);
 
     if (status.status === "vermelho") {
