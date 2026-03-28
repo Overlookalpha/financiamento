@@ -251,7 +251,11 @@ async function carregarManutencoes() {
     const historico = document.getElementById("historicoManutencao");
     historico.innerHTML = "";
 
-    const kmAtual = 152100;
+    let kmAtualReal = 152000;
+    let modoTeste = true;
+    let kmTeste = 300000;
+
+    let kmAtual = modoTeste ? kmTeste : kmAtualReal;
   const normalizar = (texto) =>
   texto
     .toLowerCase()
