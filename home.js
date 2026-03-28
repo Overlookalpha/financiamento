@@ -70,7 +70,8 @@ auth.onAuthStateChanged(async (user) => {
   if (doc.exists) {
     isAdmin = true;
   }
-
+  
+ await criarManutencoesIniciais();
   carregarDados();
   carregarManutencoes();
   carregarAlertasHome();
@@ -250,7 +251,7 @@ async function carregarManutencoes() {
     const historico = document.getElementById("historicoManutencao");
     historico.innerHTML = "";
 
-    const kmAtual = 152000;
+    const kmAtual = 152100;
   const normalizar = (texto) =>
   texto
     .toLowerCase()
@@ -469,4 +470,28 @@ async function carregarAlertasHome() {
   } else {
     alertasDiv.innerHTML = alertas.join("<br>");
   }
+}
+async function criarManutencoesIniciais() {
+  let user = auth.currentUser;
+  if (!user) return;
+
+  const snapshot = await db.collection("manutencoes")
+    .where("uid", "==", user.uid)
+    .get();
+
+  if (!snapshot.empty) return;
+
+  for (let item of manutencoesBase) {
+    await db.collection("manutencoes").add({
+      uid: user.uid,
+      categoria: item.categoria,
+      item: item.item,
+      valor: item.custoMedio,
+      km: 100000,
+      data: new Date(2020, 0, 1).toISOString(),
+      observacao: "criado automático"
+    });
+  }
+
+  console.log("Manutenções iniciais criadas 🚗");
 }
