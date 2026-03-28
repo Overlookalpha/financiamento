@@ -315,13 +315,16 @@ function calcularStatusManutencao(base, ultimaManutencao, kmAtualParam) {
   // ⏱️ TEMPO
   let diasRestantes = null;
 
-  if (base.diasTroca > 0 && ultimaManutencao?.data) {
-    let hoje = new Date();
-    let dataUltima = new Date(ultimaManutencao.data);
+ if (base.diasTroca > 0) {
+  let dataBase = ultimaManutencao?.data 
+    ? new Date(ultimaManutencao.data)
+    : new Date(0); // 1970 (nunca feito)
 
-    let diasPassados = Math.floor((hoje - dataUltima) / (1000 * 60 * 60 * 24));
-    diasRestantes = base.diasTroca - diasPassados;
-  }
+  let hoje = new Date();
+
+  let diasPassados = Math.floor((hoje - dataBase) / (1000 * 60 * 60 * 24));
+  diasRestantes = base.diasTroca - diasPassados;
+}
 
   // 🎯 STATUS (quem vencer primeiro manda)
   let status = "verde";
@@ -471,10 +474,7 @@ if (manutencoesFiltradas.length > 0) {
     // 🧠 calcula mesmo sem histórico
     const status = calcularStatusManutencao(base, ultima, kmAtual);
     // 🚨 se não tem histórico válido → considera atrasado
-if (!ultima) {
-  alertas.push("🔴 " + base.item + " sem registro");
-  return;
-}
+    
     console.log(base.item, status);
 
     if (status.status === "vermelho") {
