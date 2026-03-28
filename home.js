@@ -351,8 +351,6 @@ function abrirAba(nome) {
 }
 abrirAba("home");
 
-let kmAtual = 152000; // provisório
-
 function renderizarManutencoesBase() {
   const container = document.getElementById("listaManutencao");
 
