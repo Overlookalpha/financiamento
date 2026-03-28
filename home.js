@@ -437,37 +437,43 @@ async function carregarAlertasHome() {
   const snapshot = await db.collection("manutencoes")
     .where("uid", "==", user.uid)
     .get();
-  console.log("Manutenções encontradas:", snapshot.size);
-  
-  const alertasDiv = document.getElementById("alertasHome");
 
+  console.log("Manutenções encontradas:", snapshot.size);
+
+  const alertasDiv = document.getElementById("alertasHome");
   let alertas = [];
 
   const kmAtual = 152000;
 
   manutencoesBase.forEach(base => {
-    const m = doc.data();
 
-    const normalizar = (texto) =>
-      texto.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    let ultima = null;
 
-    const base = manutencoesBase.find(b =>
-      normalizar(b.categoria) === normalizar(m.categoria) &&
-      (
-        normalizar(b.item).includes(normalizar(m.item)) ||
-        normalizar(m.item).includes(normalizar(b.item))
-      )
-    );
+    snapshot.forEach(doc => {
+      const m = doc.data();
 
-    if (!base) return;
+      const normalizar = (texto) =>
+        texto.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 
-    const status = calcularStatusManutencao(base, m, kmAtual);
+      if (
+        normalizar(base.categoria) === normalizar(m.categoria) &&
+        (
+          normalizar(base.item).includes(normalizar(m.item)) ||
+          normalizar(m.item).includes(normalizar(base.item))
+        )
+      ) {
+        ultima = m;
+      }
+    });
+
+    const status = calcularStatusManutencao(base, ultima, kmAtual);
 
     if (status.status === "vermelho") {
-      alertas.push("🔴 " + m.item + " atrasado");
+      alertas.push("🔴 " + base.item + " atrasado");
     } else if (status.status === "amarelo") {
-      alertas.push("🟡 " + m.item + " próximo");
+      alertas.push("🟡 " + base.item + " próximo");
     }
+
   });
 
   if (alertas.length === 0) {
