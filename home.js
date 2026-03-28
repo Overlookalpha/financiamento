@@ -356,29 +356,73 @@ function abrirAba(nome) {
 }
 abrirAba("home");
 
-function renderizarManutencoesBase() {
+async function renderizarManutencoesBase() {
   const container = document.getElementById("listaManutencao");
-
   if (!container) return;
 
   container.innerHTML = "";
 
+  let user = auth.currentUser;
+  if (!user) return;
+
+  const snapshot = await db.collection("manutencoes")
+    .where("uid", "==", user.uid)
+    .get();
+
+  let historico = [];
+  snapshot.forEach(doc => historico.push(doc.data()));
+
+  const normalizar = (texto) =>
+    texto.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+
   manutencoesBase.forEach(item => {
 
-    const statusInfo = calcularStatusManutencao(item, null, kmAtual);
+    // 🔎 pega última manutenção real
+    let filtradas = historico.filter(m =>
+      normalizar(m.item).includes(normalizar(item.item)) ||
+      normalizar(item.item).includes(normalizar(m.item))
+    );
 
-let status = "🟢";
-let textoStatus = "OK";
+    let ultima = null;
 
-if (statusInfo.status === "vermelho") {
-  status = "🔴";
-  textoStatus = "Troca atrasada!";
-} else if (statusInfo.status === "amarelo") {
-  status = "🟡";
-  textoStatus = "Próximo da troca";
-}
+    if (filtradas.length > 0) {
+      filtradas.sort((a, b) => new Date(b.data) - new Date(a.data));
+      ultima = filtradas[0];
+    }
 
-    // 🔹 CARD PRINCIPAL
+    const statusInfo = calcularStatusManutencao(item, ultima, kmAtual);
+
+    let status = "🟢";
+    let textoStatus = "OK";
+
+    if (statusInfo.status === "vermelho") {
+      status = "🔴";
+      textoStatus = "Troca atrasada!";
+    } else if (statusInfo.status === "amarelo") {
+      status = "🟡";
+      textoStatus = "Próximo da troca";
+    }
+
+    // 🔥 TEXTO INTELIGENTE (igual tu pediu)
+    let detalhe = "";
+
+    if (statusInfo.kmRestante !== null) {
+      if (statusInfo.kmRestante <= 0) {
+        detalhe += "🚨 Atrasado em " + Math.abs(statusInfo.kmRestante) + " km\n";
+      } else {
+        detalhe += "📏 Faltam " + statusInfo.kmRestante + " km\n";
+      }
+    }
+
+    if (statusInfo.diasRestantes !== null) {
+      if (statusInfo.diasRestantes <= 0) {
+        detalhe += "⏰ Atrasado em " + Math.abs(statusInfo.diasRestantes) + " dias";
+      } else {
+        detalhe += "📅 Faltam " + statusInfo.diasRestantes + " dias";
+      }
+    }
+
+    // 🔹 CARD
     const card = document.createElement("div");
     card.style.margin = "12px";
     card.style.padding = "14px";
@@ -387,51 +431,50 @@ if (statusInfo.status === "vermelho") {
     card.style.boxShadow = "0 4px 12px rgba(0,0,0,0.4)";
     card.style.color = "white";
 
-    // 🔹 CATEGORIA
     const categoria = document.createElement("div");
     categoria.style.fontSize = "16px";
     categoria.style.fontWeight = "bold";
     categoria.style.marginBottom = "6px";
     categoria.innerText = "🔧 " + status + " " + item.categoria;
 
-    // 🔹 ITEM
     const itemDiv = document.createElement("div");
     itemDiv.style.fontSize = "15px";
     itemDiv.style.marginBottom = "6px";
     itemDiv.innerText = item.item;
 
-    // 🔹 CUSTO
     const custo = document.createElement("div");
     custo.style.fontSize = "14px";
     custo.style.opacity = "0.8";
     custo.innerText = "💰 Custo médio: €" + item.custoMedio;
 
-    // 🔹 TROCA
     const troca = document.createElement("div");
     troca.style.fontSize = "14px";
     troca.style.marginTop = "6px";
     troca.innerText =
-      "⏱ Troca a cada: " +
+      "⏱ " +
       (item.kmTroca ? item.kmTroca + " km" : "") +
       (item.diasTroca ? " / " + item.diasTroca + " dias" : "");
 
-    // 🔹 STATUS TEXTO
+    const detalheDiv = document.createElement("div");
+    detalheDiv.style.marginTop = "6px";
+    detalheDiv.style.fontSize = "13px";
+    detalheDiv.innerText = detalhe;
+
     const statusDiv = document.createElement("div");
     statusDiv.style.marginTop = "6px";
     statusDiv.style.fontSize = "13px";
     statusDiv.innerText = textoStatus;
 
-    // 🔗 MONTA
     card.appendChild(categoria);
     card.appendChild(itemDiv);
     card.appendChild(custo);
     card.appendChild(troca);
+    card.appendChild(detalheDiv);
     card.appendChild(statusDiv);
 
     container.appendChild(card);
   });
 }
-
 // 👉 CHAMA FORA
 renderizarManutencoesBase();
 async function carregarAlertasHome() {
