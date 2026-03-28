@@ -73,6 +73,7 @@ auth.onAuthStateChanged(async (user) => {
 
   carregarDados();
   carregarManutencoes();
+  carregarAlertasHome();
 });
  
 
@@ -424,3 +425,48 @@ function renderizarManutencoesBase() {
 
 // 👉 CHAMA FORA
 renderizarManutencoesBase();
+async function carregarAlertasHome() {
+  let user = auth.currentUser;
+  if (!user) return;
+
+  const snapshot = await db.collection("manutencoes")
+    .where("uid", "==", user.uid)
+    .get();
+
+  const alertasDiv = document.getElementById("alertasHome");
+
+  let alertas = [];
+
+  const kmAtual = 152000;
+
+  snapshot.forEach(doc => {
+    const m = doc.data();
+
+    const normalizar = (texto) =>
+      texto.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+
+    const base = manutencoesBase.find(b =>
+      normalizar(b.categoria) === normalizar(m.categoria) &&
+      (
+        normalizar(b.item).includes(normalizar(m.item)) ||
+        normalizar(m.item).includes(normalizar(b.item))
+      )
+    );
+
+    if (!base) return;
+
+    const status = calcularStatusManutencao(base, m, kmAtual);
+
+    if (status.status === "vermelho") {
+      alertas.push("🔴 " + m.item + " atrasado");
+    } else if (status.status === "amarelo") {
+      alertas.push("🟡 " + m.item + " próximo");
+    }
+  });
+
+  if (alertas.length === 0) {
+    alertasDiv.innerText = "✅ Tudo em dia";
+  } else {
+    alertasDiv.innerHTML = alertas.join("<br>");
+  }
+}
