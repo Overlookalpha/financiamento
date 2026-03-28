@@ -240,7 +240,8 @@ window.salvarManutencao = async function () {
   });
 
   alert("Manutenção salva 🚗");
-  carregarManutencoes();
+carregarManutencoes();
+carregarAlertasHome();
 };
 
 async function carregarManutencoes() {
