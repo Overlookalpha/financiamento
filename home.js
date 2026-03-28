@@ -453,16 +453,11 @@ async function carregarAlertasHome() {
   // 🔥 percorre TODA a base
   manutencoesBase.forEach(base => {
 
-    let ultima = null;
-
     // 🔎 procura no histórico
-    let manutencoesFiltradas = historico.filter(m => 
-  normalizar(base.categoria) === normalizar(m.categoria) &&
-  (
-    normalizar(base.item).includes(normalizar(m.item)) ||
-    normalizar(m.item).includes(normalizar(base.item))
-  )
-);
+    let manutencoesFiltradas = historico.filter(m => {
+  return normalizar(m.item).includes(normalizar(base.item)) ||
+         normalizar(base.item).includes(normalizar(m.item));
+});
 
 // 👉 pega a mais recente de verdade
 let ultima = null;
