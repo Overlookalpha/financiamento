@@ -365,16 +365,18 @@ function renderizarManutencoesBase() {
 
   manutencoesBase.forEach(item => {
 
-    let status = "🟢";
-    let textoStatus = "OK";
+    const statusInfo = calcularStatusManutencao(item, null, kmAtual);
 
-    if (item.kmTroca && kmAtual >= item.kmTroca) {
-      status = "🔴";
-      textoStatus = "Troca atrasada!";
-    } else if (item.kmTroca && kmAtual >= item.kmTroca * 0.8) {
-      status = "🟡";
-      textoStatus = "Próximo da troca";
-    }
+let status = "🟢";
+let textoStatus = "OK";
+
+if (statusInfo.status === "vermelho") {
+  status = "🔴";
+  textoStatus = "Troca atrasada!";
+} else if (statusInfo.status === "amarelo") {
+  status = "🟡";
+  textoStatus = "Próximo da troca";
+}
 
     // 🔹 CARD PRINCIPAL
     const card = document.createElement("div");
