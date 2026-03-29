@@ -542,34 +542,34 @@ alertas.forEach(item => {
   if (item.statusInfo.status === "amarelo") cor = "🟡";
   if (item.statusInfo.status === "vermelho") cor = "🔴";
 
-  html += '<div style="margin:8px; padding:10px; background:#1e293b; border-radius:10px; display:flex; justify-content:space-between; align-items:center;">';
+  html += '<div style="margin:8px; padding:10px; background:#1e293b; border-radius:10px; display:flex; justify-content:space-between; align-items:flex-start;">';
 
-  // 🔹 BLOCO DO TEXTO
-  html += '<div>';
+// 🔹 BLOCO DO TEXTO
+html += '<div style="padding-right:10px;">';
 
-  html += '<strong style="font-size:18px; letter-spacing:0.5px;">' + cor + ' ' + item.item + '</strong><br>';
-  html += '<span style="font-size:16px;">💰 €' + item.custoMedio + '</span><br>';
+html += '<strong style="font-size:18px; letter-spacing:0.5px; line-height:1.2;">' + cor + ' ' + item.item + '</strong><br>';
+html += '<span style="font-size:16px;">💰 €' + item.custoMedio + '</span><br>';
 
-  if (item.statusInfo.kmRestante !== null) {
-    html += '<span style="font-size:15px; opacity:0.9;">KM: ' + item.statusInfo.kmRestante + '</span><br>';
-  }
+if (item.statusInfo.kmRestante !== null) {
+  html += '<span style="font-size:15px; opacity:0.9;">KM: ' + item.statusInfo.kmRestante + '</span><br>';
+}
 
-  if (item.statusInfo.diasRestantes !== null) {
-    html += '<span style="font-size:15px; opacity:0.9;">Dias: ' + item.statusInfo.diasRestantes + '</span>';
-  }
+if (item.statusInfo.diasRestantes !== null) {
+  html += '<span style="font-size:15px; opacity:0.9;">Dias: ' + item.statusInfo.diasRestantes + '</span>';
+}
 
-  html += '</div>';
+html += '</div>';
 
-  // 🔹 BLOCO DOS BOTÕES
-  html += '<div style="display:flex; gap:5px;">';
+// 🔹 BLOCO DOS BOTÕES
+html += '<div style="display:flex; gap:5px; align-items:flex-start;">';
 
-  html += '<button onclick="ignorarAlerta(\'' + item.item + '\')" style="width:30px; height:30px; padding:0; font-size:14px;">❌</button>';
+html += '<button onclick="ignorarAlerta(\'' + item.item + '\')" style="width:32px; height:32px; padding:0; font-size:16px;">❌</button>';
 
-  html += '<button onclick="confirmarAlerta(\'' + item.item + '\')" style="width:30px; height:30px; padding:0; font-size:14px; background:green;">✔️</button>';
+html += '<button onclick="confirmarAlerta(\'' + item.item + '\')" style="width:32px; height:32px; padding:0; font-size:16px; background:green;">✔️</button>';
 
-  html += '</div>';
+html += '</div>';
 
-  html += '</div>';
+html += '</div>';
 });
 
 alertasDiv.innerHTML = html;
