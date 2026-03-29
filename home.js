@@ -228,15 +228,16 @@ window.salvarManutencao = async function () {
     return;
   }
 
-  await db.collection("manutencoes").add({
-    uid: user.uid,
-    categoria: "Freios",
-    item: "Pastilhas de freio",
-    valor: 120,
-    km: kmAtual,
-    data: new Date().toISOString(),
-    observacao: "teste app"
-  });
+ await db.collection("manutencoes").add({
+  uid: user.uid,
+  categoria: "Freios",
+  item: "Pastilhas de freio",
+  valor: 120,
+  km: kmAtual,
+  data: new Date().toISOString(),
+  observacao: "teste app",
+  tipo: "realizada" // 🔥 ESSENCIAL
+});
 
   alert("Manutenção salva 🚗");
 carregarManutencoes();
@@ -264,6 +265,7 @@ async function carregarManutencoes() {
 
 snapshot.forEach(doc => {
     const m = doc.data();
+  if (m.tipo !== "realizada") return;
 
   function normalizar(texto) {
   return texto
