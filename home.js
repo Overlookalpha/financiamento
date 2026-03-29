@@ -546,10 +546,10 @@ async function carregarAlertasHome() {
 
      html += '<div style="position:absolute; top:8px; right:8px;">';
 
-     html += '<button onclick="ignorarAlerta(\'' + item.item + '\')" style="margin-right:5px;">❌</button>';
+     html += '<button onclick="ignorarAlerta(\'' + item.item + '\')" style="margin-right:5px; width:auto; padding:5px 8px; font-size:14px;">❌</button>';
 
-     html += '<button onclick="confirmarAlerta(\'' + item.item + '\')" style="background:green;">✔️</button>';
-
+     html += '<button onclick="confirmarAlerta(\'' + item.item + '\')" style="background:green; width:auto; padding:5px 8px; font-size:14px;">✔️</button>';
+      
      html += '</div>'
 
       html += '<strong>' + cor + ' ' + item.item + '</strong><br>';
