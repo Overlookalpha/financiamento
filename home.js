@@ -494,7 +494,6 @@ async function carregarAlertasHome() {
   const alertasDiv = document.getElementById("alertasHome");
   let alertas = [];
 
-
   // 🔥 transforma snapshot em array
   let historico = [];
   snapshot.forEach(doc => historico.push(doc.data()));
@@ -506,63 +505,67 @@ async function carregarAlertasHome() {
   // 🔥 percorre TODA a base
   manutencoesBase.forEach(base => {
 
-    // 🔎 procura no histórico
     let manutencoesFiltradas = historico.filter(m => {
-  return normalizar(m.item).includes(normalizar(base.item)) ||
-         normalizar(base.item).includes(normalizar(m.item));
-});
+      return normalizar(m.item).includes(normalizar(base.item)) ||
+             normalizar(base.item).includes(normalizar(m.item));
+    });
 
-// 👉 pega a mais recente de verdade
-let ultima = null;
+    let ultima = null;
 
-if (manutencoesFiltradas.length > 0) {
-  manutencoesFiltradas.sort((a, b) => new Date(b.data) - new Date(a.data));
-  ultima = manutencoesFiltradas[0];
-}
+    if (manutencoesFiltradas.length > 0) {
+      manutencoesFiltradas.sort((a, b) => new Date(b.data) - new Date(a.data));
+      ultima = manutencoesFiltradas[0];
+    }
 
-    // 🧠 calcula mesmo sem histórico
     const status = calcularStatusManutencao(base, ultima, kmAtual);
-    // 🚨 se não tem histórico válido → considera atrasado
-    
+
     console.log(base.item, status);
 
     if (status.status === "vermelho" || status.status === "amarelo") {
 
-  alertas.push({
-    ...base,
-    statusInfo: status
-  });
+      alertas.push({
+        ...base,
+        statusInfo: status
+      });
 
-}
+    }
 
   });
 
   if (alertas.length === 0) {
     alertasDiv.innerText = "✅ Tudo em dia";
   } else {
+
     let html = "";
 
-alertas.forEach(item => {
+    alertas.forEach(item => {
 
-  let cor = "🟢";
-  if (item.statusInfo.status === "amarelo") cor = "🟡";
-  if (item.statusInfo.status === "vermelho") cor = "🔴";
+      let cor = "🟢";
+      if (item.statusInfo.status === "amarelo") cor = "🟡";
+      if (item.statusInfo.status === "vermelho") cor = "🔴";
 
- html += `
-  <div style="margin:8px; padding:10px; background:#1e293b; border-radius:10px; position:relative;">
+      html += '<div style="margin:8px; padding:10px; background:#1e293b; border-radius:10px; position:relative;">';
 
-    <div style="position:absolute; top:8px; right:8px;">
-      <button onclick="confirmarAlerta(\`${item.item}\`)">✔️</button>
-    </div>
+      html += '<div style="position:absolute; top:8px; right:8px;">';
+      html += '<button onclick="confirmarAlerta(\'' + item.item + '\')">✔️</button>';
+      html += '</div>';
 
-    <strong>${cor} ${item.item}</strong><br>
-    💰 €${item.custoMedio}<br>
-    ${item.statusInfo.kmRestante !== null ? "KM: " + item.statusInfo.kmRestante + "<br>" : ""}
-    ${item.statusInfo.diasRestantes !== null ? "Dias: " + item.statusInfo.diasRestantes : ""}
-  </div>
-`;
+      html += '<strong>' + cor + ' ' + item.item + '</strong><br>';
+      html += '💰 €' + item.custoMedio + '<br>';
 
-alertasDiv.innerHTML = html;
+      if (item.statusInfo.kmRestante !== null) {
+        html += 'KM: ' + item.statusInfo.kmRestante + '<br>';
+      }
+
+      if (item.statusInfo.diasRestantes !== null) {
+        html += 'Dias: ' + item.statusInfo.diasRestantes;
+      }
+
+      html += '</div>';
+
+    });
+
+    alertasDiv.innerHTML = html;
   }
 }
 async function criarManutencoesIniciais() {
