@@ -76,14 +76,11 @@ auth.onAuthStateChanged(async (user) => {
     isAdmin = true;
   }
   
- await criarManutencoesIniciais();
-  await criarManutencoesIniciais();
+await criarManutencoesIniciais();
 
-setTimeout(() => {
-  carregarDados();
-  carregarManutencoes();
-  carregarAlertasHome();
-}, 500);
+carregarDados();
+carregarManutencoes();
+carregarAlertasHome();
 });
  
 
