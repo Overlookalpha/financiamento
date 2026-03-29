@@ -77,9 +77,13 @@ auth.onAuthStateChanged(async (user) => {
   }
   
  await criarManutencoesIniciais();
+  await criarManutencoesIniciais();
+
+setTimeout(() => {
   carregarDados();
   carregarManutencoes();
   carregarAlertasHome();
+}, 500);
 });
  
 
