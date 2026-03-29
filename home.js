@@ -536,38 +536,43 @@ async function carregarAlertasHome() {
 
     let html = "";
 
-    alertas.forEach(item => {
+alertas.forEach(item => {
 
-      let cor = "🟢";
-      if (item.statusInfo.status === "amarelo") cor = "🟡";
-      if (item.statusInfo.status === "vermelho") cor = "🔴";
+  let cor = "🟢";
+  if (item.statusInfo.status === "amarelo") cor = "🟡";
+  if (item.statusInfo.status === "vermelho") cor = "🔴";
 
-      html += '<div style="margin:8px; padding:10px; background:#1e293b; border-radius:10px; position:relative;">';
+  html += '<div style="margin:8px; padding:10px; background:#1e293b; border-radius:10px; display:flex; justify-content:space-between; align-items:center;">';
 
-      html += '<div style="position:absolute; top:8px; right:8px; display:flex; gap:5px;">';
+  // 🔹 BLOCO DO TEXTO
+  html += '<div>';
 
-      html += '<button onclick="ignorarAlerta(\'' + item.item + '\')" style="width:30px; height:30px; padding:0; font-size:14px;">❌</button>';
+  html += '<strong>' + cor + ' ' + item.item + '</strong><br>';
+  html += '💰 €' + item.custoMedio + '<br>';
 
-      html += '<button onclick="confirmarAlerta(\'' + item.item + '\')" style="width:30px; height:30px; padding:0; font-size:14px; background:green;">✔️</button>';
+  if (item.statusInfo.kmRestante !== null) {
+    html += 'KM: ' + item.statusInfo.kmRestante + '<br>';
+  }
 
-       html += '</div>';
+  if (item.statusInfo.diasRestantes !== null) {
+    html += 'Dias: ' + item.statusInfo.diasRestantes;
+  }
 
-      html += '<strong>' + cor + ' ' + item.item + '</strong><br>';
-      html += '💰 €' + item.custoMedio + '<br>';
+  html += '</div>';
 
-      if (item.statusInfo.kmRestante !== null) {
-        html += 'KM: ' + item.statusInfo.kmRestante + '<br>';
-      }
+  // 🔹 BLOCO DOS BOTÕES
+  html += '<div style="display:flex; gap:5px;">';
 
-      if (item.statusInfo.diasRestantes !== null) {
-        html += 'Dias: ' + item.statusInfo.diasRestantes;
-      }
+  html += '<button onclick="ignorarAlerta(\'' + item.item + '\')" style="width:30px; height:30px; padding:0; font-size:14px;">❌</button>';
 
-      html += '</div>';
+  html += '<button onclick="confirmarAlerta(\'' + item.item + '\')" style="width:30px; height:30px; padding:0; font-size:14px; background:green;">✔️</button>';
 
-    });
+  html += '</div>';
 
-    alertasDiv.innerHTML = html;
+  html += '</div>';
+});
+
+alertasDiv.innerHTML = html;
   }
 }
 async function criarManutencoesIniciais() {
