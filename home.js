@@ -547,15 +547,15 @@ alertas.forEach(item => {
   // 🔹 BLOCO DO TEXTO
   html += '<div>';
 
-  html += '<strong>' + cor + ' ' + item.item + '</strong><br>';
-  html += '💰 €' + item.custoMedio + '<br>';
+  html += '<strong style="font-size:18px; letter-spacing:0.5px;">' + cor + ' ' + item.item + '</strong><br>';
+  html += '<span style="font-size:16px;">💰 €' + item.custoMedio + '</span><br>';
 
   if (item.statusInfo.kmRestante !== null) {
-    html += 'KM: ' + item.statusInfo.kmRestante + '<br>';
+    html += '<span style="font-size:15px; opacity:0.9;">KM: ' + item.statusInfo.kmRestante + '</span><br>';
   }
 
   if (item.statusInfo.diasRestantes !== null) {
-    html += 'Dias: ' + item.statusInfo.diasRestantes;
+    html += '<span style="font-size:15px; opacity:0.9;">Dias: ' + item.statusInfo.diasRestantes + '</span>';
   }
 
   html += '</div>';
