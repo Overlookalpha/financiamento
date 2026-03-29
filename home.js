@@ -552,7 +552,7 @@ alertas.forEach(item => {
   <div style="margin:8px; padding:10px; background:#1e293b; border-radius:10px; position:relative;">
 
     <div style="position:absolute; top:8px; right:8px;">
-      <button onclick="confirmarAlerta('${item.item}')">✔️</button>
+      <button onclick="confirmarAlerta(\`${item.item}\`)">✔️</button>
     </div>
 
     <strong>${cor} ${item.item}</strong><br>
