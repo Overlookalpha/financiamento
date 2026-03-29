@@ -126,8 +126,6 @@ async function carregarDados() {
     }
   });
 
-  document.getElementById("historicoManutencao").innerHTML = html;
-
   valorPagoBanco = totalBanco;
   valorPagoAcordo = totalAcordo;
   // 🔥 BUSCAR VALORES DO FIREBASE
