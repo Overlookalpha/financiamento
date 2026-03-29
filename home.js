@@ -522,18 +522,39 @@ if (manutencoesFiltradas.length > 0) {
     
     console.log(base.item, status);
 
-    if (status.status === "vermelho") {
-      alertas.push("🔴 " + base.item + " atrasado");
-    } else if (status.status === "amarelo") {
-      alertas.push("🟡 " + base.item + " próximo");
-    }
+    if (status.status === "vermelho" || status.status === "amarelo") {
+
+  alertas.push({
+    ...base,
+    statusInfo: status
+  });
+
+}
 
   });
 
   if (alertas.length === 0) {
     alertasDiv.innerText = "✅ Tudo em dia";
   } else {
-    alertasDiv.innerHTML = alertas.join("<br>");
+    let html = "";
+
+alertas.forEach(item => {
+
+  let cor = "🟢";
+  if (item.statusInfo.status === "amarelo") cor = "🟡";
+  if (item.statusInfo.status === "vermelho") cor = "🔴";
+
+  html += `
+    <div style="margin:8px; padding:10px; background:#1e293b; border-radius:10px;">
+      <strong>${cor} ${item.item}</strong><br>
+      💰 €${item.custoMedio}<br>
+      ${item.statusInfo.kmRestante !== null ? "KM: " + item.statusInfo.kmRestante + "<br>" : ""}
+      ${item.statusInfo.diasRestantes !== null ? "Dias: " + item.statusInfo.diasRestantes : ""}
+    </div>
+  `;
+});
+
+alertasDiv.innerHTML = html;
   }
 }
 async function criarManutencoesIniciais() {
