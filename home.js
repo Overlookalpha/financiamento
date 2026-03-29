@@ -544,13 +544,13 @@ async function carregarAlertasHome() {
 
       html += '<div style="margin:8px; padding:10px; background:#1e293b; border-radius:10px; position:relative;">';
 
-     html += '<div style="position:absolute; top:8px; right:8px;">';
+      html += '<div style="position:absolute; top:8px; right:8px; display:flex; gap:5px;">';
 
-     html += '<button onclick="ignorarAlerta(\'' + item.item + '\')" style="margin-right:5px; width:auto; padding:5px 8px; font-size:14px;">❌</button>';
+      html += '<button onclick="ignorarAlerta(\'' + item.item + '\')" style="width:30px; height:30px; padding:0; font-size:14px;">❌</button>';
 
-     html += '<button onclick="confirmarAlerta(\'' + item.item + '\')" style="background:green; width:auto; padding:5px 8px; font-size:14px;">✔️</button>';
-      
-     html += '</div>'
+      html += '<button onclick="confirmarAlerta(\'' + item.item + '\')" style="width:30px; height:30px; padding:0; font-size:14px; background:green;">✔️</button>';
+
+       html += '</div>';
 
       html += '<strong>' + cor + ' ' + item.item + '</strong><br>';
       html += '💰 €' + item.custoMedio + '<br>';
