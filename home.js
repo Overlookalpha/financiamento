@@ -377,6 +377,7 @@ async function renderizarManutencoesBase() {
     texto.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 
   manutencoesBase.forEach(item => {
+    if (alertasIgnorados.includes(base.item)) return;
 
     // 🔎 pega última manutenção real
     let filtradas = historico.filter(m =>
@@ -544,7 +545,8 @@ async function carregarAlertasHome() {
       html += '<div style="margin:8px; padding:10px; background:#1e293b; border-radius:10px; position:relative;">';
 
       html += '<div style="position:absolute; top:8px; right:8px;">';
-      html += '<button onclick="confirmarAlerta(\'' + item.item + '\')">✔️</button>';
+      html += '<button onclick="ignorarAlerta(\'' + item.item + '\')" style="margin-right:5px;">❌</button>';
+      html += '<button onclick="confirmarAlerta(\'' + item.item + '\')" style="background:green;">✔️</button>';
       html += '</div>';
 
       html += '<strong>' + cor + ' ' + item.item + '</strong><br>';
@@ -610,5 +612,11 @@ window.confirmarAlerta = async function(nomeItem) {
   alert("✅ Manutenção registrada!");
 
   carregarManutencoes();
+  carregarAlertasHome();
+};
+let alertasIgnorados = [];
+
+window.ignorarAlerta = function(nomeItem) {
+  alertasIgnorados.push(nomeItem);
   carregarAlertasHome();
 };
