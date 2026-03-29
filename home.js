@@ -548,15 +548,19 @@ alertas.forEach(item => {
   if (item.statusInfo.status === "amarelo") cor = "🟡";
   if (item.statusInfo.status === "vermelho") cor = "🔴";
 
-  html += `
-    <div style="margin:8px; padding:10px; background:#1e293b; border-radius:10px;">
-      <strong>${cor} ${item.item}</strong><br>
-      💰 €${item.custoMedio}<br>
-      ${item.statusInfo.kmRestante !== null ? "KM: " + item.statusInfo.kmRestante + "<br>" : ""}
-      ${item.statusInfo.diasRestantes !== null ? "Dias: " + item.statusInfo.diasRestantes : ""}
+ html += `
+  <div style="margin:8px; padding:10px; background:#1e293b; border-radius:10px; position:relative;">
+
+    <div style="position:absolute; top:8px; right:8px;">
+      <button onclick="confirmarAlerta('${item.item}')">✔️</button>
     </div>
-  `;
-});
+
+    <strong>${cor} ${item.item}</strong><br>
+    💰 €${item.custoMedio}<br>
+    ${item.statusInfo.kmRestante !== null ? "KM: " + item.statusInfo.kmRestante + "<br>" : ""}
+    ${item.statusInfo.diasRestantes !== null ? "Dias: " + item.statusInfo.diasRestantes : ""}
+  </div>
+`;
 
 alertasDiv.innerHTML = html;
   }
@@ -585,3 +589,26 @@ async function criarManutencoesIniciais() {
 
   console.log("Manutenções iniciais criadas 🚗");
 }
+window.confirmarAlerta = async function(nomeItem) {
+
+  let user = auth.currentUser;
+  if (!user) return;
+
+  let base = manutencoesBase.find(b => b.item === nomeItem);
+  if (!base) return;
+
+  await db.collection("manutencoes").add({
+    uid: user.uid,
+    categoria: base.categoria,
+    item: base.item,
+    valor: base.custoMedio,
+    km: kmAtual,
+    data: new Date().toISOString(),
+    observacao: "feito pelo alerta"
+  });
+
+  alert("✅ Manutenção registrada!");
+
+  carregarManutencoes();
+  carregarAlertasHome();
+};
