@@ -391,7 +391,7 @@ async function renderizarManutencoesBase() {
     }
 
     const statusInfo = calcularStatusManutencao(item, ultima, kmAtual);
-
+    if (statusInfo.status === "verde") return;
     let status = "🟢";
     let textoStatus = "OK";
 
