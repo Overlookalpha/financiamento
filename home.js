@@ -528,6 +528,17 @@ async function carregarAlertasHome() {
 
   const alertasDiv = document.getElementById("alertasHome");
   let alertas = [];
+  // 💰 ALERTA DE PAGAMENTO
+const pagamento = calcularProximoPagamento();
+
+if (pagamento.status !== "verde") {
+
+  alertas.push({
+    tipo: "pagamento",
+    statusInfo: pagamento
+  });
+
+}
 
   // 🔥 transforma snapshot em array
   let historico = [];
