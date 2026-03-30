@@ -585,7 +585,21 @@ if (pagamento.status !== "verde") {
     let html = "";
 
 alertas.forEach(item => {
+// 💰 ALERTA DE PAGAMENTO (TRATAMENTO ESPECIAL)
+if (item.tipo === "pagamento") {
 
+  let cor = item.statusInfo.status === "vermelho" ? "🔴" : "🟡";
+
+  html += '<div style="margin:8px; padding:10px; background:#1e293b; border-radius:10px;">';
+
+  html += '<strong style="font-size:18px;">' + cor + ' Pagamento do financiamento</strong><br>';
+
+  html += '<span style="font-size:15px;">' + item.statusInfo.texto + '</span>';
+
+  html += '</div>';
+
+  return;
+}
   let cor = "🟢";
   if (item.statusInfo.status === "amarelo") cor = "🟡";
   if (item.statusInfo.status === "vermelho") cor = "🔴";
