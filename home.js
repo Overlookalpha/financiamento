@@ -583,6 +583,38 @@ if (pagamento.status !== "verde") {
   } else {
 
     let html = "";
+  // 🔥 ALERTA FINANCEIRO
+let hoje = new Date();
+let diaPagamento = 4;
+
+let proximo = new Date(hoje.getFullYear(), hoje.getMonth(), diaPagamento);
+
+if (hoje.getDate() > diaPagamento) {
+  proximo = new Date(hoje.getFullYear(), hoje.getMonth() + 1, diaPagamento);
+}
+
+let diff = Math.ceil((proximo - hoje) / (1000 * 60 * 60 * 24));
+
+if (diff <= 3) {
+
+  let cor = diff <= 0 ? "🔴" : "🟡";
+  let texto = diff <= 0 ? "Pagamento vencido" : "Faltam " + diff + " dias";
+
+  html += `
+  <div style="margin:8px; padding:10px; background:#1e293b; border-radius:10px; display:flex; justify-content:space-between; align-items:center;">
+    
+    <div>
+      <strong>${cor} Pagamento do financiamento</strong><br>
+      <span>${texto}</span>
+    </div>
+
+    <button onclick="fecharAlertaFinanceiro()" style="width:32px; height:32px;">
+      ❌
+    </button>
+
+  </div>
+  `;
+}
 
 alertas.forEach(item => {
 // 💰 ALERTA DE PAGAMENTO (TRATAMENTO ESPECIAL)
@@ -756,3 +788,17 @@ async function carregarHistoricoFinanceiro() {
   });
 
 }
+window.fecharAlertaFinanceiro = function () {
+  const alertasDiv = document.getElementById("alertasHome");
+  if (!alertasDiv) return;
+
+  // remove só o alerta financeiro
+  const itens = alertasDiv.children;
+
+  for (let i = 0; i < itens.length; i++) {
+    if (itens[i].innerText.includes("Pagamento do financiamento")) {
+      itens[i].remove();
+      break;
+    }
+  }
+};
