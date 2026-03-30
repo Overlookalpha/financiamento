@@ -750,7 +750,7 @@ function calcularProximoPagamento() {
   } else if (diff < 0) {
     status = "vermelho";
     texto = "Atrasado há " + Math.abs(diff) + " dias";
-  } else if (diff <= 4) {
+  } else if (diff > 0 && diff <= 5) {
     status = "amarelo";
     texto = "Faltam " + diff + " dias";
   }
