@@ -600,7 +600,7 @@ if (diff <= 5) { // 👈 botei 5 pra testar melhor
   let cor = diff <= 0 ? "🔴" : "🟡";
   let texto = diff <= 0 ? "Pagamento vencido" : "Faltam " + diff + " dias";
 
-  html += `
+html += `
   <div style="margin:8px; padding:10px; background:#1e293b; border-radius:10px; display:flex; justify-content:space-between; align-items:center;">
     
     <div>
@@ -609,14 +609,13 @@ if (diff <= 5) { // 👈 botei 5 pra testar melhor
     </div>
 
     <div style="margin-left:10px;">
-      <button onclick="fecharAlertaFinanceiro()" style="width:35px; height:35px; font-size:16px;">
+      <button onclick="fecharAlertaPagamento()" style="width:35px; height:35px; font-size:16px;">
         ❌
       </button>
     </div>
 
   </div>
-  `;
-}
+`;
 
 alertas.forEach(item => {
  // 🔥 ALERTA DE PAGAMENTO (TRATAMENTO ESPECIAL)
@@ -790,17 +789,10 @@ async function carregarHistoricoFinanceiro() {
   });
 
 }
-window.fecharAlertaFinanceiro = function () {
-  const alertasDiv = document.getElementById("alertasHome");
-  if (!alertasDiv) return;
+function fecharAlertaPagamento() {
+  const hoje = new Date().toISOString().slice(0,10);
 
-  // remove só o alerta financeiro
-  const itens = alertasDiv.children;
+  localStorage.setItem("fechouPagamentoHoje", hoje);
 
-  for (let i = 0; i < itens.length; i++) {
-    if (itens[i].innerText.includes("Pagamento do financiamento")) {
-      itens[i].remove();
-      break;
-    }
-  }
-};
+  carregarAlertasHome();
+}
