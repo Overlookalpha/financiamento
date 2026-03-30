@@ -173,6 +173,13 @@ document.getElementById("totalBanco").innerText =
 
   document.getElementById("restanteAcordo").innerText =
     "Falta: €" + restanteAcordo;
+  const pagamento = calcularProximoPagamento();
+
+document.getElementById("proximoBanco").innerText =
+  "📅 Próximo pagamento: " + pagamento.data.toLocaleDateString();
+
+document.getElementById("dataBanco").innerText =
+  pagamento.texto || "Pagamento em dia";
 
 }
 
@@ -325,10 +332,14 @@ function calcularStatusManutencao(base, ultimaManutencao, kmAtualParam) {
     ? new Date(ultimaManutencao.data)
     : new Date(0); // 1970 (nunca feito)
 
-  let hoje = new Date();
+ let hoje = new Date();
 
-  let diasPassados = Math.floor((hoje - dataBase) / (1000 * 60 * 60 * 24));
-  diasRestantes = base.diasTroca - diasPassados;
+// 🔥 CORREÇÃO
+hoje.setHours(0,0,0,0);
+dataBase.setHours(0,0,0,0);
+
+let diasPassados = Math.floor((hoje - dataBase) / (1000 * 60 * 60 * 24));
+diasRestantes = base.diasTroca - diasPassados;
 }
 
   // 🎯 STATUS (quem vencer primeiro manda)
@@ -654,3 +665,41 @@ window.ignorarAlerta = function(nomeItem) {
   alertasIgnorados.push(nomeItem);
   carregarAlertasHome();
 };
+function calcularProximoPagamento() {
+  const hoje = new Date();
+  hoje.setHours(0,0,0,0);
+
+  let ano = hoje.getFullYear();
+  let mes = hoje.getMonth();
+
+  let vencimento = new Date(ano, mes, 4);
+  vencimento.setHours(0,0,0,0);
+
+  if (hoje > vencimento) {
+    vencimento = new Date(ano, mes + 1, 4);
+    vencimento.setHours(0,0,0,0);
+  }
+
+  const diff = Math.floor((vencimento - hoje) / (1000 * 60 * 60 * 24));
+
+  let status = "verde";
+  let texto = "";
+
+  if (diff === 0) {
+    status = "vermelho";
+    texto = "Hoje é o pagamento";
+  } else if (diff < 0) {
+    status = "vermelho";
+    texto = "Atrasado há " + Math.abs(diff) + " dias";
+  } else if (diff <= 3) {
+    status = "amarelo";
+    texto = "Faltam " + diff + " dias";
+  }
+
+  return {
+    data: vencimento,
+    diasRestantes: diff,
+    status,
+    texto
+  };
+}
