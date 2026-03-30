@@ -619,8 +619,8 @@ if (diff <= 5) { // 👈 botei 5 pra testar melhor
 }
 
 alertas.forEach(item => {
-// 💰 ALERTA DE PAGAMENTO (TRATAMENTO ESPECIAL)
-if (item.tipo === "pagamento") {
+ // 🔥 ALERTA DE PAGAMENTO (TRATAMENTO ESPECIAL)
+  if (false && item.tipo === "pagamento") {
 
   let cor = item.statusInfo.status === "vermelho" ? "🔴" : "🟡";
 
