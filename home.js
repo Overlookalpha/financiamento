@@ -76,15 +76,15 @@ auth.onAuthStateChanged(async (user) => {
     isAdmin = true;
   }
   
-  await criarManutencoesIniciais();
+ await criarManutencoesIniciais();
 
-  carregarDados();
-  carregarManutencoes();
-  carregarAlertasHome();
+carregarDados();
+carregarManutencoes();
+carregarAlertasHome();
+carregarHistoricoFinanceiro(); // 🔥 AQUI
 
-  // 🔥 AQUI DENTRO
-  renderizarManutencoesBase();
-
+// 🔥 AQUI DENTRO
+renderizarManutencoesBase();
 });
  
 
@@ -727,4 +727,32 @@ function calcularProximoPagamento() {
     status,
     texto
   };
+}
+async function carregarHistoricoFinanceiro() {
+
+  let user = auth.currentUser;
+  if (!user) return;
+
+  const snapshot = await db.collection("pagamentos")
+    .where("uid", "==", user.uid)
+    .orderBy("data", "desc")
+    .get();
+
+  const container = document.getElementById("historicoFinanceiro");
+  if (!container) return;
+
+  container.innerHTML = "";
+
+  snapshot.forEach(doc => {
+    const p = doc.data();
+
+    container.innerHTML += `
+      <div style="margin:10px; padding:10px; background:#1e293b; border-radius:10px;">
+        <strong>${p.tipo === "financiamento" ? "💰 Financiamento" : "🤝 Acordo"}</strong><br>
+        €${p.valor}<br>
+        ${new Date(p.data).toLocaleDateString()}
+      </div>
+    `;
+  });
+
 }
