@@ -76,11 +76,15 @@ auth.onAuthStateChanged(async (user) => {
     isAdmin = true;
   }
   
-await criarManutencoesIniciais();
+  await criarManutencoesIniciais();
 
-carregarDados();
-carregarManutencoes();
-carregarAlertasHome();
+  carregarDados();
+  carregarManutencoes();
+  carregarAlertasHome();
+
+  // 🔥 AQUI DENTRO
+  renderizarManutencoesBase();
+
 });
  
 
@@ -501,7 +505,6 @@ listaOrdenada.forEach(item => {
   });
 }
 // 👉 CHAMA FORA
-renderizarManutencoesBase();
 async function carregarAlertasHome() {
   let user = auth.currentUser;
   if (!user) return;
