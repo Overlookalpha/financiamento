@@ -583,7 +583,7 @@ if (pagamento.status !== "verde") {
   } else {
 
     let html = "";
-  // 🔥 ALERTA FINANCEIRO
+// 🔥 ALERTA FINANCEIRO
 let hoje = new Date();
 let diaPagamento = 4;
 
@@ -595,7 +595,7 @@ if (hoje.getDate() > diaPagamento) {
 
 let diff = Math.ceil((proximo - hoje) / (1000 * 60 * 60 * 24));
 
-if (diff <= 3) {
+if (diff <= 5) { // 👈 botei 5 pra testar melhor
 
   let cor = diff <= 0 ? "🔴" : "🟡";
   let texto = diff <= 0 ? "Pagamento vencido" : "Faltam " + diff + " dias";
@@ -608,9 +608,11 @@ if (diff <= 3) {
       <span>${texto}</span>
     </div>
 
-    <button onclick="fecharAlertaFinanceiro()" style="width:32px; height:32px;">
-      ❌
-    </button>
+    <div style="margin-left:10px;">
+      <button onclick="fecharAlertaFinanceiro()" style="width:35px; height:35px; font-size:16px;">
+        ❌
+      </button>
+    </div>
 
   </div>
   `;
