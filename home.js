@@ -375,9 +375,33 @@ async function renderizarManutencoesBase() {
 
   const normalizar = (texto) =>
     texto.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+  
+ const listaOrdenada = [...manutencoesBase].sort((a, b) => {
 
-  manutencoesBase.forEach(item => {
-    if (alertasIgnorados.includes(base.item)) return;
+  const getUltima = (item) => {
+    let filtradas = historico.filter(m =>
+      normalizar(m.item).includes(normalizar(item.item)) ||
+      normalizar(item.item).includes(normalizar(m.item))
+    );
+
+    if (filtradas.length === 0) return null;
+
+    filtradas.sort((x, y) => new Date(y.data) - new Date(x.data));
+    return filtradas[0];
+  };
+
+  const ultimaA = getUltima(a);
+  const ultimaB = getUltima(b);
+
+  const statusA = calcularStatusManutencao(a, ultimaA, kmAtual).status;
+  const statusB = calcularStatusManutencao(b, ultimaB, kmAtual).status;
+
+  const ordem = { vermelho: 0, amarelo: 1, verde: 2 };
+
+  return ordem[statusA] - ordem[statusB];
+});
+listaOrdenada.forEach(item => {
+    if (alertasIgnorados.includes(item.item)) return;
 
     // 🔎 pega última manutenção real
     let filtradas = historico.filter(m =>
@@ -393,7 +417,6 @@ async function renderizarManutencoesBase() {
     }
 
     const statusInfo = calcularStatusManutencao(item, ultima, kmAtual);
-    if (statusInfo.status === "verde") return;
     let status = "🟢";
     let textoStatus = "OK";
 
