@@ -777,13 +777,12 @@ async function carregarHistoricoFinanceiro() {
   snapshot.forEach(doc => {
     const p = doc.data();
 
-    container.innerHTML += `
-      <div style="margin:10px; padding:10px; background:#1e293b; border-radius:10px;">
-        <strong>${p.tipo === "financiamento" ? "💰 Financiamento" : "🤝 Acordo"}</strong><br>
-        €${p.valor}<br>
-        ${new Date(p.data).toLocaleDateString()}
-      </div>
-    `;
+    container.innerHTML += 
+  '<div style="margin:10px; padding:10px; background:#1e293b; border-radius:10px;">' +
+    '<strong>' + (p.tipo === "financiamento" ? "💰 Financiamento" : "🤝 Acordo") + '</strong><br>' +
+    '€' + p.valor + '<br>' +
+    new Date(p.data).toLocaleDateString() +
+  '</div>';
   });
 
 }
