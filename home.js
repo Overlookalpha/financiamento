@@ -600,24 +600,27 @@ if (diff <= 5) { // 👈 botei 5 pra testar melhor
   let cor = diff <= 0 ? "🔴" : "🟡";
   let texto = diff <= 0 ? "Pagamento vencido" : "Faltam " + diff + " dias";
 
-html += '<div style="margin:8px; padding:10px; background:#1e293b; border-radius:10px; display:flex; justify-content:space-between; align-items:center;">' +
+  html += `
+  <div style="margin:8px; padding:10px; background:#1e293b; border-radius:10px; display:flex; justify-content:space-between; align-items:center;">
+    
+    <div>
+      <strong>${cor} Pagamento do financiamento</strong><br>
+      <span>${texto}</span>
+    </div>
+
+    <div style="margin-left:10px;">
+      <button onclick="fecharAlertaFinanceiro()" style="width:35px; height:35px; font-size:16px;">
+        ❌
+      </button>
+    </div>
+
+  </div>
+  `;
 }
-        '<div>' +
-        '<strong>' + cor + ' Pagamento do financiamento</strong><br>' +
-        '<span>' + texto + '</span>' +
-        '</div>' +
-
-        '<div style="margin-left:10px;">' +
-        '<button onclick="fecharAlertaPagamento()" style="width:35px; height:35px; font-size:16px;">' +
-        '❌' +
-        '</button>' +
-        '</div>' +
-
-        '</div>';
 
 alertas.forEach(item => {
- // 🔥 ALERTA DE PAGAMENTO (TRATAMENTO ESPECIAL)
-  if (false && item.tipo === "pagamento") {
+// 💰 ALERTA DE PAGAMENTO (TRATAMENTO ESPECIAL)
+if (item.tipo === "pagamento") {
 
   let cor = item.statusInfo.status === "vermelho" ? "🔴" : "🟡";
 
@@ -747,7 +750,7 @@ function calcularProximoPagamento() {
   } else if (diff < 0) {
     status = "vermelho";
     texto = "Atrasado há " + Math.abs(diff) + " dias";
-  } else if (diff > 0 && diff <= 5) {
+  } else if (diff <= 10) {
     status = "amarelo";
     texto = "Faltam " + diff + " dias";
   }
@@ -777,19 +780,27 @@ async function carregarHistoricoFinanceiro() {
   snapshot.forEach(doc => {
     const p = doc.data();
 
-    container.innerHTML += 
-  '<div style="margin:10px; padding:10px; background:#1e293b; border-radius:10px;">' +
-    '<strong>' + (p.tipo === "financiamento" ? "💰 Financiamento" : "🤝 Acordo") + '</strong><br>' +
-    '€' + p.valor + '<br>' +
-    new Date(p.data).toLocaleDateString() +
-  '</div>';
+    container.innerHTML += `
+      <div style="margin:10px; padding:10px; background:#1e293b; border-radius:10px;">
+        <strong>${p.tipo === "financiamento" ? "💰 Financiamento" : "🤝 Acordo"}</strong><br>
+        €${p.valor}<br>
+        ${new Date(p.data).toLocaleDateString()}
+      </div>
+    `;
   });
 
 }
-function fecharAlertaPagamento() {
-  const hoje = new Date().toISOString().slice(0,10);
+window.fecharAlertaFinanceiro = function () {
+  const alertasDiv = document.getElementById("alertasHome");
+  if (!alertasDiv) return;
 
-  localStorage.setItem("fechouPagamentoHoje", hoje);
+  // remove só o alerta financeiro
+  const itens = alertasDiv.children;
 
-  carregarAlertasHome();
-}
+  for (let i = 0; i < itens.length; i++) {
+    if (itens[i].innerText.includes("Pagamento do financiamento")) {
+      itens[i].remove();
+      break;
+    }
+  }
+};
