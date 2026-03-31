@@ -681,7 +681,11 @@ window.confirmarAlerta = async function(nomeItem) {
   let user = auth.currentUser;
   if (!user) return;
 
-  let base = manutencoesBase.find(b => b.item === nomeItem);
+ let base = manutencoesBase.find(b => 
+  b.item.toLowerCase().trim() === nomeItem.toLowerCase().trim()
+);
+console.log("Clicou:", nomeItem);
+console.log("Base encontrada:", base);
   if (!base) return;
 
   await db.collection("manutencoes").add({
