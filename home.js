@@ -517,6 +517,7 @@ listaOrdenada.forEach(item => {
 }
 // 👉 CHAMA FORA
 async function carregarAlertasHome() {
+  alertasDiv.innerHTML = "";
   let user = auth.currentUser;
   if (!user) return;
 
