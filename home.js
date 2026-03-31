@@ -683,14 +683,15 @@ window.confirmarAlerta = async function(nomeItem) {
   if (!base) return;
 
   await db.collection("manutencoes").add({
-    uid: user.uid,
-    categoria: base.categoria,
-    item: base.item,
-    valor: base.custoMedio,
-    km: kmAtual,
-    data: new Date().toISOString(),
-    observacao: "feito pelo alerta"
-  });
+  uid: user.uid,
+  categoria: base.categoria,
+  item: base.item,
+  valor: base.custoMedio,
+  km: kmAtual,
+  data: new Date().toISOString(),
+  observacao: "feito pelo alerta",
+  tipo: "realizada" // 🔥 ADICIONA ISSO
+});
 
   alert("✅ Manutenção registrada!");
 
