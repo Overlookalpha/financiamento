@@ -694,7 +694,7 @@ window.confirmarAlerta = async function(nomeItem) {
   observacao: "feito pelo alerta",
   tipo: "realizada" // 🔥 ADICIONA ISSO
 });
-
+  alertasIgnorados.push(nomeItem);
   alert("✅ Manutenção registrada!");
 
   carregarManutencoes();
