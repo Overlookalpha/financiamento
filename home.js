@@ -517,6 +517,7 @@ listaOrdenada.forEach(item => {
 }
 // 👉 CHAMA FORA
 async function carregarAlertasHome() {
+  const alertasDiv = document.getElementById("alertasHome");
   alertasDiv.innerHTML = "";
   let user = auth.currentUser;
   if (!user) return;
@@ -527,7 +528,7 @@ async function carregarAlertasHome() {
 
   console.log("Manutenções encontradas:", snapshot.size);
 
-  const alertasDiv = document.getElementById("alertasHome");
+  
   let alertas = [];
   // 💰 ALERTA DE PAGAMENTO
 const pagamento = calcularProximoPagamento();
