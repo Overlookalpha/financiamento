@@ -601,7 +601,7 @@ if (diff <= 5) { // 👈 botei 5 pra testar melhor
   let texto = diff <= 0 ? "Pagamento vencido" : "Faltam " + diff + " dias";
 
 html += '<div style="margin:8px; padding:10px; background:#1e293b; border-radius:10px; display:flex; justify-content:space-between; align-items:center;">' +
-
+}
         '<div>' +
         '<strong>' + cor + ' Pagamento do financiamento</strong><br>' +
         '<span>' + texto + '</span>' +
