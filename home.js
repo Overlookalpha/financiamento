@@ -385,7 +385,13 @@ async function renderizarManutencoesBase() {
     .get();
 
   let historico = [];
-  snapshot.forEach(doc => historico.push(doc.data()));
+  snapshot.forEach(doc => {
+  const m = doc.data();
+
+  if (m.tipo === "realizada") {
+    historico.push(m);
+  }
+});
 
   const normalizar = (texto) =>
     texto.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
