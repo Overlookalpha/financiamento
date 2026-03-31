@@ -291,11 +291,8 @@ const base = manutencoesBase.find(b =>
     normalizar(m.item).includes(normalizar(b.item))
   )
 );
-    let statusInfo = null;
-
-    if (base) {
-        statusInfo = calcularStatusManutencao(base, m, kmAtual);
-    }
+   let kmTexto = m.km ? "KM: " + m.km : "";
+   let dataTexto = m.data ? new Date(m.data).toLocaleDateString() : "";
 
     let cor = "🟢";
     if (statusInfo?.status === "amarelo") cor = "🟡";
@@ -306,8 +303,8 @@ const base = manutencoesBase.find(b =>
 <strong>${cor} ${m.categoria}</strong><br>
 ${m.item}<br>
 €${m.valor}<br>
-${statusInfo && statusInfo.kmRestante !== null ? "KM: " + statusInfo.kmRestante : ""}<br>
-${statusInfo && statusInfo.diasRestantes !== null ? "Dias: " + statusInfo.diasRestantes : ""}<br>
+${kmTexto}<br>
+${dataTexto}
 </div>
 `;
 });
