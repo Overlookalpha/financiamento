@@ -83,6 +83,7 @@ carregarManutencoes();
 carregarAlertasHome();
 carregarHistoricoFinanceiro(); // 🔥 AQUI
 carregarHistoricoAbastecimento();
+calcularMediaGeral();
 
 // 🔥 AQUI DENTRO
 renderizarManutencoesBase();
@@ -895,4 +896,28 @@ async function carregarHistoricoAbastecimento() {
     `;
   });
 
+}
+async function calcularMediaGeral() {
+
+  let user = firebase.auth().currentUser;
+  if (!user) return;
+
+  let snapshot = await db.collection("abastecimentos")
+    .where("uid", "==", user.uid)
+    .get();
+
+  let totalKm = 0;
+  let totalLitros = 0;
+
+  snapshot.forEach(doc => {
+    let d = doc.data();
+    totalKm += d.km;
+    totalLitros += d.litros;
+  });
+
+  if (totalLitros === 0) return;
+
+  let mediaGeral = totalKm / totalLitros;
+
+  console.log("🔥 Média geral:", mediaGeral.toFixed(2));
 }
