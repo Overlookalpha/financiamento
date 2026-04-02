@@ -866,6 +866,9 @@ Possíveis causas:
 
   document.getElementById("statusAbastecimento").innerText = mensagem;
 
+  // 🔥 NOVO (AQUI É O PONTO CERTO)
+  calcularMediaGeral();
+
   carregarHistoricoAbastecimento(); // 🔥 ATUALIZA NA HORA
 };
 async function carregarHistoricoAbastecimento() {
