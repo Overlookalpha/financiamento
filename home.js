@@ -932,5 +932,27 @@ async function calcularMediaGeral() {
 
   let mediaGeral = totalKm / totalLitros;
 
-  console.log("🔥 Média REAL:", mediaGeral.toFixed(2));
+// 🔥 MOSTRAR NA TELA
+document.getElementById("mediaGeralTexto").innerText =
+  "Média do carro: " + mediaGeral.toFixed(2) + " km/L";
+
+// 🔥 COMPARAÇÃO INTELIGENTE
+let mediaAtual = parseFloat(localStorage.getItem("mediaConsumo"));
+
+if (mediaAtual) {
+
+  let diferenca = ((mediaAtual - mediaGeral) / mediaGeral) * 100;
+
+  let alerta = "";
+
+  if (diferenca < -15) {
+    alerta = "⚠️ Consumo pior que o normal!";
+  } else if (diferenca > 15) {
+    alerta = "🔥 Consumo melhor que o normal!";
+  } else {
+    alerta = "👍 Consumo dentro do padrão";
+  }
+
+  document.getElementById("mediaGeralTexto").innerText += "\n" + alerta;
+}
 }
