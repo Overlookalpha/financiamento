@@ -790,7 +790,7 @@ window.fecharAlertaFinanceiro = function () {
     }
   }
 };
-window.salvarAbastecimento = function () {
+window.salvarAbastecimento = async function () {
 
   let km = parseFloat(document.getElementById("kmAtual").value);
   let litros = parseFloat(document.getElementById("litrosAbastecidos").value);
@@ -800,11 +800,12 @@ window.salvarAbastecimento = function () {
     return;
   }
 
-  // pegar último KM salvo
+  let user = auth.currentUser;
+  if (!user) return;
+
   let ultimoKM = localStorage.getItem("ultimoKM");
 
   if (!ultimoKM) {
-    // primeira vez
     localStorage.setItem("ultimoKM", km);
     document.getElementById("statusAbastecimento").innerText =
       "Primeiro abastecimento registrado ✅";
@@ -816,46 +817,52 @@ window.salvarAbastecimento = function () {
   let kmRodado = km - ultimoKM;
 
   if (kmRodado <= 0) {
-    alert("KM inválido (menor que o anterior)");
+    alert("KM inválido");
     return;
   }
 
   let media = kmRodado / litros;
 
-  // pegar média anterior
+  // 🔥 SALVAR NO FIREBASE
+  await db.collection("abastecimentos").add({
+    uid: user.uid,
+    km: km,
+    litros: litros,
+    media: media,
+    data: new Date().toISOString()
+  });
+
+  // 🔥 COMPARAÇÃO
   let mediaAntiga = localStorage.getItem("mediaConsumo");
 
   let mensagem = "Média: " + media.toFixed(2) + " km/l";
 
   if (mediaAntiga) {
-
     mediaAntiga = parseFloat(mediaAntiga);
 
     let diferenca = ((media - mediaAntiga) / mediaAntiga) * 100;
 
     if (diferenca < -20) {
-
       mensagem += `
-      
+
 ⚠️ Consumo piorou muito!
+
 Possíveis causas:
 * Pneus descalibrados
 * Filtro de ar sujo
 * Velas desgastadas
 * Combustível ruim
 * Problema no motor
-      `;
-
+`;
     } else {
       mensagem += "\nConsumo normal 👍";
     }
-
   }
 
-  // salvar novos dados
   localStorage.setItem("ultimoKM", km);
   localStorage.setItem("mediaConsumo", media);
 
   document.getElementById("statusAbastecimento").innerText = mensagem;
 
+  carregarHistoricoAbastecimento(); // 🔥 ATUALIZA NA HORA
 };
