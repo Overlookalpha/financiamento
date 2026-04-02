@@ -904,20 +904,30 @@ async function calcularMediaGeral() {
 
   let snapshot = await db.collection("abastecimentos")
     .where("uid", "==", user.uid)
+    .orderBy("km", "asc")
     .get();
+
+  let docs = snapshot.docs;
+
+  if (docs.length < 2) {
+    console.log("Poucos dados");
+    return;
+  }
 
   let totalKm = 0;
   let totalLitros = 0;
 
-  snapshot.forEach(doc => {
-    let d = doc.data();
-    totalKm += d.km;
-    totalLitros += d.litros;
-  });
+  for (let i = 1; i < docs.length; i++) {
+    let atual = docs[i].data();
+    let anterior = docs[i - 1].data();
 
-  if (totalLitros === 0) return;
+    let distancia = atual.km - anterior.km;
+
+    totalKm += distancia;
+    totalLitros += atual.litros;
+  }
 
   let mediaGeral = totalKm / totalLitros;
 
-  console.log("🔥 Média geral:", mediaGeral.toFixed(2));
+  console.log("🔥 Média REAL:", mediaGeral.toFixed(2));
 }
