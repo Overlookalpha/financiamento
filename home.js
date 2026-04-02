@@ -790,3 +790,72 @@ window.fecharAlertaFinanceiro = function () {
     }
   }
 };
+window.salvarAbastecimento = function () {
+
+  let km = parseFloat(document.getElementById("kmAtual").value);
+  let litros = parseFloat(document.getElementById("litrosAbastecidos").value);
+
+  if (!km || !litros) {
+    alert("Preenche os dados direito 😅");
+    return;
+  }
+
+  // pegar último KM salvo
+  let ultimoKM = localStorage.getItem("ultimoKM");
+
+  if (!ultimoKM) {
+    // primeira vez
+    localStorage.setItem("ultimoKM", km);
+    document.getElementById("statusAbastecimento").innerText =
+      "Primeiro abastecimento registrado ✅";
+    return;
+  }
+
+  ultimoKM = parseFloat(ultimoKM);
+
+  let kmRodado = km - ultimoKM;
+
+  if (kmRodado <= 0) {
+    alert("KM inválido (menor que o anterior)");
+    return;
+  }
+
+  let media = kmRodado / litros;
+
+  // pegar média anterior
+  let mediaAntiga = localStorage.getItem("mediaConsumo");
+
+  let mensagem = "Média: " + media.toFixed(2) + " km/l";
+
+  if (mediaAntiga) {
+
+    mediaAntiga = parseFloat(mediaAntiga);
+
+    let diferenca = ((media - mediaAntiga) / mediaAntiga) * 100;
+
+    if (diferenca < -20) {
+
+      mensagem += `
+      
+⚠️ Consumo piorou muito!
+Possíveis causas:
+* Pneus descalibrados
+* Filtro de ar sujo
+* Velas desgastadas
+* Combustível ruim
+* Problema no motor
+      `;
+
+    } else {
+      mensagem += "\nConsumo normal 👍";
+    }
+
+  }
+
+  // salvar novos dados
+  localStorage.setItem("ultimoKM", km);
+  localStorage.setItem("mediaConsumo", media);
+
+  document.getElementById("statusAbastecimento").innerText = mensagem;
+
+};
