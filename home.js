@@ -82,6 +82,7 @@ carregarDados();
 carregarManutencoes();
 carregarAlertasHome();
 carregarHistoricoFinanceiro(); // 🔥 AQUI
+carregarHistoricoAbastecimento();
 
 // 🔥 AQUI DENTRO
 renderizarManutencoesBase();
@@ -866,3 +867,32 @@ Possíveis causas:
 
   carregarHistoricoAbastecimento(); // 🔥 ATUALIZA NA HORA
 };
+async function carregarHistoricoAbastecimento() {
+
+  let user = auth.currentUser;
+  if (!user) return;
+
+  const snapshot = await db.collection("abastecimentos")
+    .where("uid", "==", user.uid)
+    .orderBy("data", "desc")
+    .get();
+
+  const container = document.getElementById("historicoAbastecimento");
+  if (!container) return;
+
+  container.innerHTML = "";
+
+  snapshot.forEach(doc => {
+    const a = doc.data();
+
+    container.innerHTML += `
+      <div style="margin:10px; padding:10px; background:#1e293b; border-radius:10px;">
+        📏 KM: ${a.km}<br>
+        ⛽ Litros: ${a.litros}<br>
+        📊 Média: ${a.media.toFixed(2)} km/l<br>
+        📅 ${new Date(a.data).toLocaleDateString()}
+      </div>
+    `;
+  });
+
+}
