@@ -125,13 +125,13 @@ async function carregarDados() {
   let totalAcordo = 0;
 
   snapshot.forEach(doc => {
-    let p = doc.data();
+    let p = doc.();
 
     html += `
       <p>
         ${p.tipo === "financiamento" ? "💳 Financiamento" : "🤝 Acordo"} <br>
         €${p.valor} <br>
-        ${new Date(p.data).toLocaleDateString()}
+        ${new Date(p.).toLocaleDateString()}
       </p>
     `;
 
@@ -708,7 +708,7 @@ async function criarManutencoesIniciais() {
       item: item.item,
       valor: item.custoMedio,
       km: kmAtual,
-      data: new Date(2020, 0, 1).toISOString(),
+      data: new Date().toISOString(),
       observacao: "criado automático"
     });
   }
