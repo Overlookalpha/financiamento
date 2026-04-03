@@ -1,8 +1,4 @@
-let kmAtualReal = 152000;
-let modoTeste = true;
-let kmTeste = 300000;
-
-let kmAtual = modoTeste ? kmTeste : kmAtualReal;
+let kmAtual = 152287; // KM REAL DO CARRO
 // CONFIG
 const firebaseConfig = {
   apiKey: "AIzaSyDxIxFwkQb0xEoysQqTDjwK-ijERK0p67w",
@@ -297,8 +293,6 @@ const base = manutencoesBase.find(b =>
    let dataTexto = m.data ? new Date(m.data).toLocaleDateString() : "";
 
     let cor = "🟢";
-    if (statusInfo?.status === "amarelo") cor = "🟡";
-    if (statusInfo?.status === "vermelho") cor = "🔴";
 
     historico.innerHTML += `
 <div style="margin:10px; padding:10px; background:#1e293b; border-radius:10px;">
