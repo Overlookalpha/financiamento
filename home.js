@@ -290,7 +290,9 @@ async function carregarManutencoes() {
 
 snapshot.forEach(doc => {
     const m = doc.data();
-  if (m.tipo && m.tipo !== "realizada") return;
+ if (m.tipo && m.tipo !== "realizada") {
+  return;
+}
   function normalizar(texto) {
   return texto
     .toLowerCase()
