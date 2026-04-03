@@ -322,11 +322,11 @@ ${dataTexto}
 });
 }
 function calcularStatusManutencao(base, ultimaManutencao, kmAtualParam) {
-  if (!ultimaManutencao) {
+ if (!ultimaManutencao) {
   return {
-    kmRestante: null,
-    diasRestantes: null,
-    status: "amarelo"
+    kmRestante: base.kmTroca || null,
+    diasRestantes: base.diasTroca || null,
+    status: "verde"
   };
 }
 
