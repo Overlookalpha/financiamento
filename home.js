@@ -420,17 +420,15 @@ async function renderizarManutencoesBase() {
 
   let historico = [];
   snapshot.forEach(doc => {
-  const m = doc.data();
+    const m = doc.data();
 
-  if (m.tipo === "realizada") {
-    historico.push(m);
-  }
-});
+    if (m.tipo === "realizada") {
+      historico.push(m);
+    }
+  });
 
   const normalizar = (texto) =>
     texto.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-  
- const listaOrdenada = [...manutencoesBase].sort((a, b) => {
 
   const getUltima = (item) => {
     let filtradas = historico.filter(m =>
@@ -441,36 +439,36 @@ async function renderizarManutencoesBase() {
     if (filtradas.length === 0) return null;
 
     filtradas.sort((x, y) => new Date(y.data) - new Date(x.data));
-    return filtradas[0];
-  };
 
-  const ultimaA = getUltima(a);
-  const ultimaB = getUltima(b);
-
-  const statusA = calcularStatusManutencao(a, ultimaA, kmAtual).status;
-  const statusB = calcularStatusManutencao(b, ultimaB, kmAtual).status;
-
-  const ordem = { vermelho: 0, amarelo: 1, verde: 2 };
-
-  return ordem[statusA] - ordem[statusB];
-});
-listaOrdenada.forEach(item => {
-    if (alertasIgnorados.includes(item.item)) return;
-
-    // 🔎 pega última manutenção real
-    let filtradas = historico.filter(m =>
-      normalizar(m.item).includes(normalizar(item.item)) ||
-      normalizar(item.item).includes(normalizar(m.item))
+    // 🔥 só manutenção válida
+    let valida = filtradas.find(m =>
+      m.tipo === "realizada" &&
+      typeof m.km === "number"
     );
 
-    let ultima = null;
+    return valida || null;
+  };
 
-    if (filtradas.length > 0) {
-      filtradas.sort((a, b) => new Date(b.data) - new Date(a.data));
-      ultima = filtradas[0];
-    }
+  const listaOrdenada = [...manutencoesBase].sort((a, b) => {
+
+    const ultimaA = getUltima(a);
+    const ultimaB = getUltima(b);
+
+    const statusA = calcularStatusManutencao(a, ultimaA, kmAtual).status;
+    const statusB = calcularStatusManutencao(b, ultimaB, kmAtual).status;
+
+    const ordem = { vermelho: 0, amarelo: 1, verde: 2 };
+
+    return ordem[statusA] - ordem[statusB];
+  });
+
+  listaOrdenada.forEach(item => {
+    if (alertasIgnorados.includes(item.item)) return;
+
+    let ultima = getUltima(item);
 
     const statusInfo = calcularStatusManutencao(item, ultima, kmAtual);
+
     let status = "🟢";
     let textoStatus = "OK";
 
@@ -482,7 +480,6 @@ listaOrdenada.forEach(item => {
       textoStatus = "Próximo da troca";
     }
 
-    // 🔥 TEXTO INTELIGENTE (igual tu pediu)
     let detalhe = "";
 
     if (statusInfo.kmRestante !== null) {
@@ -501,7 +498,6 @@ listaOrdenada.forEach(item => {
       }
     }
 
-    // 🔹 CARD
     const card = document.createElement("div");
     card.style.margin = "12px";
     card.style.padding = "14px";
