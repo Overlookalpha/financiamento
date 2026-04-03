@@ -372,7 +372,6 @@ function abrirAba(nome) {
     aba.style.display = "block";
   }
 }
-abrirAba("home");
 
 async function renderizarManutencoesBase() {
   const container = document.getElementById("listaManutencao");
@@ -960,3 +959,6 @@ if (mediaAtual) {
   document.getElementById("mediaGeralTexto").innerText += "\n" + alerta;
 }
 }
+window.onload = function () {
+  abrirAba("home");
+};
