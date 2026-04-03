@@ -335,17 +335,22 @@ function calcularStatusManutencao(base, ultimaManutencao, kmAtualParam) {
 
 if (base.kmTroca > 0) {
 
-  // 🔥 SE NUNCA FOI FEITO OU É AUTOMÁTICO
-  if (!ultimaManutencao || ultimaManutencao.observacao === "criado automático") {
+  // 🔥 pegar última manutenção REAL
+  let kmBase = null;
 
+  if (
+    ultimaManutencao &&
+    ultimaManutencao.tipo === "realizada"
+  ) {
+    kmBase = ultimaManutencao.km;
+  }
+
+  // 🔥 se nunca fez manutenção → começa do zero
+  if (!kmBase) {
     kmRestante = base.kmTroca;
-
   } else {
-
-    let kmBase = ultimaManutencao.km;
     let kmRodado = kmAtualParam - kmBase;
     kmRestante = base.kmTroca - kmRodado;
-
   }
 }
 
