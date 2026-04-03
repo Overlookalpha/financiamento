@@ -369,7 +369,7 @@ function abrirAba(nome) {
   const aba = document.getElementById("aba-" + nome);
 
   if (aba) {
-    aba.style.display = "block";
+    aba.style.display = "flex"; // 🔥 TROCA AQUI
   }
 }
 
