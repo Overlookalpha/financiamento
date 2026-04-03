@@ -438,9 +438,9 @@ async function renderizarManutencoesBase() {
 
   const getUltima = (item) => {
     let filtradas = historico.filter(m =>
-      normalizar(m.item).includes(normalizar(item.item)) ||
-      normalizar(item.item).includes(normalizar(m.item))
-    );
+  m.tipo === "realizada" &&
+  normalizar(m.item).includes(normalizar(item.item))
+);
 
     if (filtradas.length === 0) return null;
 
