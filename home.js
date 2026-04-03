@@ -328,33 +328,29 @@ function calcularStatusManutencao(base, ultimaManutencao, kmAtualParam) {
 }
 
   // 📏 KM
-  let kmRestante = null;
+ let kmRestante = null;
 
 if (base.kmTroca > 0) {
 
-  // 🔥 pegar última manutenção REAL
   let kmBase = null;
 
+  // 🔥 pega KM da última manutenção REAL
   if (
-  ultimaManutencao &&
-  ultimaManutencao.tipo === "realizada" &&
-  typeof ultimaManutencao.km === "number"
-) {
-  kmBase = ultimaManutencao.km;
-}
+    ultimaManutencao &&
+    ultimaManutencao.tipo === "realizada" &&
+    typeof ultimaManutencao.km === "number"
+  ) {
+    kmBase = ultimaManutencao.km;
+  }
 
-  // 🔥 se nunca fez manutenção → começa do zero
-  if (!kmBase) {
-  kmRestante = base.kmTroca;
-} else {
-  let kmRodado = kmAtualParam - kmBase;
-
-  // 🔥 se já passou do limite → ignora dado antigo
-  if (kmRodado > base.kmTroca) {
+  // 🔥 se nunca fez manutenção → começa do zero do ciclo
+  if (kmBase === null) {
     kmRestante = base.kmTroca;
   } else {
+    let kmRodado = kmAtualParam - kmBase;
     kmRestante = base.kmTroca - kmRodado;
   }
+
 }
 }
 
