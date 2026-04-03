@@ -117,6 +117,14 @@ button:active {
   display: none;
   width: 100%;
 }
+
+/* 💣 CORREÇÃO FINAL (ESSA RESOLVE) */
+.aba > .card {
+  display: block;
+  width: 100%;
+  max-width: 350px;
+  margin: 15px auto;
+}
 </style>
 </head>
 
@@ -149,12 +157,11 @@ button:active {
     <p id="pagoBanco"></p>
     <p id="restanteBanco"></p>
 
-    <!-- DATAS -->
     <p id="dataBanco"></p>
     <p id="proximoBanco"></p>
 
     <input id="inputBanco" type="number" placeholder="Digite o valor pago">
-    <button id="btnParcela" onclick="pagarParcela()">Adicionar pagamento</button>
+    <button onclick="pagarParcela()">Adicionar pagamento</button>
     <div id="historicoFinanceiro"></div>
   </div>
 
@@ -168,12 +175,11 @@ button:active {
     <p id="restanteAcordo"></p>
 
     <input id="inputAcordo" type="number" placeholder="Digite o valor pago">
-    <button id="btnAcordo" onclick="pagarAcordo()">Adicionar pagamento</button>
+    <button onclick="pagarAcordo()">Adicionar pagamento</button>
   </div>
 
-</div> <!-- ✅ FECHADO CORRETAMENTE -->
+</div>
 
-<!-- ABA MANUTENÇÃO -->
 <div id="aba-manutencao" class="aba">
 
   <div class="card">
@@ -189,7 +195,6 @@ button:active {
 
 </div>
 
-<!-- ABA VEÍCULO -->
 <div id="aba-veiculo" class="aba">
 
   <div class="card">
@@ -211,12 +216,10 @@ button:active {
 
 </div>
 
-<!-- 🔥 FIREBASE -->
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
 
-<!-- 🔥 TEU SCRIPT (IMPORTANTE: ÚLTIMO) -->
 <script src="home.js"></script>
 
 </body>
