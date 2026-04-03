@@ -339,11 +339,12 @@ if (base.kmTroca > 0) {
   let kmBase = null;
 
   if (
-    ultimaManutencao &&
-    ultimaManutencao.tipo === "realizada"
-  ) {
-    kmBase = ultimaManutencao.km;
-  }
+  ultimaManutencao &&
+  ultimaManutencao.tipo === "realizada" &&
+  typeof ultimaManutencao.km === "number"
+) {
+  kmBase = ultimaManutencao.km;
+}
 
   // 🔥 se nunca fez manutenção → começa do zero
   if (!kmBase) {
