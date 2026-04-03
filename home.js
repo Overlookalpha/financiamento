@@ -300,10 +300,7 @@ snapshot.forEach(doc => {
 
 const base = manutencoesBase.find(b =>
   normalizar(b.categoria) === normalizar(m.categoria) &&
-  (
-    normalizar(b.item).includes(normalizar(m.item)) ||
-    normalizar(m.item).includes(normalizar(b.item))
-  )
+  normalizar(b.item) === normalizar(m.item)
 );
    let kmTexto = m.km ? "KM: " + m.km : "";
    let dataTexto = m.data ? new Date(m.data).toLocaleDateString() : "";
