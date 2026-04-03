@@ -10,6 +10,20 @@ firebase.initializeApp(firebaseConfig);
 
 const auth = firebase.auth();
 const db = firebase.firestore();
+async function obterKmAtual() {
+  let user = auth.currentUser;
+  if (!user) return 0;
+
+  let snapshot = await db.collection("abastecimentos")
+    .where("uid", "==", user.uid)
+    .orderBy("km", "desc")
+    .limit(1)
+    .get();
+
+  if (snapshot.empty) return 0;
+
+  return snapshot.docs[0].data().km;
+}
 
 let isAdmin = false;
 // 👇 PRIMEIRA COISA DO ARQUIVO
@@ -71,7 +85,8 @@ auth.onAuthStateChanged(async (user) => {
   if (doc.exists) {
     isAdmin = true;
   }
-  
+  kmAtual = await obterKmAtual();
+console.log("KM ATUAL:", kmAtual);
  await criarManutencoesIniciais();
 
 carregarDados();
@@ -673,7 +688,7 @@ async function criarManutencoesIniciais() {
       categoria: item.categoria,
       item: item.item,
       valor: item.custoMedio,
-      km: 100000,
+      km: kmAtual,
       data: new Date(2020, 0, 1).toISOString(),
       observacao: "criado automático"
     });
