@@ -5,6 +5,7 @@
 <title>Home</title>
 
 <style>     
+
 /* 🌍 BASE */
 body {
   margin: 0;
@@ -25,18 +26,17 @@ h2 {
 .card {
   background: rgba(255,255,255,0.06);
   width: 90%;
-  max-width: 350px;
   margin: 15px auto;
   padding: 18px;
   border-radius: 15px;
   backdrop-filter: blur(12px);
   box-shadow: 0 0 20px rgba(0,0,0,0.35);
   transition: 0.2s;
-  display: block;
 }
 
-.card:hover {
-  transform: scale(1.02);
+/* 🔥 REMOVE BUG DE LADO A LADO */
+.card {
+  max-width: none;
 }
 
 /* 🧾 TÍTULO DO CARD */
@@ -116,24 +116,10 @@ button:active {
 .aba {
   display: none;
   width: 100%;
+  flex-direction: column;
+  align-items: center;
 }
 
-/* 💣 CORREÇÃO FINAL (ESSA RESOLVE) */
-.aba > .card {
-  display: block;
-  width: 100%;
-  max-width: 350px;
-  margin: 15px auto;
-}
-  #aba-veiculo .card {
-  display: block !important;
-  width: 90% !important;
-  max-width: 350px !important;
-  margin: 15px auto !important;
-}
-  .card {
-  display: block !important;
-}
 </style>
 </head>
 
