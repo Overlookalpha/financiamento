@@ -123,6 +123,7 @@ button:active {
 <body>
 
 <h2>🚗 Controle do Carro</h2>
+
 <div id="menu" style="display:flex; gap:10px; justify-content:center; margin:20px; flex-wrap:wrap;">
   <button onclick="abrirAba('home')">🏠 Home</button>
   <button onclick="abrirAba('financeiro')">💰 Financeiro</button>
@@ -132,15 +133,12 @@ button:active {
   <button onclick="abrirAba('config')">⚙️ Config</button>
 </div>
 
-<div id="aba-home">
-
+<div id="aba-home" class="aba">
   <div class="card">
     <h3>🚨 Alertas</h3>
     <p id="alertasHome">Nenhum alerta no momento</p>
   </div>
-
 </div>
-
 
 <div id="aba-financeiro" class="aba">
 
@@ -158,7 +156,6 @@ button:active {
     <input id="inputBanco" type="number" placeholder="Digite o valor pago">
     <button id="btnParcela" onclick="pagarParcela()">Adicionar pagamento</button>
     <div id="historicoFinanceiro"></div>
-
   </div>
 
   <div class="divider"></div>
@@ -172,11 +169,9 @@ button:active {
 
     <input id="inputAcordo" type="number" placeholder="Digite o valor pago">
     <button id="btnAcordo" onclick="pagarAcordo()">Adicionar pagamento</button>
-
   </div>
 
-
-
+</div> <!-- ✅ FECHADO CORRETAMENTE -->
 
 <!-- ABA MANUTENÇÃO -->
 <div id="aba-manutencao" class="aba">
