@@ -348,11 +348,17 @@ if (base.kmTroca > 0) {
 
   // 🔥 se nunca fez manutenção → começa do zero
   if (!kmBase) {
+  kmRestante = base.kmTroca;
+} else {
+  let kmRodado = kmAtualParam - kmBase;
+
+  // 🔥 se já passou do limite → ignora dado antigo
+  if (kmRodado > base.kmTroca) {
     kmRestante = base.kmTroca;
   } else {
-    let kmRodado = kmAtualParam - kmBase;
     kmRestante = base.kmTroca - kmRodado;
   }
+}
 }
 
   // ⏱️ TEMPO
