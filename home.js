@@ -354,7 +354,7 @@ if (base.kmTroca > 0) {
   }
 
 }
-}
+
 
   // ⏱️ TEMPO
   let diasRestantes = null;
