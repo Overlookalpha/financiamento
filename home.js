@@ -362,11 +362,15 @@ diasRestantes = base.diasTroca - diasPassados;
   };
 }
 function abrirAba(nome) {
-  document.getElementById("aba-home").style.display = "none";
-  document.getElementById("aba-financeiro").style.display = "none";
-  document.getElementById("aba-manutencao").style.display = "none";
+  document.querySelectorAll(".aba").forEach(el => {
+    el.style.display = "none";
+  });
 
-  document.getElementById("aba-" + nome).style.display = "block";
+  const aba = document.getElementById("aba-" + nome);
+
+  if (aba) {
+    aba.style.display = "block";
+  }
 }
 abrirAba("home");
 
