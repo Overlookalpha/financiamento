@@ -306,6 +306,13 @@ ${dataTexto}
 });
 }
 function calcularStatusManutencao(base, ultimaManutencao, kmAtualParam) {
+  if (!ultimaManutencao) {
+  return {
+    kmRestante: null,
+    diasRestantes: null,
+    status: "amarelo"
+  };
+}
 
   // 📏 KM
   let kmRestante = null;
@@ -319,11 +326,10 @@ function calcularStatusManutencao(base, ultimaManutencao, kmAtualParam) {
   // ⏱️ TEMPO
   let diasRestantes = null;
 
- if (base.diasTroca > 0) {
+ if (base.diasTroca > 0 && ultimaManutencao?.data) {
   let dataBase = ultimaManutencao?.data 
     ? new Date(ultimaManutencao.data)
-    : new Date(0); // 1970 (nunca feito)
-
+    : null;
  let hoje = new Date();
 
 // 🔥 CORREÇÃO
