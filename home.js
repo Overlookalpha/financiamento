@@ -1,4 +1,4 @@
-
+let kmRodadoGlobal = 0;
 // CONFIG
 const firebaseConfig = {
   apiKey: "AIzaSyDxIxFwkQb0xEoysQqTDjwK-ijERK0p67w",
@@ -86,6 +86,25 @@ auth.onAuthStateChanged(async (user) => {
     isAdmin = true;
   }
  kmAtual = await obterKmAtual();
+  // 🔥 calcular km rodado real (último trajeto)
+let snapshotKm = await db.collection("abastecimentos")
+  .where("uid", "==", user.uid)
+  .orderBy("km", "desc")
+  .limit(2)
+  .get();
+
+let docsKm = snapshotKm.docs;
+
+if (docsKm.length >= 2) {
+  let atual = docsKm[0].data().km;
+  let anterior = docsKm[1].data().km;
+  kmRodadoGlobal = atual - anterior;
+} else {
+  kmRodadoGlobal = 0;
+}
+
+console.log("KM rodado GLOBAL:", kmRodadoGlobal);
+  
   console.log("KM ATUAL:", kmAtual);
 
   await criarManutencoesIniciais();
@@ -350,7 +369,7 @@ if (base.kmTroca && base.kmTroca > 0) {
   // 🚀 nunca fez manutenção → ciclo cheio
   kmRestante = base.kmTroca;
 } else {
-  let kmRodado = kmAtualParam - kmBase;
+  let kmRodado = kmRodadoGlobal;
   kmRestante = base.kmTroca - kmRodado;
 }
 }
