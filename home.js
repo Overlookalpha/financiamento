@@ -88,7 +88,7 @@ auth.onAuthStateChanged(async (user) => {
  kmAtual = await obterKmAtual();
 console.log("KM ATUAL:", kmAtual);
 
-await criarManutencoesIniciais();
+// await criarManutencoesIniciais();
 
 // 🔥 PRIMEIRO renderiza com KM atualizado
 renderizarManutencoesBase();
