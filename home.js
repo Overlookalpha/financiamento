@@ -347,8 +347,7 @@ if (base.kmTroca && base.kmTroca > 0) {
   }
 
   // 🔥 se nunca fez manutenção → começa do zero do ciclo
- let kmBaseInicial = kmBase ?? kmAtualParam;
-
+ let kmBaseInicial = kmBase ?? 0;
 let kmRodado = kmAtualParam - kmBaseInicial;
 kmRestante = base.kmTroca - kmRodado;
 
@@ -701,7 +700,7 @@ async function criarManutencoesIniciais() {
       categoria: item.categoria,
       item: item.item,
       valor: item.custoMedio,
-      km: kmAtual,
+      km: 0,
       data: new Date().toISOString(),
       observacao: "criado automático",
       tipo: "base" // 👈 ESSENCIAL
