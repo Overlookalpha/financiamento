@@ -838,18 +838,15 @@ window.salvarAbastecimento = async function () {
   let user = auth.currentUser;
   if (!user) return;
 
-  let ultimoKM = localStorage.getItem("ultimoKM");
+ let kmAtualFirebase = await obterKmAtual();
 
-  if (!ultimoKM) {
-    localStorage.setItem("ultimoKM", km);
-    document.getElementById("statusAbastecimento").innerText =
-      "Primeiro abastecimento registrado ✅";
-    return;
-  }
+if (!kmAtualFirebase) {
+  document.getElementById("statusAbastecimento").innerText =
+    "Primeiro abastecimento registrado ✅";
+  return;
+}
 
-  ultimoKM = parseFloat(ultimoKM);
-
-  let kmRodado = km - ultimoKM;
+let kmRodado = km - kmAtualFirebase;
 
   if (kmRodado <= 0) {
     alert("KM inválido");
@@ -894,7 +891,6 @@ Possíveis causas:
     }
   }
 
-  localStorage.setItem("ultimoKM", km);
   localStorage.setItem("mediaConsumo", media);
 
   document.getElementById("statusAbastecimento").innerText = mensagem;
