@@ -325,7 +325,7 @@ function calcularStatusManutencao(base, ultimaManutencao, kmAtualParam) {
   return {
     kmRestante: base.kmTroca || null,
     diasRestantes: base.diasTroca || null,
-    status: "verde"
+    status: "amarelo" // 👈 chama atenção
   };
 }
 
@@ -703,7 +703,7 @@ async function criarManutencoesIniciais() {
       item: item.item,
       valor: item.custoMedio,
       km: kmAtual,
-      data: new Date(2020, 0, 1).toISOString(),
+      data: new Date().toISOString(),
       observacao: "criado automático"
     });
   }
