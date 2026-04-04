@@ -346,11 +346,13 @@ if (base.kmTroca && base.kmTroca > 0) {
     kmBase = ultimaManutencao.km;
   }
 
-  // 🔥 se nunca fez manutenção → começa do zero do ciclo
- let kmBaseInicial = kmBase ?? 0;
-let kmRodado = kmAtualParam - kmBaseInicial;
-kmRestante = base.kmTroca - kmRodado;
-
+  if (kmBase === null) {
+  // 🚀 nunca fez manutenção → ciclo cheio
+  kmRestante = base.kmTroca;
+} else {
+  let kmRodado = kmAtualParam - kmBase;
+  kmRestante = base.kmTroca - kmRodado;
+}
 }
 
 
