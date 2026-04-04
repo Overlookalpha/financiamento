@@ -99,6 +99,7 @@ carregarAlertasHome();
 carregarHistoricoFinanceiro();
 carregarHistoricoAbastecimento();
 calcularMediaGeral();
+gerarAlertasManutencao();
 });
  
 
@@ -992,3 +993,65 @@ if (mediaAtual) {
 window.onload = function () {
   abrirAba("home");
 };
+async function gerarAlertasManutencao() {
+  const container = document.getElementById("alertasManutencao");
+  if (!container) return;
+
+  container.innerHTML = "";
+
+  let user = auth.currentUser;
+  if (!user) return;
+
+  const snapshot = await db.collection("manutencoes")
+    .where("uid", "==", user.uid)
+    .get();
+
+  let historico = [];
+  snapshot.forEach(doc => {
+    const m = doc.data();
+    if (m.tipo === "realizada") {
+      historico.push(m);
+    }
+  });
+
+  const normalizar = (texto) =>
+    texto.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+
+  const getUltima = (item) => {
+    let filtradas = historico.filter(m =>
+      normalizar(m.item).includes(normalizar(item.item))
+    );
+
+    if (filtradas.length === 0) return null;
+
+    filtradas.sort((a, b) => new Date(b.data) - new Date(a.data));
+    return filtradas[0];
+  };
+
+  let html = "";
+
+  manutencoesBase.forEach(item => {
+    let ultima = getUltima(item);
+
+    const status = calcularStatusManutencao(item, ultima, kmAtual);
+
+    if (status.status === "vermelho" || status.status === "amarelo") {
+
+      let cor = status.status === "vermelho" ? "🔴" : "🟡";
+
+      html += `
+        <div style="margin:8px; padding:10px; background:#1e293b; border-radius:10px;">
+          <strong>${cor} ${item.item}</strong><br>
+          ${status.kmRestante !== null ? "KM restante: " + status.kmRestante + "<br>" : ""}
+          ${status.diasRestantes !== null ? "Dias restantes: " + status.diasRestantes : ""}
+        </div>
+      `;
+    }
+  });
+
+  if (html === "") {
+    html = "✅ Tudo em dia";
+  }
+
+  container.innerHTML = html;
+}
