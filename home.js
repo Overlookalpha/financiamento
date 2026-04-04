@@ -332,8 +332,7 @@ function calcularStatusManutencao(base, ultimaManutencao, kmAtualParam) {
   // 📏 KM
  let kmRestante = null;
 
-if (base.kmTroca > 0) {
-
+if (base.kmTroca && base.kmTroca > 0)
   let kmBase = null;
 
   // 🔥 pega KM da última manutenção REAL
