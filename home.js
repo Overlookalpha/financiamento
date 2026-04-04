@@ -414,6 +414,7 @@ async function renderizarManutencoesBase() {
 
   let user = auth.currentUser;
   if (!user) return;
+  kmAtual = await obterKmAtual();
 
   const snapshot = await db.collection("manutencoes")
     .where("uid", "==", user.uid)
@@ -846,12 +847,12 @@ if (!kmAtualFirebase) {
   return;
 }
 
-let kmRodado = km - kmAtualFirebase;
+if (km <= kmAtualFirebase) {
+  alert("KM não pode ser menor ou igual ao último 🚫");
+  return;
+}
 
-  if (kmRodado <= 0) {
-    alert("KM inválido");
-    return;
-  }
+let kmRodado = km - kmAtualFirebase;
 
   let media = kmRodado / litros;
 
