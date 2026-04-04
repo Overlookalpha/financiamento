@@ -704,7 +704,8 @@ async function criarManutencoesIniciais() {
       valor: item.custoMedio,
       km: kmAtual,
       data: new Date().toISOString(),
-      observacao: "criado automático"
+      observacao: "criado automático",
+      tipo: "base" // 👈 ESSENCIAL
     });
   }
 
