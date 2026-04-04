@@ -1,4 +1,4 @@
-let kmAtual = 152287; // KM REAL DO CARRO
+
 // CONFIG
 const firebaseConfig = {
   apiKey: "AIzaSyDxIxFwkQb0xEoysQqTDjwK-ijERK0p67w",
