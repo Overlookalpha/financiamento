@@ -86,9 +86,9 @@ auth.onAuthStateChanged(async (user) => {
     isAdmin = true;
   }
  kmAtual = await obterKmAtual();
-console.log("KM ATUAL:", kmAtual);
+  console.log("KM ATUAL:", kmAtual);
 
-// await criarManutencoesIniciais();
+  await criarManutencoesIniciais();
 
 // 🔥 PRIMEIRO renderiza com KM atualizado
 renderizarManutencoesBase();
