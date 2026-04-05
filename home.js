@@ -1,3 +1,4 @@
+let kmInicialSistema = 0;
 let kmRodadoGlobal = 0;
 // CONFIG
 const firebaseConfig = {
@@ -86,6 +87,17 @@ auth.onAuthStateChanged(async (user) => {
     isAdmin = true;
   }
  kmAtual = await obterKmAtual();
+  let snapshotPrimeiro = await db.collection("abastecimentos")
+  .where("uid", "==", user.uid)
+  .orderBy("km", "asc")
+  .limit(1)
+  .get();
+
+if (!snapshotPrimeiro.empty) {
+  kmInicialSistema = snapshotPrimeiro.docs[0].data().km;
+}
+
+console.log("KM INICIAL:", kmInicialSistema);
   // 🔥 calcular km rodado real (último trajeto)
 let snapshotKm = await db.collection("abastecimentos")
   .where("uid", "==", user.uid)
