@@ -123,6 +123,19 @@ console.log("KM rodado GLOBAL:", kmRodadoGlobal);
 
 // 🔥 PRIMEIRO renderiza com KM atualizado
 renderizarManutencoesBase();
+// 💰 ATUALIZAR RESERVA NA TELA
+let reserva = calcularReservaManutencao();
+let custoKm = calcularCustoPorKmTotal();
+let kmRodado = kmAtual - kmInicialSistema;
+
+document.getElementById("reservaCarro").innerText =
+  "€" + reserva.toFixed(2);
+
+document.getElementById("custoKm").innerText =
+  "📊 €" + custoKm.toFixed(3) + "/km";
+
+document.getElementById("kmRodadoInfo").innerText =
+  "🚗 " + kmRodado + " km rodados";
 
 carregarDados();
 carregarManutencoes();
