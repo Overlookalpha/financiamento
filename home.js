@@ -365,7 +365,9 @@ function calcularStatusManutencao(base, ultimaManutencao, kmAtualParam) {
 let kmRestante = null;
 
 if (base.kmTroca && base.kmTroca > 0) {
-  kmRestante = base.kmTroca - kmRodadoGlobal;
+  let kmRodadoTotal = kmAtualParam - kmInicialSistema;
+
+  kmRestante = base.kmTroca - kmRodadoTotal;
 }
 
   // ⏱️ TEMPO
