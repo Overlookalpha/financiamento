@@ -1,3 +1,4 @@
+let kmAtual = 0;
 let reservaReal = 0;
 let kmInicialSistema = 0;
 let kmRodadoGlobal = 0;
@@ -1129,10 +1130,14 @@ function calcularReservaManutencao() {
   return reserva;
 }
 function atualizarReservaUI() {
+  if (!kmAtual || !kmInicialSistema) {
+  console.log("KM ainda não carregado");
+  return;
+}
 
   let reserva = reservaReal + calcularReservaManutencao();
   let custoKm = calcularCustoPorKmTotal();
-  let kmRodado = kmAtual - kmInicialSistema;
+ let kmRodado = Math.max(0, kmAtual - kmInicialSistema);
 
   document.getElementById("reservaCarro").innerText =
     "€" + reserva.toFixed(2);
