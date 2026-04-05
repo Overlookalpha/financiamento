@@ -925,7 +925,7 @@ Possíveis causas:
   // 💰 ATUALIZAR RESERVA AUTOMATICAMENTE
 let reserva = calcularReservaManutencao();
 let custoKm = calcularCustoPorKmTotal();
-let kmRodado = kmAtual - kmInicialSistema;
+kmRodado = kmAtual - kmInicialSistema;
 
 document.getElementById("reservaCarro").innerText =
   "€" + reserva.toFixed(2);
