@@ -486,12 +486,8 @@ async function renderizarManutencoesBase() {
     let detalhe = "";
 
     if (statusInfo.kmRestante !== null) {
-      if (statusInfo.kmRestante <= 0) {
-        detalhe += "🚨 Atrasado em " + Math.abs(statusInfo.kmRestante) + " km\n";
-      } else {
-        detalhe += "📏 Faltam " + statusInfo.kmRestante + " km\n";
-      }
-    }
+  detalhe += "📏 TESTE: " + kmRodadoGlobal + " km\n";
+}
 
     if (statusInfo.diasRestantes !== null) {
       if (statusInfo.diasRestantes <= 0) {
