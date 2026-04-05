@@ -139,32 +139,34 @@ button:active {
 <div id="aba-home" class="aba">
 
   <!-- 💰 RESERVA PRIMEIRO -->
-  <div class="card">
+  <div class="card" style="text-align:center;">
 
-    <h3>💰 Reserva do carro</h3>
+  <h3>💰 Reserva do carro</h3>
 
-    <div style="display:flex; justify-content:space-between; align-items:center;">
+  <!-- VALOR PRINCIPAL -->
+  <div style="display:flex; justify-content:center; align-items:center; gap:8px; margin-top:10px;">
+    
+    <span id="reservaCarro" style="font-size:28px; font-weight:bold;">
+      €0
+    </span>
 
-      <p id="reservaCarro" style="font-size:22px; font-weight:bold; margin:0;">
-        €0
-      </p>
-
-      <span style="font-size:12px; opacity:0.7;">
-        estimado
-      </span>
-
-    </div>
-
-    <p id="custoKm" style="opacity:0.8;">
-      📊 €0/km
-    </p>
-
-    <p id="kmRodadoInfo" style="opacity:0.7;">
-      🚗 0 km rodados
-    </p>
+    <span style="font-size:12px; opacity:0.6;">
+      estimado
+    </span>
 
   </div>
 
+  <!-- CUSTO POR KM -->
+  <div id="custoKm" style="margin-top:10px; font-size:14px; opacity:0.8;">
+    📊 €0/km
+  </div>
+
+  <!-- KM RODADO -->
+  <div id="kmRodadoInfo" style="margin-top:5px; font-size:14px; opacity:0.7;">
+    🚗 0 km rodados
+  </div>
+
+</div>
   <!-- 🚨 ALERTAS DEPOIS -->
   <div class="card">
     <h3>🚨 Alertas</h3>
