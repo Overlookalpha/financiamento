@@ -1091,3 +1091,15 @@ function calcularCustoPorKmTotal() {
 
   return totalPorKm;
 }
+function calcularReservaManutencao() {
+
+  let custoPorKm = calcularCustoPorKmTotal();
+
+  let kmRodadoTotal = kmAtual - kmInicialSistema;
+
+  let reserva = kmRodadoTotal * custoPorKm;
+
+  console.log("RESERVA:", reserva);
+
+  return reserva;
+}
