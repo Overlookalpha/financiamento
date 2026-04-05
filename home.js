@@ -354,10 +354,18 @@ ${dataTexto}
 }
 function calcularStatusManutencao(base, ultimaManutencao, kmAtualParam) {
  if (!ultimaManutencao) {
+
+  let kmRestante = null;
+
+  if (base.kmTroca && base.kmTroca > 0) {
+    let kmRodadoTotal = kmAtualParam - kmInicialSistema;
+    kmRestante = base.kmTroca - kmRodadoTotal;
+  }
+
   return {
-    kmRestante: base.kmTroca || null,
+    kmRestante: kmRestante,
     diasRestantes: base.diasTroca || null,
-    status: "amarelo" // 👈 chama atenção
+    status: "amarelo"
   };
 }
 
