@@ -129,7 +129,10 @@ if (docsKm.length >= 2) {
 console.log("KM rodado GLOBAL:", kmRodadoGlobal);
   
   console.log("KM ATUAL:", kmAtual);
+
+setTimeout(() => {
   atualizarReservaUI();
+}, 300);
 
   await criarManutencoesIniciais();
 
