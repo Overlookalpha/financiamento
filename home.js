@@ -1073,3 +1073,21 @@ async function gerarAlertasManutencao() {
 
   container.innerHTML = html;
 }
+function calcularCustoPorKmTotal() {
+
+  let totalPorKm = 0;
+
+  manutencoesBase.forEach(item => {
+
+    if (!item.kmTroca || item.kmTroca === 0) return;
+
+    let custoPorKm = item.custoMedio / item.kmTroca;
+
+    totalPorKm += custoPorKm;
+
+  });
+
+  console.log("CUSTO POR KM:", totalPorKm);
+
+  return totalPorKm;
+}
