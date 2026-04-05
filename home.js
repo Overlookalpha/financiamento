@@ -90,8 +90,6 @@ if (user) {
     const data = doc.data();
     reservaReal = data.reservaReal || 0;
   }
-
-  atualizarReservaUI();
 }
   
   let doc = await db.collection("admins").doc(user.uid).get();
@@ -131,6 +129,7 @@ if (docsKm.length >= 2) {
 console.log("KM rodado GLOBAL:", kmRodadoGlobal);
   
   console.log("KM ATUAL:", kmAtual);
+  atualizarReservaUI();
 
   await criarManutencoesIniciais();
 
