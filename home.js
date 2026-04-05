@@ -82,6 +82,17 @@ auth.onAuthStateChanged(async (user) => {
     return;
   }
 
+if (user) {
+  const doc = await db.collection("usuarios").doc(user.uid).get();
+
+  if (doc.exists) {
+    const data = doc.data();
+    reservaReal = data.reservaReal || 0;
+  }
+
+  atualizarReservaUI();
+}
+  
   let doc = await db.collection("admins").doc(user.uid).get();
 
   if (doc.exists) {
@@ -749,6 +760,9 @@ console.log("Base encontrada:", base);
   
  // 💰 DAR BAIXA NA RESERVA
 reservaReal -= base.custoMedio;
+await db.collection("usuarios").doc(user.uid).set({
+  reservaReal: reservaReal
+}, { merge: true });
 
 // evitar negativo (opcional)
 if (reservaReal < 0) reservaReal = 0;
