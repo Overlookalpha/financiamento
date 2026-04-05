@@ -1,3 +1,4 @@
+let reservaReal = 0;
 let kmInicialSistema = 0;
 let kmRodadoGlobal = 0;
 // CONFIG
@@ -745,7 +746,13 @@ window.confirmarAlerta = async function(nomeItem) {
 console.log("Clicou:", nomeItem);
 console.log("Base encontrada:", base);
   if (!base) return;
+  
+ // 💰 DAR BAIXA NA RESERVA
+reservaReal -= base.custoMedio;
 
+// evitar negativo (opcional)
+if (reservaReal < 0) reservaReal = 0;
+  
   await db.collection("manutencoes").add({
   uid: user.uid,
   categoria: base.categoria,
@@ -759,8 +766,10 @@ console.log("Base encontrada:", base);
   alertasIgnorados.push(nomeItem);
   alert("✅ Manutenção registrada!");
 
-  carregarManutencoes();
-  carregarAlertasHome();
+ carregarManutencoes();
+carregarAlertasHome();
+
+atualizarReservaUI();
 };
 let alertasIgnorados = [];
 
@@ -922,19 +931,8 @@ Possíveis causas:
   calcularMediaGeral();
 
   carregarHistoricoAbastecimento(); // 🔥 ATUALIZA NA HORA
+   atualizarReservaUI();
   // 💰 ATUALIZAR RESERVA AUTOMATICAMENTE
-let reserva = calcularReservaManutencao();
-let custoKm = calcularCustoPorKmTotal();
-kmRodado = kmAtual - kmInicialSistema;
-
-document.getElementById("reservaCarro").innerText =
-  "€" + reserva.toFixed(2);
-
-document.getElementById("custoKm").innerText =
-  "📊 €" + custoKm.toFixed(3) + "/km";
-
-document.getElementById("kmRodadoInfo").innerText =
-  "🚗 " + kmRodado + " km rodados";
 };
 async function carregarHistoricoAbastecimento() {
 
@@ -1115,4 +1113,19 @@ function calcularReservaManutencao() {
   console.log("RESERVA:", reserva);
 
   return reserva;
+}
+function atualizarReservaUI() {
+
+  let reserva = reservaReal + calcularReservaManutencao();
+  let custoKm = calcularCustoPorKmTotal();
+  let kmRodado = kmAtual - kmInicialSistema;
+
+  document.getElementById("reservaCarro").innerText =
+    "€" + reserva.toFixed(2);
+
+  document.getElementById("custoKm").innerText =
+    "📊 €" + custoKm.toFixed(3) + "/km";
+
+  document.getElementById("kmRodadoInfo").innerText =
+    "🚗 " + kmRodado + " km rodados";
 }
