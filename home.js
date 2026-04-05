@@ -356,7 +356,6 @@ if (base.kmTroca && base.kmTroca > 0) {
   kmRestante = base.kmTroca - kmRodadoGlobal;
 }
 
-
   // ⏱️ TEMPO
   let diasRestantes = null;
 
@@ -486,7 +485,11 @@ async function renderizarManutencoesBase() {
     let detalhe = "";
 
     if (statusInfo.kmRestante !== null) {
-  detalhe += "📏 TESTE: " + kmRodadoGlobal + " km\n";
+  if (statusInfo.kmRestante <= 0) {
+    detalhe += "🚨 Atrasado em " + Math.abs(statusInfo.kmRestante) + " km";
+  } else {
+    detalhe += "📏 Faltam " + statusInfo.kmRestante + " km\n";
+  }
 }
 
     if (statusInfo.diasRestantes !== null) {
