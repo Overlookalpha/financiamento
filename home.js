@@ -700,13 +700,20 @@ html += '<strong style="font-size:18px; letter-spacing:0.5px; line-height:1.2;">
 html += '<span style="font-size:16px;">💰 €' + item.custoMedio + '</span><br>';
 
 if (item.statusInfo.kmRestante !== null) {
-  html += '<span style="font-size:15px; opacity:0.9;">KM: ' + item.statusInfo.kmRestante + '</span><br>';
+  if (item.statusInfo.kmRestante <= 0) {
+    html += '<span style="font-size:15px;">🚨 Atrasado em ' + Math.abs(item.statusInfo.kmRestante) + ' km</span><br>';
+  } else {
+    html += '<span style="font-size:15px;">📏 Faltam ' + item.statusInfo.kmRestante + ' km</span><br>';
+  }
 }
 
 if (item.statusInfo.diasRestantes !== null) {
-  html += '<span style="font-size:15px; opacity:0.9;">Dias: ' + item.statusInfo.diasRestantes + '</span>';
+  if (item.statusInfo.diasRestantes <= 0) {
+    html += '<span style="font-size:15px;">🚨 Atrasado em ' + Math.abs(item.statusInfo.diasRestantes) + ' dias</span>';
+  } else {
+    html += '<span style="font-size:15px;">⏰ Faltam ' + item.statusInfo.diasRestantes + ' dias</span>';
+  }
 }
-
 html += '</div>';
 
 // 🔹 BLOCO DOS BOTÕES
@@ -1038,6 +1045,12 @@ if (mediaAtual) {
 }
 window.onload = function () {
   abrirAba("home");
+
+  // 🔥 Atualiza na hora ao abrir
+  atualizarTempoManutencao();
+
+  // 🔁 Depois agenda meia-noite
+  iniciarAtualizacaoMeiaNoite();
 };
 async function gerarAlertasManutencao() {
   const container = document.getElementById("alertasManutencao");
@@ -1149,4 +1162,29 @@ function atualizarReservaUI() {
 
   document.getElementById("kmRodadoInfo").innerText =
     "🚗 " + kmRodado + " km rodados";
+}
+function atualizarTempoManutencao() {
+  renderizarManutencoesBase();
+  carregarAlertasHome();
+  gerarAlertasManutencao();
+}
+function iniciarAtualizacaoMeiaNoite() {
+  const agora = new Date();
+
+  const meiaNoite = new Date();
+  meiaNoite.setHours(24, 0, 0, 0); // próxima meia-noite
+
+  const tempoRestante = meiaNoite - agora;
+
+  // ⏳ espera até meia-noite
+  setTimeout(() => {
+
+    atualizarTempoManutencao();
+
+    // 🔁 depois disso, roda todo dia
+    setInterval(() => {
+      atualizarTempoManutencao();
+    }, 1000 * 60 * 60 * 24);
+
+  }, tempoRestante);
 }
