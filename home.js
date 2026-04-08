@@ -547,12 +547,27 @@ async function renderizarManutencoesBase() {
     custo.innerText = "💰 Custo médio: €" + item.custoMedio;
 
     const troca = document.createElement("div");
-    troca.style.fontSize = "14px";
-    troca.style.marginTop = "6px";
-    troca.innerText =
-      "⏱ " +
-      (item.kmTroca ? item.kmTroca + " km" : "") +
-      (item.diasTroca ? " / " + item.diasTroca + " dias" : "");
+troca.style.fontSize = "14px";
+troca.style.marginTop = "6px";
+
+let textoTempo = "";
+
+// KM
+if (statusInfo.kmRestante !== null && item.kmTroca) {
+  textoTempo += statusInfo.kmRestante + " / " + item.kmTroca + " km ";
+}
+
+// DIAS
+if (statusInfo.diasRestantes !== null && item.diasTroca) {
+  textoTempo += statusInfo.diasRestantes + " / " + item.diasTroca + " dias";
+}
+
+// 🔥 GARANTE QUE NÃO FICA VAZIO
+if (textoTempo === "") {
+  textoTempo = "Sem dados";
+}
+
+troca.innerText = "⏱ " + textoTempo;
 
     const detalheDiv = document.createElement("div");
     detalheDiv.style.marginTop = "6px";
