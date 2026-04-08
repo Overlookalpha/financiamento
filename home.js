@@ -549,21 +549,24 @@ async function renderizarManutencoesBase() {
     const troca = document.createElement("div");
 troca.style.fontSize = "14px";
 troca.style.marginTop = "6px";
-
 let textoTempo = "";
 
-// KM
-if (statusInfo.kmRestante !== null && item.kmTroca) {
-  textoTempo += statusInfo.kmRestante + " / " + item.kmTroca + " km ";
+// 🔥 SE TEM KM → mostra só KM
+if (item.kmTroca && statusInfo.kmRestante !== null) {
+
+  textoTempo = statusInfo.kmRestante + " / " + item.kmTroca + " km";
+
 }
 
-// DIAS
-if (statusInfo.diasRestantes !== null && item.diasTroca) {
-  textoTempo += statusInfo.diasRestantes + " / " + item.diasTroca + " dias";
+// 🔥 SENÃO → usa DIAS
+else if (item.diasTroca && statusInfo.diasRestantes !== null) {
+
+  textoTempo = statusInfo.diasRestantes + " / " + item.diasTroca + " dias";
+
 }
 
-// 🔥 GARANTE QUE NÃO FICA VAZIO
-if (textoTempo === "") {
+// fallback
+else {
   textoTempo = "Sem dados";
 }
 
