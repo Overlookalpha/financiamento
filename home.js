@@ -551,22 +551,24 @@ troca.style.fontSize = "14px";
 troca.style.marginTop = "6px";
 let textoTempo = "";
 
-// 🔥 SE TEM KM → mostra só KM
+// 🔥 KM (se existir)
 if (item.kmTroca && statusInfo.kmRestante !== null) {
-
-  textoTempo = statusInfo.kmRestante + " / " + item.kmTroca + " km";
-
+  textoTempo += statusInfo.kmRestante + " / " + item.kmTroca + " km";
 }
 
-// 🔥 SENÃO → usa DIAS
-else if (item.diasTroca && statusInfo.diasRestantes !== null) {
+// 🔥 DIAS (se existir)
+if (item.diasTroca && statusInfo.diasRestantes !== null) {
 
-  textoTempo = statusInfo.diasRestantes + " / " + item.diasTroca + " dias";
+  // quebra linha se já tem KM
+  if (textoTempo !== "") {
+    textoTempo += " | ";
+  }
 
+  textoTempo += statusInfo.diasRestantes + " / " + item.diasTroca + " dias";
 }
 
 // fallback
-else {
+if (textoTempo === "") {
   textoTempo = "Sem dados";
 }
 
