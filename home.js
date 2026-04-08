@@ -368,22 +368,7 @@ ${dataTexto}
 });
 }
 function calcularStatusManutencao(base, ultimaManutencao, kmAtualParam) {
- if (!ultimaManutencao) {
-
-  let kmRestante = null;
-
-  if (base.kmTroca && base.kmTroca > 0) {
-    let kmRodadoTotal = kmAtualParam - kmInicialSistema;
-    kmRestante = base.kmTroca - kmRodadoTotal;
-  }
-
-  return {
-    kmRestante: kmRestante,
-    diasRestantes: base.diasTroca || null,
-    status: "amarelo"
-  };
-}
-
+ 
   // 📏 KM
 let kmRestante = null;
 
@@ -461,9 +446,9 @@ async function renderizarManutencoesBase() {
   snapshot.forEach(doc => {
     const m = doc.data();
 
-    if (m.tipo === "realizada") {
-      historico.push(m);
-    }
+    if (m.tipo === "realizada" || m.tipo === "base") {
+  historico.push(m);
+}
   });
 
   const normalizar = (texto) =>
