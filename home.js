@@ -385,15 +385,31 @@ if (base.diasTroca > 0) {
   let dataBase;
 
   // 🔥 pega SEMPRE a data da manutenção (base ou realizada)
-  if (ultimaManutencao && ultimaManutencao.data) {
-    dataBase = new Date(ultimaManutencao.data);
-  } else {
-    return {
-      kmRestante,
-      diasRestantes: base.diasTroca,
-      status: "amarelo"
-    };
+  let dataBase = null;
+
+// 🔥 PRIORIDADE: manutenção realizada
+if (ultimaManutencao && ultimaManutencao.data) {
+  dataBase = new Date(ultimaManutencao.data);
+} else {
+  // 🔥 SENÃO: usa a base criada no Firebase
+  let baseDoc = historico.find(m =>
+    m.tipo === "base" &&
+    m.item === base.item
+  );
+
+  if (baseDoc && baseDoc.data) {
+    dataBase = new Date(baseDoc.data);
   }
+}
+
+// 🚨 se não tiver nenhuma data
+if (!dataBase) {
+  return {
+    kmRestante,
+    diasRestantes: base.diasTroca,
+    status: "amarelo"
+  };
+}
 
   let hoje = new Date();
 
