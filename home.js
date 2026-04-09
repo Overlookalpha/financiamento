@@ -1066,6 +1066,9 @@ window.onload = function () {
 
   // 🔁 Depois agenda meia-noite
   iniciarAtualizacaoMeiaNoite();
+  setInterval(() => {
+  atualizarTempoManutencao();
+ }, 60000); // atualiza a cada 1 minuto
 };
 async function gerarAlertasManutencao() {
   const container = document.getElementById("alertasManutencao");
