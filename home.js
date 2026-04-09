@@ -384,11 +384,15 @@ if (base.diasTroca > 0) {
 
   let dataBase;
 
+  // 🔥 pega SEMPRE a data da manutenção (base ou realizada)
   if (ultimaManutencao && ultimaManutencao.data) {
     dataBase = new Date(ultimaManutencao.data);
   } else {
-    // 🔥 usa data atual como fallback
-    dataBase = new Date();
+    return {
+      kmRestante,
+      diasRestantes: base.diasTroca,
+      status: "amarelo"
+    };
   }
 
   let hoje = new Date();
