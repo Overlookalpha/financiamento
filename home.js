@@ -367,54 +367,53 @@ ${dataTexto}
 `;
 });
 }
-function calcularStatusManutencao(base, ultimaManutencao, kmAtualParam) {
+function calcularStatusManutencao(base, ultimaManutencao, kmAtualParam, historico) {
  
   // 📏 KM
-let kmRestante = null;
+  let kmRestante = null;
 
-if (base.kmTroca && base.kmTroca > 0) {
-  let kmRodadoTotal = kmAtualParam - kmInicialSistema;
-
-  kmRestante = base.kmTroca - kmRodadoTotal;
-}
+  if (base.kmTroca && base.kmTroca > 0) {
+    let kmRodadoTotal = kmAtualParam - kmInicialSistema;
+    kmRestante = base.kmTroca - kmRodadoTotal;
+  }
    
   // ⏱️ TEMPO
   let diasRestantes = null;
-if (base.diasTroca > 0) {
 
- let dataBase;
+  if (base.diasTroca > 0) {
 
-// 🔥 PRIORIDADE: manutenção realizada
-if (ultimaManutencao && ultimaManutencao.data) {
-  dataBase = new Date(ultimaManutencao.data);
-} else {
-  // 🔥 pega a data base criada no Firebase
-  const normalizar = (texto) =>
-  texto.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim();
+    let dataBase = null;
 
-let baseDoc = historico.find(m =>
-  m.tipo === "base" &&
-  normalizar(m.item) === normalizar(base.item)
-);
+    // 🔥 1. PRIORIDADE: manutenção realizada
+    if (ultimaManutencao && ultimaManutencao.data) {
+      dataBase = new Date(ultimaManutencao.data);
 
-  if (baseDoc && baseDoc.data) {
-    dataBase = new Date(baseDoc.data);
-  } else {
-    // fallback (só se não tiver nada mesmo)
-    dataBase = new Date();
+    } else {
+
+      // 🔥 2. SENÃO: pega a base criada no Firebase
+      let baseDoc = historico.find(m =>
+        m.tipo === "base" && m.item === base.item
+      );
+
+      if (baseDoc && baseDoc.data) {
+        dataBase = new Date(baseDoc.data);
+      } else {
+        // 🔥 fallback (segurança)
+        dataBase = new Date();
+      }
+    }
+
+    let hoje = new Date();
+
+    hoje.setHours(0,0,0,0);
+    dataBase.setHours(0,0,0,0);
+
+    let diasPassados = Math.floor((hoje - dataBase) / (1000 * 60 * 60 * 24));
+
+    diasRestantes = base.diasTroca - diasPassados;
   }
-}
-  let hoje = new Date();
 
-  hoje.setHours(0,0,0,0);
-  dataBase.setHours(0,0,0,0);
-
-  let diasPassados = Math.floor((hoje - dataBase) / (1000 * 60 * 60 * 24));
-
-  diasRestantes = base.diasTroca - diasPassados;
-}
-
-  // 🎯 STATUS (quem vencer primeiro manda)
+  // 🎯 STATUS
   let status = "verde";
 
   if (
@@ -497,8 +496,8 @@ async function renderizarManutencoesBase() {
     const ultimaA = getUltima(a);
     const ultimaB = getUltima(b);
 
-    const statusA = calcularStatusManutencao(a, ultimaA, kmAtual).status;
-    const statusB = calcularStatusManutencao(b, ultimaB, kmAtual).status;
+    const statusA = calcularStatusManutencao(a, ultimaA, kmAtual, historico).status;
+    const statusB = calcularStatusManutencao(b, ultimaB, kmAtual, historico).status;
 
     const ordem = { vermelho: 0, amarelo: 1, verde: 2 };
 
@@ -510,8 +509,7 @@ async function renderizarManutencoesBase() {
 
     let ultima = getUltima(item);
 
-    const statusInfo = calcularStatusManutencao(item, ultima, kmAtual);
-
+    const statusInfo = calcularStatusManutencao(item, ultima, kmAtual, historico);
     let status = "🟢";
     let textoStatus = "OK";
 
@@ -663,8 +661,7 @@ if (pagamento.status !== "verde") {
       ultima = manutencoesFiltradas[0];
     }
 
-    const status = calcularStatusManutencao(base, ultima, kmAtual);
-
+    const status = calcularStatusManutencao(base, ultima, kmAtual, historico);
     console.log(base.item, status);
 
     if (status.status === "vermelho" || status.status === "amarelo") {
@@ -1075,9 +1072,6 @@ window.onload = function () {
 
   // 🔁 Depois agenda meia-noite
   iniciarAtualizacaoMeiaNoite();
-  setInterval(() => {
-  atualizarTempoManutencao();
- }, 60000); // atualiza a cada 1 minuto
 };
 async function gerarAlertasManutencao() {
   const container = document.getElementById("alertasManutencao");
@@ -1119,7 +1113,7 @@ async function gerarAlertasManutencao() {
   manutencoesBase.forEach(item => {
     let ultima = getUltima(item);
 
-    const status = calcularStatusManutencao(item, ultima, kmAtual);
+    const status = calcularStatusManutencao(base, ultima, kmAtual, historico);
 
     if (status.status === "vermelho" || status.status === "amarelo") {
 
