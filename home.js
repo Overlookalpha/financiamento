@@ -377,22 +377,28 @@ if (base.kmTroca && base.kmTroca > 0) {
 
   kmRestante = base.kmTroca - kmRodadoTotal;
 }
-
+   
   // ⏱️ TEMPO
   let diasRestantes = null;
+if (base.diasTroca > 0) {
 
- if (base.diasTroca > 0 && ultimaManutencao?.data) {
-  let dataBase = ultimaManutencao?.data 
-    ? new Date(ultimaManutencao.data)
-    : null;
- let hoje = new Date();
+  let dataBase;
 
-// 🔥 CORREÇÃO
-hoje.setHours(0,0,0,0);
-dataBase.setHours(0,0,0,0);
+  if (ultimaManutencao && ultimaManutencao.data) {
+    dataBase = new Date(ultimaManutencao.data);
+  } else {
+    // 🔥 usa data atual como fallback
+    dataBase = new Date();
+  }
 
-let diasPassados = Math.floor((hoje - dataBase) / (1000 * 60 * 60 * 24));
-diasRestantes = base.diasTroca - diasPassados;
+  let hoje = new Date();
+
+  hoje.setHours(0,0,0,0);
+  dataBase.setHours(0,0,0,0);
+
+  let diasPassados = Math.floor((hoje - dataBase) / (1000 * 60 * 60 * 24));
+
+  diasRestantes = base.diasTroca - diasPassados;
 }
 
   // 🎯 STATUS (quem vencer primeiro manda)
