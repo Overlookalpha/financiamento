@@ -382,19 +382,28 @@ if (base.kmTroca && base.kmTroca > 0) {
   let diasRestantes = null;
 if (base.diasTroca > 0) {
 
-  let dataBase;
+ let dataBase;
 
-  // 🔥 pega SEMPRE a data da manutenção (base ou realizada)
-  if (ultimaManutencao && ultimaManutencao.data) {
-    dataBase = new Date(ultimaManutencao.data);
+// 🔥 PRIORIDADE: manutenção realizada
+if (ultimaManutencao && ultimaManutencao.data) {
+  dataBase = new Date(ultimaManutencao.data);
+} else {
+  // 🔥 pega a data base criada no Firebase
+  const normalizar = (texto) =>
+  texto.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim();
+
+let baseDoc = historico.find(m =>
+  m.tipo === "base" &&
+  normalizar(m.item) === normalizar(base.item)
+);
+
+  if (baseDoc && baseDoc.data) {
+    dataBase = new Date(baseDoc.data);
   } else {
-    return {
-      kmRestante,
-      diasRestantes: base.diasTroca,
-      status: "amarelo"
-    };
+    // fallback (só se não tiver nada mesmo)
+    dataBase = new Date();
   }
-
+}
   let hoje = new Date();
 
   hoje.setHours(0,0,0,0);
