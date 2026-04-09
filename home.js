@@ -382,8 +382,6 @@ if (base.kmTroca && base.kmTroca > 0) {
   let diasRestantes = null;
 if (base.diasTroca > 0) {
 
-  let dataBase;
-
   // 🔥 pega SEMPRE a data da manutenção (base ou realizada)
   let dataBase = null;
 
