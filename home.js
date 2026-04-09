@@ -379,38 +379,23 @@ if (base.kmTroca && base.kmTroca > 0) {
 }
    
   // ⏱️ TEMPO
-  let diasRestantes = null;
+ let diasRestantes = null;
+
 if (base.diasTroca > 0) {
 
   // 🔥 pega SEMPRE a data da manutenção (base ou realizada)
   let dataBase = null;
 
-// 🔥 PRIORIDADE: manutenção realizada
-if (ultimaManutencao && ultimaManutencao.data) {
-  dataBase = new Date(ultimaManutencao.data);
-} else {
-  // 🔥 SENÃO: usa a base criada no Firebase
-  let baseDoc = historico.find(m =>
-    m.tipo === "base" &&
-    m.item === base.item
-  );
-
-  if (baseDoc && baseDoc.data) {
-    dataBase = new Date(baseDoc.data);
+  // 🔥 PRIORIDADE: manutenção realizada
+  if (ultimaManutencao && ultimaManutencao.data) {
+    dataBase = new Date(ultimaManutencao.data);
+  } else {
+    // 🔥 se nunca fez manutenção → começa a contar desde hoje
+    dataBase = new Date();
   }
-}
 
-// 🚨 se não tiver nenhuma data
-if (!dataBase) {
-  return {
-    kmRestante,
-    diasRestantes: base.diasTroca,
-    status: "amarelo"
-  };
-}
-
+  // normaliza datas
   let hoje = new Date();
-
   hoje.setHours(0,0,0,0);
   dataBase.setHours(0,0,0,0);
 
@@ -419,37 +404,26 @@ if (!dataBase) {
   diasRestantes = base.diasTroca - diasPassados;
 }
 
-  // 🎯 STATUS (quem vencer primeiro manda)
-  let status = "verde";
+// 🎯 STATUS (quem vencer primeiro manda)
+let status = "verde";
 
-  if (
-    (kmRestante !== null && kmRestante <= 0) ||
-    (diasRestantes !== null && diasRestantes <= 0)
-  ) {
-    status = "vermelho";
-  } else if (
-    (kmRestante !== null && kmRestante <= 1000) ||
-    (diasRestantes !== null && diasRestantes <= 3)
-  ) {
-    status = "amarelo";
-  }
-
-  return {
-    kmRestante,
-    diasRestantes,
-    status
-  };
+if (
+  (kmRestante !== null && kmRestante <= 0) ||
+  (diasRestantes !== null && diasRestantes <= 0)
+) {
+  status = "vermelho";
+} else if (
+  (kmRestante !== null && kmRestante <= 1000) ||
+  (diasRestantes !== null && diasRestantes <= 3)
+) {
+  status = "amarelo";
 }
-function abrirAba(nome) {
-  document.querySelectorAll(".aba").forEach(el => {
-    el.style.display = "none";
-  });
 
-  const aba = document.getElementById("aba-" + nome);
-
-  if (aba) {
-    aba.style.display = "flex"; // 🔥 TROCA AQUI
-  }
+return {
+  kmRestante,
+  diasRestantes,
+  status
+};
 }
 
 async function renderizarManutencoesBase() {
