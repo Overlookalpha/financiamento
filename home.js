@@ -646,7 +646,8 @@ card.appendChild(botao);
 card.appendChild(detalheExtra);
 
 container.appendChild(card);
-    
+  });
+}
 // 👉 CHAMA FORA
 async function carregarAlertasHome() {
   const alertasDiv = document.getElementById("alertasHome");
