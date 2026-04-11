@@ -1113,7 +1113,8 @@ async function gerarAlertasManutencao() {
   manutencoesBase.forEach(item => {
     let ultima = getUltima(item);
 
-    const status = calcularStatusManutencao(base, ultima, kmAtual, historico);
+    // 🔥 CORREÇÃO AQUI (era base)
+    const status = calcularStatusManutencao(item, ultima, kmAtual, historico);
 
     if (status.status === "vermelho" || status.status === "amarelo") {
 
