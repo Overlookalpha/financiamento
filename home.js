@@ -454,6 +454,7 @@ async function renderizarManutencoesBase() {
 
   let user = auth.currentUser;
   if (!user) return;
+
   kmAtual = await obterKmAtual();
 
   const snapshot = await db.collection("manutencoes")
@@ -461,12 +462,13 @@ async function renderizarManutencoesBase() {
     .get();
 
   let historico = [];
+
   snapshot.forEach(doc => {
     const m = doc.data();
 
     if (m.tipo === "realizada" || m.tipo === "base") {
-  historico.push(m);
-}
+      historico.push(m);
+    }
   });
 
   const normalizar = (texto) =>
@@ -474,17 +476,15 @@ async function renderizarManutencoesBase() {
 
   const getUltima = (item) => {
     let filtradas = historico.filter(m =>
-  m.tipo === "realizada" &&
-  normalizar(m.item).includes(normalizar(item.item))
-);
+      m.tipo === "realizada" &&
+      normalizar(m.item).includes(normalizar(item.item))
+    );
 
     if (filtradas.length === 0) return null;
 
     filtradas.sort((x, y) => new Date(y.data) - new Date(x.data));
 
-    // 🔥 só manutenção válida
     let valida = filtradas.find(m =>
-      m.tipo === "realizada" &&
       typeof m.km === "number"
     );
 
@@ -492,7 +492,6 @@ async function renderizarManutencoesBase() {
   };
 
   const listaOrdenada = [...manutencoesBase].sort((a, b) => {
-
     const ultimaA = getUltima(a);
     const ultimaB = getUltima(b);
 
@@ -505,11 +504,13 @@ async function renderizarManutencoesBase() {
   });
 
   listaOrdenada.forEach(item => {
+
     if (alertasIgnorados.includes(item.item)) return;
 
     let ultima = getUltima(item);
 
     const statusInfo = calcularStatusManutencao(item, ultima, kmAtual, historico);
+
     let status = "🟢";
     let textoStatus = "OK";
 
@@ -524,12 +525,12 @@ async function renderizarManutencoesBase() {
     let detalhe = "";
 
     if (statusInfo.kmRestante !== null) {
-  if (statusInfo.kmRestante <= 0) {
-    detalhe += "🚨 Atrasado em " + Math.abs(statusInfo.kmRestante) + " km";
-  } else {
-    detalhe += "📏 Faltam " + statusInfo.kmRestante + " km\n";
-  }
-}
+      if (statusInfo.kmRestante <= 0) {
+        detalhe += "🚨 Atrasado em " + Math.abs(statusInfo.kmRestante) + " km";
+      } else {
+        detalhe += "📏 Faltam " + statusInfo.kmRestante + " km\n";
+      }
+    }
 
     if (statusInfo.diasRestantes !== null) {
       if (statusInfo.diasRestantes <= 0) {
@@ -564,91 +565,79 @@ async function renderizarManutencoesBase() {
     custo.innerText = "💰 Custo médio: €" + item.custoMedio;
 
     const troca = document.createElement("div");
-troca.style.fontSize = "14px";
-troca.style.marginTop = "6px";
-let textoTempo = "";
+    troca.style.fontSize = "14px";
+    troca.style.marginTop = "6px";
 
-// 🔥 KM (se existir)
-if (item.kmTroca && statusInfo.kmRestante !== null) {
-  textoTempo += statusInfo.kmRestante + " / " + item.kmTroca + " km";
-}
+    let textoTempo = "";
 
-// 🔥 DIAS (se existir)
-if (item.diasTroca && statusInfo.diasRestantes !== null) {
+    if (item.kmTroca && statusInfo.kmRestante !== null) {
+      textoTempo += statusInfo.kmRestante + " / " + item.kmTroca + " km";
+    }
 
-  // quebra linha se já tem KM
-  if (textoTempo !== "") {
-    textoTempo += " | ";
-  }
+    if (item.diasTroca && statusInfo.diasRestantes !== null) {
+      if (textoTempo !== "") {
+        textoTempo += " | ";
+      }
 
-  textoTempo += statusInfo.diasRestantes + " / " + item.diasTroca + " dias";
-}
+      textoTempo += statusInfo.diasRestantes + " / " + item.diasTroca + " dias";
+    }
 
-// fallback
-if (textoTempo === "") {
-  textoTempo = "Sem dados";
-}
+    if (textoTempo === "") {
+      textoTempo = "Sem dados";
+    }
 
-troca.innerText = "⏱ " + textoTempo;
+    troca.innerText = "⏱ " + textoTempo;
 
-const detalheDiv = document.createElement("div");
-detalheDiv.style.marginTop = "6px";
-detalheDiv.style.fontSize = "13px";
-detalheDiv.innerText = detalhe;
+    const detalheDiv = document.createElement("div");
+    detalheDiv.style.marginTop = "6px";
+    detalheDiv.style.fontSize = "13px";
+    detalheDiv.innerText = detalhe;
 
-const statusDiv = document.createElement("div");
-statusDiv.style.marginTop = "6px";
-statusDiv.style.fontSize = "13px";
-statusDiv.innerText = textoStatus;
+    const statusDiv = document.createElement("div");
+    statusDiv.style.marginTop = "6px";
+    statusDiv.style.fontSize = "13px";
+    statusDiv.innerText = textoStatus;
 
-card.appendChild(categoria);
-card.appendChild(itemDiv);
-card.appendChild(custo);
-card.appendChild(troca);
-card.appendChild(detalheDiv);
-card.appendChild(statusDiv);
+    card.appendChild(categoria);
+    card.appendChild(itemDiv);
+    card.appendChild(custo);
+    card.appendChild(troca);
+    card.appendChild(detalheDiv);
+    card.appendChild(statusDiv);
 
-// 🔽 DETALHE (OBSERVAÇÕES) — CRIA PRIMEIRO
-const detalheExtra = document.createElement("div");
-detalheExtra.style.display = "none";
-detalheExtra.style.marginTop = "10px";
-detalheExtra.style.fontSize = "13px";
-detalheExtra.style.textAlign = "left";
-
-detalheExtra.innerHTML =
-"<strong>🛠️ Materiais:</strong><br>" +
-"• Exemplo material 1<br>" +
-"• Exemplo material 2<br><br>" +
-
-"<strong>📋 Como fazer:</strong><br>" +
-"• Passo 1<br>" +
-"• Passo 2<br><br>" +
-
-"<strong>⚠️ Observações:</strong><br>" +
-"• Cuidado importante";
-
-// 🔘 BOTÃO VER DETALHES
-const botao = document.createElement("button");
-botao.innerText = "📖 Ver como fazer";
-botao.style.marginTop = "8px";
-botao.style.width = "100%";
-
-botao.onclick = () => {
-  if (detalheExtra.style.display === "none") {
-    detalheExtra.style.display = "block";
-  } else {
+    // 🔽 detalhe extra
+    const detalheExtra = document.createElement("div");
     detalheExtra.style.display = "none";
-  }
-};
+    detalheExtra.style.marginTop = "10px";
+    detalheExtra.style.fontSize = "13px";
+    detalheExtra.style.textAlign = "left";
 
-// 🔥 ORDEM CORRETA
-card.appendChild(botao);
-card.appendChild(detalheExtra);
+    detalheExtra.innerHTML =
+      "<strong>🛠️ Materiais:</strong><br>" +
+      "• Exemplo material 1<br>" +
+      "• Exemplo material 2<br><br>" +
+      "<strong>📋 Como fazer:</strong><br>" +
+      "• Passo 1<br>" +
+      "• Passo 2<br><br>" +
+      "<strong>⚠️ Observações:</strong><br>" +
+      "• Cuidado importante";
 
-container.appendChild(card);
+    const botao = document.createElement("button");
+    botao.innerText = "📖 Ver como fazer";
+    botao.style.marginTop = "8px";
+    botao.style.width = "100%";
+
+    botao.onclick = () => {
+      detalheExtra.style.display =
+        detalheExtra.style.display === "none" ? "block" : "none";
+    };
+
+    card.appendChild(botao);
+    card.appendChild(detalheExtra);
+
+    container.appendChild(card);
   });
 }
-// 👉 CHAMA FORA
 async function carregarAlertasHome() {
   const alertasDiv = document.getElementById("alertasHome");
   alertasDiv.innerHTML = "";
