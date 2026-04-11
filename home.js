@@ -615,18 +615,17 @@ detalheExtra.style.marginTop = "10px";
 detalheExtra.style.fontSize = "13px";
 detalheExtra.style.textAlign = "left";
 
-detalheExtra.innerHTML = `
-<strong>🛠️ Materiais:</strong><br>
-* Exemplo material 1<br>
-* Exemplo material 2<br><br>
+detalheExtra.innerHTML =
+"<strong>🛠️ Materiais:</strong><br>" +
+"• Exemplo material 1<br>" +
+"• Exemplo material 2<br><br>" +
 
-<strong>📋 Como fazer:</strong><br>
-* Passo 1<br>
-* Passo 2<br><br>
+"<strong>📋 Como fazer:</strong><br>" +
+"• Passo 1<br>" +
+"• Passo 2<br><br>" +
 
-<strong>⚠️ Observações:</strong><br>
-* Cuidado importante
-`;
+"<strong>⚠️ Observações:</strong><br>" +
+"• Cuidado importante";
 
 // 🔘 BOTÃO VER DETALHES
 const botao = document.createElement("button");
