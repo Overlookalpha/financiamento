@@ -591,26 +591,63 @@ if (textoTempo === "") {
 
 troca.innerText = "⏱ " + textoTempo;
 
-    const detalheDiv = document.createElement("div");
-    detalheDiv.style.marginTop = "6px";
-    detalheDiv.style.fontSize = "13px";
-    detalheDiv.innerText = detalhe;
+const detalheDiv = document.createElement("div");
+detalheDiv.style.marginTop = "6px";
+detalheDiv.style.fontSize = "13px";
+detalheDiv.innerText = detalhe;
 
-    const statusDiv = document.createElement("div");
-    statusDiv.style.marginTop = "6px";
-    statusDiv.style.fontSize = "13px";
-    statusDiv.innerText = textoStatus;
+const statusDiv = document.createElement("div");
+statusDiv.style.marginTop = "6px";
+statusDiv.style.fontSize = "13px";
+statusDiv.innerText = textoStatus;
 
-    card.appendChild(categoria);
-    card.appendChild(itemDiv);
-    card.appendChild(custo);
-    card.appendChild(troca);
-    card.appendChild(detalheDiv);
-    card.appendChild(statusDiv);
+card.appendChild(categoria);
+card.appendChild(itemDiv);
+card.appendChild(custo);
+card.appendChild(troca);
+card.appendChild(detalheDiv);
+card.appendChild(statusDiv);
 
-    container.appendChild(card);
-  });
-}
+// 🔽 DETALHE (OBSERVAÇÕES) — CRIA PRIMEIRO
+const detalheExtra = document.createElement("div");
+detalheExtra.style.display = "none";
+detalheExtra.style.marginTop = "10px";
+detalheExtra.style.fontSize = "13px";
+detalheExtra.style.textAlign = "left";
+
+detalheExtra.innerHTML = `
+<strong>🛠️ Materiais:</strong><br>
+* Exemplo material 1<br>
+* Exemplo material 2<br><br>
+
+<strong>📋 Como fazer:</strong><br>
+* Passo 1<br>
+* Passo 2<br><br>
+
+<strong>⚠️ Observações:</strong><br>
+* Cuidado importante
+`;
+
+// 🔘 BOTÃO VER DETALHES
+const botao = document.createElement("button");
+botao.innerText = "📖 Ver como fazer";
+botao.style.marginTop = "8px";
+botao.style.width = "100%";
+
+botao.onclick = () => {
+  if (detalheExtra.style.display === "none") {
+    detalheExtra.style.display = "block";
+  } else {
+    detalheExtra.style.display = "none";
+  }
+};
+
+// 🔥 ORDEM CORRETA
+card.appendChild(botao);
+card.appendChild(detalheExtra);
+
+container.appendChild(card);
+    
 // 👉 CHAMA FORA
 async function carregarAlertasHome() {
   const alertasDiv = document.getElementById("alertasHome");
