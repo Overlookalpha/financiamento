@@ -1226,40 +1226,59 @@ document.getElementById("inputFoto").addEventListener("change", function(event) 
 
   const reader = new FileReader();
 
- reader.onload = async function(e) {
+reader.onload = function (e) {
 
-  const base64 = e.target.result;
-  // mostra imagem
-  document.getElementById("resultadoAnalise").innerHTML =
-    "<img src='" + base64 + "' style='width:100%; border-radius:10px;'>" +
-    "<p>📸 Foto carregada</p>";
+  let base64 = e.target.result;
 
-  try {
+  const processarImagem = async (imagemFinal) => {
 
-    const resposta = await fetch("http://localhost:3000/analisar", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        imagem: base64,
-        tipo: document.getElementById("tituloAnalise").innerText
-      })
-    });
+    document.getElementById("resultadoAnalise").innerHTML =
+      "<img src='" + imagemFinal + "' style='width:100%; border-radius:10px;'>" +
+      "<p>📸 Foto carregada</p>";
 
-    const dados = await resposta.json();
+    try {
+      const resposta = await fetch("http://localhost:3000/analisar", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          imagem: imagemFinal,
+          tipo: document.getElementById("tituloAnalise").innerText
+        })
+      });
 
-    document.getElementById("resultadoAnalise").innerHTML +=
-      "<p>🧠 " + dados.resultado + "</p>";
+      const dados = await resposta.json();
 
-  } catch (erro) {
+      document.getElementById("resultadoAnalise").innerHTML +=
+        "<p>🧠 " + dados.resultado + "</p>";
 
-    document.getElementById("resultadoAnalise").innerHTML +=
-      "<p>❌ Erro ao analisar</p>";
+    } catch (erro) {
+      document.getElementById("resultadoAnalise").innerHTML +=
+        "<p style='color:red;'>❌ Erro ao analisar</p>";
+    }
+  };
 
-    console.error(erro);
+  // 👇 CONVERSÃO PRA JPEG (CORREÇÃO MOBILE)
+  if (!base64.startsWith("data:image/jpeg")) {
+    const img = new Image();
+    img.src = base64;
+
+    img.onload = function () {
+      const canvas = document.createElement("canvas");
+      canvas.width = img.width;
+      canvas.height = img.height;
+
+      const ctx = canvas.getContext("2d");
+      ctx.drawImage(img, 0, 0);
+
+      const convertido = canvas.toDataURL("image/jpeg", 0.8);
+
+      processarImagem(convertido);
+    };
+  } else {
+    processarImagem(base64);
   }
-
 };
 
   reader.readAsDataURL(file);
