@@ -1216,7 +1216,7 @@ window.abrirAnalise = function(item) {
 
   abrirAba("analise");
 };
-function tirarFoto() {
+window.tirarFoto = function() {
   document.getElementById("inputFoto").click();
 }
 document.getElementById("inputFoto").addEventListener("change", function(event) {
