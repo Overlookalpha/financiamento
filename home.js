@@ -1227,11 +1227,49 @@ document.getElementById("inputFoto").addEventListener("change", function(event) 
   const reader = new FileReader();
 
   reader.onload = function(e) {
-    document.getElementById("resultadoAnalise").innerHTML = `
-      <img src="${e.target.result}" style="width:100%; border-radius:10px;">
-      <p>📸 Foto carregada</p>
+
+  let resultado = `
+    <img src="${e.target.result}" style="width:100%; border-radius:10px; margin-top:10px;">
+    <p>📸 Foto carregada</p>
+  `;
+
+  // 🧠 SIMULAÇÃO DE IA
+  let analise = "";
+
+  if (document.getElementById("tituloAnalise").innerText.includes("óleo")) {
+
+    analise = `
+      <div style="margin-top:10px;">
+        🛢 Nível do óleo: ⚠️ Baixo<br>
+        💡 Recomendação:<br>
+        - Usar óleo 5W30<br>
+        - Completar até o nível<br>
+      </div>
     `;
-  };
+
+  } else if (document.getElementById("tituloAnalise").innerText.includes("radiador")) {
+
+    analise = `
+      <div style="margin-top:10px;">
+        💧 Nível do radiador: ⚠️ Baixo<br>
+        💡 Recomendação:<br>
+        - Usar líquido refrigerante<br>
+        - Completar reservatório<br>
+      </div>
+    `;
+
+  } else {
+
+    analise = `
+      <div style="margin-top:10px;">
+        🔍 Análise genérica<br>
+        Tudo parece normal 👍
+      </div>
+    `;
+  }
+
+  document.getElementById("resultadoAnalise").innerHTML = resultado + analise;
+};
 
   reader.readAsDataURL(file);
 });
