@@ -1228,7 +1228,7 @@ document.getElementById("inputFoto").addEventListener("change", function(event) 
 
  reader.onload = async function(e) {
 
-  const base64 = e.target.result.split(",")[1];
+  const base64 = e.target.result;
   // mostra imagem
   document.getElementById("resultadoAnalise").innerHTML =
     "<img src='" + base64 + "' style='width:100%; border-radius:10px;'>" +
