@@ -1216,3 +1216,22 @@ window.abrirAnalise = function(item) {
 
   abrirAba("analise");
 };
+function tirarFoto() {
+  document.getElementById("inputFoto").click();
+}
+document.getElementById("inputFoto").addEventListener("change", function(event) {
+
+  const file = event.target.files[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+
+  reader.onload = function(e) {
+    document.getElementById("resultadoAnalise").innerHTML = `
+      <img src="${e.target.result}" style="width:100%; border-radius:10px;">
+      <p>📸 Foto carregada</p>
+    `;
+  };
+
+  reader.readAsDataURL(file);
+});
