@@ -1211,5 +1211,8 @@ function iniciarAtualizacaoMeiaNoite() {
   }, tempoRestante);
 }
 window.abrirAnalise = function(item) {
-  alert("Abrir análise: " + item);
+
+  document.getElementById("tituloAnalise").innerText = item;
+
+  abrirAba("analise");
 };
