@@ -1226,41 +1226,41 @@ document.getElementById("inputFoto").addEventListener("change", function(event) 
 
   const reader = new FileReader();
 
- reader.onload = function(e) {
+ reader.onload = async function(e) {
 
-  var imagem = '<img src="' + e.target.result + '" style="width:100%; border-radius:10px; margin-top:10px;">' +
-               '<p>📸 Foto carregada</p>';
+  const base64 = e.target.result;
 
-  var analise = "";
-  var titulo = document.getElementById("tituloAnalise").innerText.toLowerCase();
+  // mostra imagem
+  document.getElementById("resultadoAnalise").innerHTML =
+    "<img src='" + base64 + "' style='width:100%; border-radius:10px;'>" +
+    "<p>📸 Foto carregada</p>";
 
-  if (titulo.includes("óleo")) {
+  try {
 
-    analise = '<div style="margin-top:10px;">' +
-              '🛢 Nível do óleo: ⚠️ Baixo<br>' +
-              '💡 Recomendação:<br>' +
-              '- Usar óleo 5W30<br>' +
-              '- Completar até o nível<br>' +
-              '</div>';
+    const resposta = await fetch("http://localhost:3000/analisar", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        imagem: base64,
+        tipo: document.getElementById("tituloAnalise").innerText
+      })
+    });
 
-  } else if (titulo.includes("radiador")) {
+    const dados = await resposta.json();
 
-    analise = '<div style="margin-top:10px;">' +
-              '💧 Nível do radiador: ⚠️ Baixo<br>' +
-              '💡 Recomendação:<br>' +
-              '- Usar líquido refrigerante<br>' +
-              '- Completar reservatório<br>' +
-              '</div>';
+    document.getElementById("resultadoAnalise").innerHTML +=
+      "<p>🧠 " + dados.resultado + "</p>";
 
-  } else {
+  } catch (erro) {
 
-    analise = '<div style="margin-top:10px;">' +
-              '🔍 Análise geral<br>' +
-              'Tudo parece normal 👍' +
-              '</div>';
+    document.getElementById("resultadoAnalise").innerHTML +=
+      "<p>❌ Erro ao analisar</p>";
+
+    console.error(erro);
   }
 
-  document.getElementById("resultadoAnalise").innerHTML = imagem + analise;
 };
 
   reader.readAsDataURL(file);
