@@ -712,7 +712,7 @@ if (item.tipo === "pagamento") {
   if (item.statusInfo.status === "amarelo") cor = "🟡";
   if (item.statusInfo.status === "vermelho") cor = "🔴";
 
-  html += '<div style="margin:8px; padding:10px; background:#1e293b; border-radius:10px; display:flex; justify-content:space-between; align-items:flex-start;">';
+ html += '<div onclick="abrirAnalise(\'' + item.item + '\')" style="margin:8px; padding:10px; background:#1e293b; border-radius:10px; display:flex; justify-content:space-between; align-items:flex-start; cursor:pointer;">';
 
 // 🔹 BLOCO DO TEXTO
 html += '<div style="padding-right:10px;">';
@@ -1210,3 +1210,6 @@ function iniciarAtualizacaoMeiaNoite() {
 
   }, tempoRestante);
 }
+window.abrirAnalise = function(item) {
+  alert("Abrir análise: " + item);
+};
